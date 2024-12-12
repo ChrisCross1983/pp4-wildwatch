@@ -48,3 +48,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+# Home View
+def home(request):
+    return render(request, 'users/home.html')

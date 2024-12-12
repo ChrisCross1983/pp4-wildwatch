@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildWatch</title>
+  
+</head>
+<body>
+
+ 
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'users:login' %}">Login</a></li>
+                <li><a href="{% url 'users:signup' %}">Signup</a></li>
+                <li><a href="{% url 'users:home' %}">Home</a></li>
+                <li><a href="{% url 'users:logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+   <!-- Main Content -->
+    <div class="content">
+        {% block content %}
+       
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 WildWatch</p>
+    </footer>
+
+</body>
+</html>
