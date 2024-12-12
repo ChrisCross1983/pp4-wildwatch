@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h1>Animal Reports</h1>
+<ul>
+    {% for report in reports %}
+        <li>
+            <a href="{% url 'reports:report_detail' report.id %}">
+                {{ report.species }} - {{ report.location }} ({{ report.status }})
+            </a>
+            <br>
+            Created at: {{ report.created_at }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,16 +1,13 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<h1>Welcome to the Home Page</h1>
-
-{% if user.is_authenticated %}
-    <h2>Welcome, {{ user.username }}!</h2>
+  <h1>Welcome to WildWatch</h1>
+  {% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
     <p>You are logged in.</p>
-    <form method="post" action="{% url 'users:logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-{% else %}
+    <a href="{% url 'users:logout' %}">Logout</a>
+  {% else %}
     <p>You are not logged in.</p>
-{% endif %}
+    <a href="{% url 'users:login' %}">Login</a>
+  {% endif %}
 {% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h1>{{ report.species }} Report</h1>
+<p><strong>Location:</strong> {{ report.location }}</p>
+<p><strong>Status:</strong> {{ report.status }}</p>
+<p><strong>Created at:</strong> {{ report.created_at }}</p>
+<a href="{% url 'reports:report_list' %}">Back to report list</a>
+{% endblock %}

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import sys
 import os
 from pathlib import Path
 import dj_database_url
@@ -58,7 +59,8 @@ ROOT_URLCONF = 'wild_watch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'users/templates',],
+        'DIRS': [BASE_DIR / 'wild_watch' / 'templates',
+                 BASE_DIR / 'users' / 'templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,13 +83,11 @@ DATABASES = {
     'default': dj_database_url.parse(str(os.environ.get('HEROKU_POSTGRESQL_TEAL_URL')))
 }
 
-import sys
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'test_db.sqlite3',
     }
-
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get("CLOUDINARY_CLOUD_NAME"),

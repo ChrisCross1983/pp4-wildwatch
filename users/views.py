@@ -51,4 +51,8 @@ def logout_view(request):
 
 # Home View
 def home(request):
-    return render(request, 'users/home.html')
+    if request.user.is_authenticated:
+        context = {'user': request.user}
+    else:
+        context = {}
+    return render(request, 'users/home.html', context)
