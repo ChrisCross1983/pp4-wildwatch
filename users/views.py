@@ -2,10 +2,26 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from .forms import CustomUserCreationForm
+from django.contrib import messages
 
 # Create your views here.
 
 # Registration View
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Account created successfully!')
+            return redirect('users:login')
+        else:
+            # Debugging
+            print(form.errors)
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'users/register.html', {'form': form})
+
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)

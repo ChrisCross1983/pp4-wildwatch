@@ -58,7 +58,7 @@ ROOT_URLCONF = 'wild_watch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'users/templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,6 +80,13 @@ WSGI_APPLICATION = 'wild_watch.wsgi.application'
 DATABASES = {
     'default': dj_database_url.parse(str(os.environ.get('HEROKU_POSTGRESQL_TEAL_URL')))
 }
+
+import sys
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'test_db.sqlite3',
+    }
 
 
 CLOUDINARY_STORAGE = {
