@@ -6,7 +6,8 @@ def create_report(request):
         form = InjuryReportForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, 'reports/success.html')  # Erfolgsseite
+            return redirect('reports:list_reports')
     else:
         form = InjuryReportForm()
     return render(request, 'reports/create_report.html', {'form': form})
+
