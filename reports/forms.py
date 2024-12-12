@@ -1,15 +1,7 @@
 from django import forms
 from .models import InjuryReport
 
-class ReportForm(forms.ModelForm):
+class InjuryReportForm(forms.ModelForm):
     class Meta:
         model = InjuryReport
-        fields = [
-            'description',
-            'reported_by',
-            'animal',
-            'report_status',
-            'location',
-            'comments',
-            'image',
-        ]
+        fields = ['description', 'species', 'gender', 'injury_condition', 'location', 'image']

@@ -1,10 +1,14 @@
-{% extends 'base_generic.html' %}
-
-{% block content %}
-  <h1>Create a New Animal Report</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-  </form>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Report</title>
+</head>
+<body>
+    <h1>Create an Injury Report</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
