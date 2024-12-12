@@ -25,8 +25,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'wild-watch.herokuapp.com', 'wild-watch-4ac96b54e024.herokuapp.com', '.herokuapp.com']
 
 # Application definition
@@ -79,8 +78,9 @@ WSGI_APPLICATION = 'wild_watch.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('HEROKU_POSTGRESQL_TEAL_URL'))
+    'default': dj_database_url.parse(str(os.environ.get('HEROKU_POSTGRESQL_TEAL_URL')))
 }
+
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get("CLOUDINARY_CLOUD_NAME"),
