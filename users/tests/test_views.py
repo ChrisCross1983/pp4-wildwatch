@@ -1,11 +1,10 @@
-# users/tests/test_views.py
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 
 class UserRegistrationViewTestCase(TestCase):
     def test_user_registration(self):
-        url = reverse('users:register')
+        url = reverse('users:signup')
 
         data = {
             'username': 'testuser',
@@ -28,17 +27,24 @@ class UserLoginViewTestCase(TestCase):
     def test_user_login(self):
         url = reverse('users:login')
 
-        # Login with valid credentials
         data = {
             'username': 'testuser',
             'password': 'testpassword123'
         }
 
         response = self.client.post(url, data)
+        self.assertRedirects(response, reverse('home'))
 
-        # Check if the user is redirected to the home page after successful login
-        self.assertRedirects(response, '/')
+        response = self.client.get(reverse('home'))
+        self.assertContains(response, "Welcome back, testuser!")
 
-        # Verify the user is logged in by checking the session
-        response = self.client.get('/')
-        self.assertContains(response, "Welcome, testuser!")
+class LogoutViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+
+    def test_protected_view_after_logout(self):
+        self.client.login(username='testuser', password='testpassword')
+        self.client.get(reverse('users:logout'))
+
+        response = self.client.get(reverse('reports:my_reports'))
+        self.assertRedirects(response, f"{reverse('users:login')}?next=/reports/my-reports/")

@@ -23,7 +23,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('users:home')
+            return redirect('home')
     else:
         form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})

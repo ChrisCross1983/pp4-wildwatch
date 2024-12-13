@@ -75,6 +75,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'wild_watch.wsgi.application'
+
+LOGIN_URL = '/users/login/'
 LOGOUT_REDIRECT_URL = '/'
 
 
