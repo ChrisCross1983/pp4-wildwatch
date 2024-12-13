@@ -6,6 +6,8 @@ from django.contrib.auth.forms import UserChangeForm
 from .forms import CustomUserCreationForm
 from .forms import CustomUserUpdateForm
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 # Signup View
 def signup(request):
@@ -51,10 +53,27 @@ def profile(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = CustomUserUpdateForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('users:profile')
+        user_form = CustomUserUpdateForm(request.POST, instance=request.user)
+        password_form = PasswordChangeForm(user=request.user, data=request.POST)
+        
+        if 'save_profile' in request.POST:
+            if user_form.is_valid():
+                user_form.save()
+                messages.success(request, "Your profile has been updated successfully!")
+                return redirect('users:profile')
+        
+        elif 'change_password' in request.POST:
+            if password_form.is_valid():
+                password_form.save()
+                update_session_auth_hash(request, password_form.user)
+                messages.success(request, "Your password has been updated successfully!")
+                return redirect('users:profile')
+
     else:
-        form = CustomUserUpdateForm(instance=request.user)
-    return render(request, 'users/edit_profile.html', {'form': form})
+        user_form = CustomUserUpdateForm(instance=request.user)
+        password_form = PasswordChangeForm(user=request.user)
+
+    return render(request, 'users/edit_profile.html', {
+        'user_form': user_form,
+        'password_form': password_form,
+    })

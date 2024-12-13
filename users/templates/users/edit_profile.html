@@ -2,10 +2,20 @@
 
 {% block content %}
 <h1>Edit Profile</h1>
-<form method="POST">
+
+<h3>Update Profile Details</h3>
+<form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Changes</button>
+    {{ user_form.as_p }}
+    <button type="submit" name="save_profile">Save Profile</button>
 </form>
+
+<h3>Change Password</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ password_form.as_p }}
+    <button type="submit" name="change_password">Change Password</button>
+</form>
+
 <a href="{% url 'users:profile' %}">Back to Profile</a>
 {% endblock %}
