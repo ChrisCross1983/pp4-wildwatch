@@ -60,8 +60,10 @@ ROOT_URLCONF = 'wild_watch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'wild_watch' / 'templates',
-                 BASE_DIR / 'users' / 'templates',],
+        'DIRS': [
+            BASE_DIR / 'wild_watch' / 'templates',
+            BASE_DIR / 'users' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

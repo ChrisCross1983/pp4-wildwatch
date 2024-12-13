@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm
 from .forms import CustomUserCreationForm
+from .forms import CustomUserUpdateForm
 from django.contrib import messages
 
 # Signup View
