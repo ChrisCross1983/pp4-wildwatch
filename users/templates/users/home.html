@@ -1,13 +1,15 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-  <h1>Welcome to WildWatch</h1>
-  {% if user.is_authenticated %}
-    <p>Welcome, {{ user.username }}!</p>
-    <p>You are logged in.</p>
-    <a href="{% url 'users:logout' %}">Logout</a>
-  {% else %}
-    <p>You are not logged in.</p>
-    <a href="{% url 'users:login' %}">Login</a>
-  {% endif %}
+<h1>Welcome to WildWatch</h1>
+{% if user.is_authenticated %}
+    <p>Welcome back, {{ user.username }}!</p>
+    <p>What would you like to do today?</p>
+    <ul>
+        <li><a href="{% url 'reports:create_report' %}">Submit a new report</a></li>
+        <li><a href="{% url 'reports:my_reports' %}">View my reports</a></li>
+    </ul>
+{% else %}
+    <p>WildWatch helps protect animals. Please <a href="{% url 'users:signup' %}">sign up</a> or <a href="{% url 'users:login' %}">log in</a> to get started.</p>
+{% endif %}
 {% endblock %}

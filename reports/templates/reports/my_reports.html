@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Reports</title>
+</head>
+<body>
+    <h1>My Reports</h1>
+    {% if reports %}
+        <ul>
+            {% for report in reports %}
+                <li>{{ report.species }} - {{ report.injury_condition }} - {{ report.date_reported }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not submitted any reports yet.</p>
+    {% endif %}
+    <a href="{% url 'reports:create_report' %}">Submit a new report</a>
+</body>
+</html>
+

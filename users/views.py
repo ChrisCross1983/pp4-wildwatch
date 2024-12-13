@@ -4,30 +4,14 @@ from django.contrib.auth import login, logout
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 
-# Create your views here.
-
-# Registration View
-
-def register(request):
+# Signup View
+def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Account created successfully!')
             return redirect('users:login')
-        else:
-            # Debugging
-            print(form.errors)
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'users/register.html', {'form': form})
-
-def signup(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/signup.html', {'form': form})
@@ -39,7 +23,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('home')
+            return redirect('users:home')
     else:
         form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
@@ -47,7 +31,7 @@ def login_view(request):
 # Logout View
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('users:login')
 
 # Home View
 def home(request):

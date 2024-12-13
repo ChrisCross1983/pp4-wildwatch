@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Reports</title>
+</head>
+<body>
+    <h1>All Injury Reports</h1>
+    <ul>
+        {% for report in reports %}
+            <li>{{ report.species }} - {{ report.injury_condition }} - {{ report.date_reported }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'reports:create_report' %}">Create another report</a>
+</body>
+</html>
