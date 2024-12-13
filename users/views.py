@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserChangeForm
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 
@@ -40,3 +42,18 @@ def home(request):
     else:
         context = {}
     return render(request, 'users/home.html', context)
+
+@login_required
+def profile(request):
+    return render(request, 'users/profile.html', {'user': request.user})
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = CustomUserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('users:profile')
+    else:
+        form = CustomUserUpdateForm(instance=request.user)
+    return render(request, 'users/edit_profile.html', {'form': form})

@@ -79,6 +79,8 @@ WSGI_APPLICATION = 'wild_watch.wsgi.application'
 LOGIN_URL = '/users/login/'
 LOGOUT_REDIRECT_URL = '/'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
