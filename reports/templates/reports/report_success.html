@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Report Submitted</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Thank You!</h1>
-    <p>Your report has been successfully submitted. Thank you for helping animals in need!</p>
+    <p>
+      Your report has been successfully submitted. Thank you for helping animals
+      in need!
+    </p>
+    <a href="{% url 'users:home' %}">Back to Home</a>
     <a href="{% url 'reports:create_report' %}">Submit another report</a>
-</body>
+  </body>
 </html>

@@ -14,6 +14,7 @@
     {% else %}
         <p>You have not submitted any reports yet.</p>
     {% endif %}
+    <a href="{% url 'users:home' %}">Back to Home</a>
     <a href="{% url 'reports:create_report' %}">Submit a new report</a>
 </body>
 </html>
