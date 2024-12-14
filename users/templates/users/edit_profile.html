@@ -4,7 +4,7 @@
 <h1>Edit Profile</h1>
 
 <h3>Update Profile Details</h3>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ user_form.as_p }}
     <button type="submit" name="save_profile">Save Profile</button>
