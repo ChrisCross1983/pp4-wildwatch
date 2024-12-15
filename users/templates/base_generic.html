@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WildWatch</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">    
   </head>
   <body>
     <header>
@@ -25,6 +27,14 @@
         </ul>
       </nav>
     </header>
+    <!-- Display messages -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message|safe }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
     <!-- Main Content -->
     <div class="content">{% block content %} {% endblock %}</div>

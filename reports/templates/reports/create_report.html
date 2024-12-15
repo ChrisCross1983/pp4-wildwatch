@@ -1,31 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Create Report</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Create an Injury Report</h1>
+
+    <!-- Display messages -->
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="explanation">
+      <p>
+        Reporting injured animals is crucial to ensure timely help. By providing
+        accurate details, you assist in their rescue and treatment.
+      </p>
+    </div>
+
     <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="id_species">Species:</label>
-        {{ form.species }}
+      {% csrf_token %}
+      <label for="id_species">Species:</label>
+      {{ form.species }}
 
-        <label for="id_gender">Gender:</label>
-        {{ form.gender }}
+      <label for="id_gender">Gender:</label>
+      {{ form.gender }}
 
-        <label for="id_injury_condition">Injury Condition:</label>
-        {{ form.injury_condition }}
+      <label for="id_injury_condition">Injury Condition:</label>
+      {{ form.injury_condition }}
 
-        <label for="id_description">Description:</label>
-        {{ form.description }}
+      <label for="id_description">Description:</label>
+      {{ form.description }}
 
-        <label for="id_location">Location (optional):</label>
-        {{ form.location }}
+      <label for="id_location">Location (optional):</label>
+      {{ form.location }}
 
-        <label for="id_image">Image (optional):</label>
-        {{ form.image }}
+      <label for="id_image">Image (optional):</label>
+      {{ form.image }}
 
-        <button type="submit">Submit</button>
+      <button type="submit">Submit</button>
     </form>
-</body>
+    <a href="{% url 'reports:all_reports' %}">Back to All Reports</a>
+  </body>
 </html>

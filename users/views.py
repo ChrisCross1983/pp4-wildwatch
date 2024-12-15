@@ -21,15 +21,29 @@ def signup(request):
 
 # Login View
 def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('home')
+            print("Form is valid")
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            print(f"Username: {username}, Password: {password}")
+            user = authenticate(request, username=username, password=password)
+            print(f"Authenticated user: {user}")
+
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Welcome back, {user.username}!")
+                return redirect('home')
+            else:
+                messages.error(request, "Invalid username or password.")
+        else:
+            print("Form errors:", form.errors)
+            messages.error(request, "Invalid form submission.")
     else:
         form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
+
 
 # Logout View
 def logout_view(request):

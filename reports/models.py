@@ -1,34 +1,32 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-from django.db import models
-from django.contrib.auth.models import User
+from django.urls import reverse
 
 class InjuryReport(models.Model):
-    # Dropdown-Choices
     SPECIES_CHOICES = [
         ('Cat', 'Cat'),
         ('Dog', 'Dog'),
+        ('Other', 'Other')
     ]
 
     GENDER_CHOICES = [
         ('Male', 'Male'),
         ('Female', 'Female'),
-        ('Unknown', 'Unknown'),
+        ('Unknown', 'Unknown')
     ]
 
     INJURY_CONDITION_CHOICES = [
         ('Slightly Injured', 'Slightly Injured'),
         ('Seriously Injured', 'Seriously Injured'),
-        ('Not Injured', 'Not Injured'),
+        ('Not Injured', 'Not Injured')
     ]
 
-    description = models.TextField()
-    species = models.CharField(max_length=50, choices=SPECIES_CHOICES)
-    gender = models.CharField(max_length=50, choices=GENDER_CHOICES)
-    injury_condition = models.CharField(max_length=50, choices=INJURY_CONDITION_CHOICES)
-    location = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='injury_reports/', blank=True, null=True)
+    description = models.TextField(help_text="Provide a detailed description of the situation.")
+    species = models.CharField(max_length=50, choices=SPECIES_CHOICES, help_text="Select the species of the animal.")
+    gender = models.CharField(max_length=50, choices=GENDER_CHOICES, help_text="Select the gender of the animal if known.")
+    injury_condition = models.CharField(max_length=50, choices=INJURY_CONDITION_CHOICES, help_text="Describe the severity of the injury.")
+    location = models.CharField(max_length=255, blank=True, null=True, help_text="Enter the nearest city or coordinates.")
+    image = models.ImageField(upload_to='injury_reports/', blank=True, null=True, help_text="Upload a clear image if possible.")
 
     date_reported = models.DateTimeField(auto_now_add=True)
     reported_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -36,6 +34,8 @@ class InjuryReport(models.Model):
     def __str__(self):
         return f"{self.species} - {self.injury_condition}"
 
+    def get_absolute_url(self):
+        return reverse('reports:report_detail', args=[self.id])
 
 class Location(models.Model):
     name = models.CharField(max_length=100)

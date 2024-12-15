@@ -97,7 +97,7 @@ DEFAULT_FROM_EMAIL = 'WildWatch <cborza83@gmail.com>'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(str(os.environ.get('HEROKU_POSTGRESQL_TEAL_URL')))
+    'default': dj_database_url.parse(os.environ.get('HEROKU_POSTGRESQL_TEAL_URL'))
 }
 
 if 'test' in sys.argv:
@@ -149,6 +149,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
