@@ -10,6 +10,7 @@
       <nav>
         <ul>
           {% if user.is_authenticated %}
+          <li><a href="{% url 'reports:all_reports' %}">All Reports</a></li>
           <li><a href="{% url 'users:profile' %}">My Profile</a></li>
           <li>
             <a href="{% url 'reports:create_report' %}">Submit a Report</a>

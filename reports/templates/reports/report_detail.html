@@ -1,9 +1,27 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<h1>{{ report.species }} Report</h1>
-<p><strong>Location:</strong> {{ report.location }}</p>
-<p><strong>Status:</strong> {{ report.status }}</p>
-<p><strong>Created at:</strong> {{ report.created_at }}</p>
-<a href="{% url 'reports:report_list' %}">Back to report list</a>
+<h1>Report Details</h1>
+
+
+<div class="report-details">
+    <h2>{{ report.species }} Report</h2>
+    {% if report.image %}
+        <img src="{{ report.image.url }}" alt="Image of {{ report.species }}" style="max-width: 300px; margin-bottom: 20px;">
+    {% endif %}
+    <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
+    <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
+    <p><strong>Status:</strong> {{ report.injury_condition }}</p>
+    <p><strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
+    <p><strong>Description:</strong> {{ report.description|linebreaks }}</p>
+</div>
+
+<a href="{% url 'reports:all_reports' %}">&larr; Back to All Reports</a>
+
+<!-- Future Features --> 
+<div class="comments-section">
+    <h3>Comments</h3>
+    <p>Feature coming soon...</p>
+</div>
+
 {% endblock %}
