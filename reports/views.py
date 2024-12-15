@@ -48,3 +48,18 @@ def report_detail(request, report_id):
 def my_reports(request):
     reports = InjuryReport.objects.filter(reported_by=request.user)
     return render(request, 'reports/my_reports.html', {'reports': reports})
+
+@login_required
+def edit_report(request, report_id):
+    report = get_object_or_404(InjuryReport, id=report_id, reported_by=request.user)
+    
+    if request.method == 'POST':
+        form = InjuryReportForm(request.POST, request.FILES, instance=report)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your report has been updated successfully!")
+            return redirect('reports:report_detail', report_id=report.id)
+    else:
+        form = InjuryReportForm(instance=report)
+
+    return render(request, 'reports/edit_report.html', {'form': form, 'report': report})

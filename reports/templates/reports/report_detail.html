@@ -15,7 +15,9 @@
     <p><strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
     <p><strong>Description:</strong> {{ report.description|linebreaks }}</p>
 </div>
-
+{% if report.reported_by == user %}
+    <a href="{% url 'reports:edit_report' report.id %}">Edit this Report</a>
+{% endif %}
 <a href="{% url 'reports:all_reports' %}">&larr; Back to All Reports</a>
 
 <!-- Future Features --> 

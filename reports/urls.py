@@ -8,4 +8,5 @@ urlpatterns = [
     path('all/', views.all_reports, name='all_reports'),
     path('my-reports/', views.my_reports, name='my_reports'),
     path('<int:report_id>/', views.report_detail, name='report_detail'),
+    path('<int:report_id>/edit/', views.edit_report, name='edit_report'),
 ]
