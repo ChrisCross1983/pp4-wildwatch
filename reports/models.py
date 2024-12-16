@@ -20,6 +20,12 @@ class InjuryReport(models.Model):
         ('Seriously Injured', 'Seriously Injured'),
         ('Not Injured', 'Not Injured')
     ]
+    
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Rejected', 'Rejected'),
+    ]
 
     description = models.TextField(help_text="Provide a detailed description of the situation.")
     species = models.CharField(max_length=50, choices=SPECIES_CHOICES, help_text="Select the species of the animal.")
@@ -30,12 +36,26 @@ class InjuryReport(models.Model):
 
     date_reported = models.DateTimeField(auto_now_add=True)
     reported_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='Pending',
+    )
 
     def __str__(self):
         return f"{self.species} - {self.injury_condition}"
 
     def get_absolute_url(self):
         return reverse('reports:report_detail', args=[self.id])
+    
+    def approve(self):
+        self.status = 'Approved'
+        self.save()
+
+    def reject(self):
+        self.status = 'Rejected'
+        self.save()
 
 class Location(models.Model):
     name = models.CharField(max_length=100)

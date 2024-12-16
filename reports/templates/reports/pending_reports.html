@@ -1,0 +1,26 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h1>Pending Reports for Admin Review</h1>
+
+<ul>
+    {% for report in reports %}
+    <li>
+        <strong>Species:</strong> {{ report.species }} <br>
+        <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
+        <strong>Status:</strong> {{ report.injury_condition }} <br>
+        <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
+        <strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }} <br>
+        {% if report.image %}
+            <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
+        {% endif %}
+        <a href="{% url 'reports:approve_report' report.id %}" class="btn btn-success">Approve</a>
+        <a href="{% url 'reports:reject_report' report.id %}" class="btn btn-danger">Reject</a>
+    </li>
+    {% empty %}
+    <p>No pending reports.</p>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'reports:all_reports' %}" class="btn btn-primary">Back to All Reports</a>
+{% endblock %}

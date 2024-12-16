@@ -35,7 +35,8 @@
     <li>
         <strong>Species:</strong> {{ report.species }} <br>
         <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
-        <strong>Status:</strong> {{ report.injury_condition }} <br>
+        <strong>Status:</strong> {{ report.status }} <br>
+        <strong>Injury Condition:</strong> {{ report.injury_condition }} <br>
         <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
         <strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }} <br>
         {% if report.image %}

@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import InjuryReport
 from .forms import InjuryReportForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 
+def is_staff_user(user):
+    return user.is_staff
 
 @login_required
 def create_report(request):
@@ -15,15 +17,15 @@ def create_report(request):
         if form.is_valid():
             report = form.save(commit=False)
             report.reported_by = request.user
+            report.status = "Pending"
             report.save()
-            messages.success(request,
-                             f"Your report has been successfully submitted! <a href='{request.build_absolute_uri(report.get_absolute_url())}'>View your report</a>",
-                             extra_tags='safe')
+            messages.success(request, "Your report has been successfully submitted!")
             return redirect('reports:all_reports')
     else:
         form = InjuryReportForm()
     return render(request, 'reports/create_report.html', {'form': form})
 
+@login_required
 def all_reports(request):
     reports = InjuryReport.objects.all().order_by('-date_reported')
 
@@ -42,7 +44,7 @@ def all_reports(request):
     if species:
         reports = reports.filter(species=species)
     if status:
-        reports = reports.filter(injury_condition=status)
+        reports = reports.filter(status=status)
 
     # Count results
     results_count = reports.count()
@@ -81,3 +83,27 @@ def edit_report(request, report_id):
         form = InjuryReportForm(instance=report)
 
     return render(request, 'reports/edit_report.html', {'form': form, 'report': report})
+
+@login_required
+@user_passes_test(is_staff_user)
+def approve_report(request, report_id):
+    report = get_object_or_404(InjuryReport, id=report_id)
+    report.status = "Approved"
+    report.save()
+    messages.success(request, f"The report '{report.species}' has been approved.")
+    return redirect('reports:pending_reports')
+
+@login_required
+@user_passes_test(is_staff_user)
+def reject_report(request, report_id):
+    report = get_object_or_404(InjuryReport, id=report_id)
+    report.status = "Rejected"
+    report.save()
+    messages.success(request, f"The report '{report.species}' has been rejected.")
+    return redirect('reports:pending_reports')
+
+@login_required
+@user_passes_test(is_staff_user)
+def pending_reports(request):
+    reports = InjuryReport.objects.filter(status="Pending").order_by('-date_reported')
+    return render(request, 'reports/pending_reports.html', {'reports': reports})
