@@ -243,7 +243,7 @@ def take_care_of_report(request, report_id):
                 f"The user {request.user.username} has agreed to help with your reported case ('{report.title}').\n"
                 "Thank you for your support in protecting the animals!\n\n"
                 "WildWatch Team",
-                "WildWatch <admin@wildwatch.com>",
+                "WildWatch <cborza83@gmail.com>",
                 [report.reported_by.email],
             )
     else:
@@ -254,31 +254,53 @@ def take_care_of_report(request, report_id):
 @login_required
 def delete_report(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
+    
     if request.user == report.reported_by or request.user.is_staff:
         report.delete()
         messages.success(request, "The report has been successfully deleted.")
+    else:
+        messages.error(request, "You are not authorized to delete this report.")
+    
     return redirect('reports:my_reports')
 
 @login_required
 def close_report(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
-    if request.user == report.reported_by or request.user.is_staff:
-        report.status = "Completed"
-        report.save()
-        messages.success(request, "The report has been marked as completed.")
 
-        # E-Mail to report creater
-        if report.reported_by and report.reported_by.email:
-            send_mail(
-                "WildWatch: Case closed",
-                f"Hello {report.reported_by.username},\n\n"
-                f"Your reported case ('{report.title}') has been successfully completed.\n\n"
-                "Thank you for your help in protecting the animals!\n\n"
-                "WildWatch Team",
-                "WildWatch <admin@wildwatch.com>",
-                [report.reported_by.email],
-            )
-    return redirect('reports:all_reports')
+    if request.user == report.helper or request.user.is_staff:
+        if request.method == "POST":
+            report.set_status("Completed")
+            messages.success(request, "The report has been marked as completed.")
+
+            if report.reported_by and report.reported_by.email:
+                send_mail(
+                    "WildWatch: Report closed",
+                    f"Hello {report.reported_by.username},\n\n"
+                    f"The report titled '{report.title}' has been successfully completed by "
+                    f"{request.user.username}.\n\n"
+                    "Thank you for your continued support in protecting wildlife!\n\n"
+                    "WildWatch Team",
+                    "WildWatch <cborza83@gmail.com>",
+                    [report.reported_by.email],
+                )
+
+            if report.helper and report.helper.email:
+                send_mail(
+                    "WildWatch: Report successfully closed",
+                    f"Hello {report.helper.username},\n\n"
+                    f"You have successfully completed the report titled '{report.title}'.\n\n"
+                    "Thank you for your efforts in protecting wildlife!\n\n"
+                    "WildWatch Team",
+                    "WildWatch <cborza83@gmail.com>",
+                    [report.helper.email],
+                )
+            return redirect('reports:my_reports')
+
+        return render(request, 'reports/close_report.html', {'report': report})
+
+    messages.error(request, "You are not authorized to close this report.")
+    return redirect('reports:my_reports')
+
 
 @login_required
 def help_report(request, report_id):
@@ -296,7 +318,7 @@ def help_report(request, report_id):
                 f"The user {request.user.username} has agreed to help with your reported case ('{report.title}').\n"
                 "Thank you for your support in protecting the animals!\n\n"
                 "WildWatch Team",
-                "WildWatch <admin@wildwatch.com>",
+                "WildWatch <cborza83@gmail.com>",
                 [report.reported_by.email],
                 fail_silently=False,
             )

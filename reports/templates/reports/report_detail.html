@@ -26,8 +26,11 @@
   {% endif %}
   
   {% if report.helper == user %}
-  <p>You are helping with this case. Contact the reporter: {{ report.reported_by.email }}</p>
-  {% endif %}
+    <p>You are helping with this case. Contact the reporter: {{ report.reported_by.email }}</p>
+    {% if report.status == "In Progress" %}
+        <a href="{% url 'reports:close_report' report.id %}">Mark as Completed</a>
+    {% endif %}
+{% endif %}
   
   <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
   <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>

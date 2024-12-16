@@ -13,4 +13,6 @@ urlpatterns = [
     path('reject/<int:report_id>/', views.reject_report, name='reject_report'),
     path('pending-reports/', views.pending_reports, name='pending_reports'),
     path('help/<int:report_id>/', views.help_report, name='help_report'),
+    path('<int:report_id>/close/', views.close_report, name='close_report'),
+    path('<int:report_id>/delete/', views.delete_report, name='delete_report'),
 ]

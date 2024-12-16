@@ -1,0 +1,12 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h1>Close Report</h1>
+<p>Are you sure you want to mark the report "<strong>{{ report.title }}</strong>" as completed?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Yes, mark as completed</button>
+    <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

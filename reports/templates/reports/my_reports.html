@@ -22,6 +22,8 @@
         <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
         {% endif %}
         <a href="{% url 'reports:edit_report' report.id %}">Edit Report</a>
+        <a href="{% url 'reports:delete_report' report.id %}" onclick="return confirm('Are you sure you want to delete this report?');">Delete Report</a>
+    </li>
 
         <!-- New Buttons -->
         {% if report.publication_status == "Approved" and report.status == "Open" %}
