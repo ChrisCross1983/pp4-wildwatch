@@ -21,7 +21,7 @@
           <li><a href="{% url 'reports:create_report' %}">Submit a Report</a></li>
           <li><a href="{% url 'reports:my_reports' %}">My Reports</a></li>
           {% if user.is_staff %}
-          <li><a href="{% url 'reports:pending_reports' %}">Pending Reports</a></li>
+          <li><a href="{% url 'reports:pending_reports' %}">ADMIN Area - Pending Reports</a></li>
           {% endif %}
           <li><a href="{% url 'users:logout' %}">Logout</a></li>
           {% else %}

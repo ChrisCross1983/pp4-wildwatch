@@ -2,6 +2,14 @@
 
 {% block content %}
 <h1>Edit Report</h1>
+
+<!-- Admin-Comment -->
+{% if report.status == "Rejected" and report.admin_comment %}
+    <div class="admin-feedback">
+        <p><strong>Admin Feedback:</strong> {{ report.admin_comment }}</p>
+    </div>
+{% endif %}
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}

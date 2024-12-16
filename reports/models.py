@@ -37,6 +37,8 @@ class InjuryReport(models.Model):
     date_reported = models.DateTimeField(auto_now_add=True)
     reported_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     
+    admin_comment = models.TextField(blank=True, null=True)
+    
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
@@ -53,8 +55,10 @@ class InjuryReport(models.Model):
         self.status = 'Approved'
         self.save()
 
-    def reject(self):
+    def reject(self, comment=None):
         self.status = 'Rejected'
+        if comment:
+            self.admin_comment = comment
         self.save()
 
 class Location(models.Model):

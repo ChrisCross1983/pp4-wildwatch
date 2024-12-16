@@ -1,3 +1,22 @@
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+img {
+    display: block;
+    margin: 10px 0;
+}
+
+
 .messages {
     list-style-type: none;
     padding: 0;
@@ -25,4 +44,13 @@
 
 .reset-button:hover {
     background-color: #ff453a;
+}
+
+.admin-feedback {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
 }

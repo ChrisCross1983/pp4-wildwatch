@@ -1,0 +1,20 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h1>Reject Report</h1>
+<p>Are you sure you want to reject the following report?</p>
+
+<div class="report-details">
+    <p><strong>Species:</strong> {{ report.species }}</p>
+    <p><strong>Location:</strong> {{ report.location }}</p>
+    <p><strong>Status:</strong> {{ report.injury_condition }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="admin_comment">Provide a reason for rejection:</label><br>
+    <textarea id="admin_comment" name="admin_comment" rows="4" cols="50" placeholder="Add a comment for the user..."></textarea><br><br>
+    <button type="submit">Reject Report</button>
+    <a href="{% url 'reports:pending_reports' %}">Cancel</a>
+</form>
+{% endblock %}

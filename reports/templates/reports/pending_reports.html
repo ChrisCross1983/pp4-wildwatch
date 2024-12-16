@@ -1,26 +1,58 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<h1>Pending Reports for Admin Review</h1>
+<h1>Manage Reports</h1>
 
+<form method="get" action=".">
+    <label for="filter_status">Filter by Status:</label>
+    <select name="filter_status" id="filter_status">
+        <option value="">All</option>
+        <option value="Pending" {% if request.GET.filter_status == "Pending" %}selected{% endif %}>Pending</option>
+        <option value="Rejected" {% if request.GET.filter_status == "Rejected" %}selected{% endif %}>Rejected</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<h2>Pending Reports</h2>
 <ul>
-    {% for report in reports %}
+    {% for report in pending_reports %}
     <li>
         <strong>Species:</strong> {{ report.species }} <br>
         <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
-        <strong>Status:</strong> {{ report.injury_condition }} <br>
+        <strong>Description:</strong> {{ report.description|linebreaks }} <br>
+        <strong>Status:</strong> {{ report.status }} <br>
         <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
-        <strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }} <br>
+        <strong>Reported By:</strong> {{ report.reported_by.username|default:"Anonymous" }} <br>
         {% if report.image %}
             <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
         {% endif %}
-        <a href="{% url 'reports:approve_report' report.id %}" class="btn btn-success">Approve</a>
-        <a href="{% url 'reports:reject_report' report.id %}" class="btn btn-danger">Reject</a>
+        <a href="{% url 'reports:edit_report' report.id %}">Edit Report</a> |
+        <a href="{% url 'reports:approve_report' report.id %}">Approve</a> |
+        <a href="{% url 'reports:reject_report' report.id %}">Reject</a>
     </li>
     {% empty %}
     <p>No pending reports.</p>
     {% endfor %}
 </ul>
 
-<a href="{% url 'reports:all_reports' %}" class="btn btn-primary">Back to All Reports</a>
+<h2>Rejected Reports</h2>
+<ul>
+    {% for report in rejected_reports %}
+    <li>
+        <strong>Species:</strong> {{ report.species }} <br>
+        <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
+        <strong>Description:</strong> {{ report.description|linebreaks }} <br>
+        <strong>Status:</strong> {{ report.status }} <br>
+        <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
+        <strong>Reported By:</strong> {{ report.reported_by.username|default:"Anonymous" }} <br>
+        {% if report.image %}
+            <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
+        {% endif %}
+        <a href="{% url 'reports:edit_report' report.id %}">Edit Report</a>
+    </li>
+    {% empty %}
+    <p>No rejected reports.</p>
+    {% endfor %}
+</ul>
+
 {% endblock %}
