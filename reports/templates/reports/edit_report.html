@@ -12,8 +12,11 @@
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    
+    <!-- Display the form -->
     {{ form.as_p }}
+    
     <button type="submit">Save Changes</button>
 </form>
-<a href="{% url 'reports:report_detail' report.id %}">Cancel</a>
+<a href="{{ request.META.HTTP_REFERER|default:request.build_absolute_uri }}">Cancel</a>
 {% endblock %}

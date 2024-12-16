@@ -3,13 +3,50 @@
 {% block content %}
 <h1>Edit Profile</h1>
 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="alert alert-success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if profile_form.errors %}
+    <div class="alert alert-danger">
+        <strong>Profile Update Errors:</strong>
+        <ul>
+            {% for error in profile_form.errors.values %}
+                {% for sub_error in error %}
+                    <li>{{ sub_error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
 <h3>Update Profile Details</h3>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
+    {{ user_form.username.label_tag }} {{ user_form.username }}
+    {{ user_form.first_name.label_tag }} {{ user_form.first_name }}
+    {{ user_form.last_name.label_tag }} {{ user_form.last_name }}
+    {{ user_form.email.label_tag }} {{ user_form.email }}
+    {{ profile_form.profile_picture.label_tag }} {{ profile_form.profile_picture }}
     <button type="submit" name="save_profile">Save Profile</button>
 </form>
+
+{% if password_form.errors %}
+    <div class="alert alert-danger">
+        <strong>Password Change Errors:</strong>
+        <ul>
+            {% for error in password_form.errors.values %}
+                {% for sub_error in error %}
+                    <li>{{ sub_error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
 
 <h3>Change Password</h3>
 <form method="post">

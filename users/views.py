@@ -65,6 +65,8 @@ def profile(request):
 # Edit Profile View
 @login_required
 def edit_profile(request):
+    profile = request.user.profile
+    
     if request.method == 'POST':
         user_form = CustomUserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -76,7 +78,7 @@ def edit_profile(request):
                 profile_form.save()
                 messages.success(request, "Your profile has been updated successfully!")
                 return redirect('users:profile')
-
+        
         elif 'change_password' in request.POST:
             if password_form.is_valid():
                 password_form.save()

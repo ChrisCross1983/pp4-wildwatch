@@ -1,29 +1,78 @@
 {% extends 'base_generic.html' %}
-
 {% block content %}
 <h1>Report Details</h1>
 
-
 <div class="report-details">
-    <h2>{{ report.species }} Report</h2>
-    {% if report.image %}
-        <img src="{{ report.image.url }}" alt="Image of {{ report.species }}" style="max-width: 300px; margin-bottom: 20px;">
-    {% endif %}
-    <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
-    <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
-    <p><strong>Status:</strong> {{ report.injury_condition }}</p>
-    <p><strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
-    <p><strong>Description:</strong> {{ report.description|linebreaks }}</p>
+  <h2>{{ report.title }}</h2>
+  <p><strong>Species:</strong> {{ report.species }}</p>
+  
+  {% if report.image %}
+  <img
+    src="{{ report.image.url }}"
+    alt="Image of {{ report.species }}"
+    style="max-width: 300px; margin-bottom: 20px"
+  />
+  {% endif %}
+  
+  {% if report.status == "Open" %}
+  <form method="post" action="{% url 'reports:help_report' report.id %}">
+    {% csrf_token %}
+    <button type="submit">I want to help</button>
+  </form>
+  {% elif report.helper %}
+  <p style="background-color: #f0f0a0; padding: 10px">
+    This case is being handled by {{ report.helper.username }}.
+  </p>
+  {% endif %}
+  
+  {% if report.helper == user %}
+  <p>You are helping with this case. Contact the reporter: {{ report.reported_by.email }}</p>
+  {% endif %}
+  
+  <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
+  <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
+  <p><strong>Gender:</strong> {{ report.gender }}</p>
+  <p><strong>Injury Condition:</strong> {{ report.injury_condition }}</p>
+  <p><strong>Status:</strong> {{ report.status }}</p>
+  <p><strong>Publication Status:</strong> {{ report.publication_status }}</p>
+  <p>
+    <strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}
+  </p>
+  <p><strong>Description:</strong> {{ report.description|linebreaks }}</p>
+  
+  {% if report.admin_comment %}
+  <p><strong>Admin Feedback:</strong> {{ report.admin_comment }}</p>
+  {% endif %}
+  
+  {% if report.publication_date %}
+  <p><strong>Publication Date:</strong> {{ report.publication_date|date:"Y-m-d H:i" }}</p>
+  {% endif %}
 </div>
-{% if report.reported_by == user %}
-    <a href="{% url 'reports:edit_report' report.id %}">Edit this Report</a>
-{% endif %}
-<a href="{% url 'reports:all_reports' %}">&larr; Back to All Reports</a>
 
-<!-- Future Features --> 
+<!-- Admin-specific buttons -->
+{% if user.is_staff %}
+<a href="{% url 'reports:approve_report' report.id %}">Approve</a>
+<a href="{% url 'reports:reject_report' report.id %}">Reject</a>
+<a href="{% url 'reports:pending_reports' %}">&larr; Back to Pending Reports</a>
+
+<!-- User-specific buttons -->
+{% elif report.reported_by == user %}
+<a href="{% url 'reports:edit_report' report.id %}">Edit this Report</a>
+{% if request.META.HTTP_REFERER and 'my-reports' in request.META.HTTP_REFERER %}
+<a href="{% url 'reports:my_reports' %}">&larr; Back to My Reports</a>
+{% else %}
+<a href="{% url 'reports:all_reports' %}">&larr; Back to All Reports</a>
+{% endif %}
+
+<!-- Default button for other users -->
+{% else %}
+<a href="{% url 'reports:all_reports' %}">&larr; Back to All Reports</a>
+{% endif %}
+
+<!-- Future Features -->
 <div class="comments-section">
-    <h3>Comments</h3>
-    <p>Feature coming soon...</p>
+  <h3>Comments</h3>
+  <p>Feature coming soon...</p>
 </div>
 
 {% endblock %}

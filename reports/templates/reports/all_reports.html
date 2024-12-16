@@ -13,6 +13,7 @@
         <option value="">All</option>
         <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
         <option value="Dog" {% if request.GET.species == "Dog" %}selected{% endif %}>Dog</option>
+        <option value="Other" {% if request.GET.species == "Other" %}selected{% endif %}>Other</option>
     </select>
 
     <label for="status">Filter by Injury Condition:</label>
@@ -23,6 +24,22 @@
         <option value="Not Injured" {% if request.GET.status == "Not Injured" %}selected{% endif %}>Not Injured</option>
     </select>
 
+    <!-- User filter -->
+    <label for="user_filter">Filter:</label>
+    <select name="user" id="user_filter">
+        <option value="">All Reports</option>
+        <option value="self" {% if request.GET.user == "self" %}selected{% endif %}>My Reports</option>
+    </select>
+
+    <label for="status_filter">Filter status:</label>
+    <select name="status" id="status_filter">
+        <option value="">Alle</option>
+        <option value="Open" {% if request.GET.status == "Open" %}selected{% endif %}>Open</option>
+        <option value="In Progress" {% if request.GET.status == "In Progress" %}selected{% endif %}>In <Progress></Progress></option>
+        <option value="Completed" {% if request.GET.status == "Completed" %}selected{% endif %}>Completed</option>
+    </select>
+    <button type="submit">Filtern</button>
+
     <button type="submit">Search</button>
     <a href="{% url 'reports:all_reports' %}" class="reset-button">Reset Filters</a>
 </form>
@@ -30,17 +47,33 @@
 <!-- Search Results -->
 <p><strong>Search Results:</strong> {{ results_count }} reports found.</p>
 
+{% if report.status == "Offen" %}
+    <a href="{% url 'reports:take_care_of_report' report.id %}">I take care of this</a>
+{% endif %}
+
+<p><strong>Status:</strong>
+    {% if report.status == "Open" %}
+        <span style="color: blue;">Offen</span>
+    {% elif report.status == "In Progress" %}
+        <span style="color: orange;">In Bearbeitung</span>
+    {% elif report.status == "Completed" %}
+        <span style="color: green;">Abgeschlossen</span>
+    {% endif %}
+</p>
+
 <ul>
     {% for report in page_obj %}
     <li>
+        <strong>Title:</strong> {{ report.title }} <br>
         <strong>Species:</strong> {{ report.species }} <br>
         <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
         <strong>Status:</strong> {{ report.status }} <br>
+        <strong>Publication Status:</strong> {{ report.publication_status }} <br>
         <strong>Injury Condition:</strong> {{ report.injury_condition }} <br>
         <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
         <strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }} <br>
         {% if report.image %}
-            <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
+        <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
         {% endif %}
         <a href="{% url 'reports:report_detail' report.id %}">View Details</a>
     </li>

@@ -4,7 +4,7 @@ from .models import InjuryReport
 class InjuryReportForm(forms.ModelForm):
     class Meta:
         model = InjuryReport
-        fields = ['species', 'gender', 'injury_condition', 'description', 'location', 'image']
+        fields = ['title', 'species', 'gender', 'injury_condition', 'description', 'location', 'image']
         labels = {
             'species': 'Species',
             'description': 'Description of the animal and injury',

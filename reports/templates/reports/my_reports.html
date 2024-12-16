@@ -1,21 +1,45 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Reports</title>
-</head>
-<body>
-    <h1>My Reports</h1>
-    {% if reports %}
-        <ul>
-            {% for report in reports %}
-                <li>{{ report.species }} - {{ report.injury_condition }} - {{ report.date_reported }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>You have not submitted any reports yet.</p>
-    {% endif %}
-    <a href="{% url 'users:home' %}">Back to Home</a>
-    <a href="{% url 'reports:create_report' %}">Submit a new report</a>
-</body>
-</html>
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h1>My Reports</h1>
+
+<!-- Check if user has reports -->
+<ul>
+    {% for report in reports %}
+    <li class="{% if report.publication_status == 'Rejected' %}rejected-report{% endif %}">
+        {% if report.publication_status == "Rejected" %}
+        <div class="alert alert-danger">
+            <strong>Rejected:</strong> {{ report.admin_comment }}
+        </div>
+        {% endif %}
+        <strong>Title:</strong> {{ report.title }} <br>
+        <strong>Species:</strong> {{ report.species }} <br>
+        <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
+        <strong>Publication Status:</strong> {{ report.publication_status }} <br>
+        <strong>Status:</strong> {{ report.status }} <br>
+        <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
+        {% if report.image %}
+        <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
+        {% endif %}
+        <a href="{% url 'reports:edit_report' report.id %}">Edit Report</a>
+
+        <!-- New Buttons -->
+        {% if report.publication_status == "Approved" and report.status == "Open" %}
+            <a href="{% url 'reports:help_report' report.id %}">I want to help</a>
+        {% endif %}
+        {% if report.status == "In Progress" %}
+            <a href="{% url 'reports:close_report' report.id %}">Mark as Completed</a>
+        {% endif %}
+    </li>
+    {% empty %}
+    <p>You have no reports.</p>
+    {% endfor %}
+</ul>
+
+<!-- Navigation Buttons -->
+<div class="button-container">
+    <a href="{% url 'users:home' %}" class="btn btn-secondary">Back to Home</a>
+    <a href="{% url 'reports:create_report' %}" class="btn btn-success">Submit a New Report</a>
+</div>
+{% endblock %}
 

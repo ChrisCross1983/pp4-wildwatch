@@ -3,6 +3,7 @@
 {% block content %}
 <h1>Manage Reports</h1>
 
+<!-- Filter Form -->
 <form method="get" action=".">
     <label for="filter_status">Filter by Status:</label>
     <select name="filter_status" id="filter_status">
@@ -13,28 +14,29 @@
     <button type="submit">Filter</button>
 </form>
 
+<!-- Pending Reports -->
 <h2>Pending Reports</h2>
 <ul>
     {% for report in pending_reports %}
     <li>
+        <strong>Title:</strong> {{ report.title }} <br>
         <strong>Species:</strong> {{ report.species }} <br>
         <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
-        <strong>Description:</strong> {{ report.description|linebreaks }} <br>
+        <strong>Publication Status:</strong> {{ report.publication_status }} <br>
         <strong>Status:</strong> {{ report.status }} <br>
         <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
-        <strong>Reported By:</strong> {{ report.reported_by.username|default:"Anonymous" }} <br>
         {% if report.image %}
-            <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
+        <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
         {% endif %}
-        <a href="{% url 'reports:edit_report' report.id %}">Edit Report</a> |
         <a href="{% url 'reports:approve_report' report.id %}">Approve</a> |
         <a href="{% url 'reports:reject_report' report.id %}">Reject</a>
     </li>
     {% empty %}
-    <p>No pending reports.</p>
+    <p>No pending reports found.</p>
     {% endfor %}
 </ul>
 
+<!-- Rejected Reports -->
 <h2>Rejected Reports</h2>
 <ul>
     {% for report in rejected_reports %}
@@ -54,5 +56,4 @@
     <p>No rejected reports.</p>
     {% endfor %}
 </ul>
-
 {% endblock %}

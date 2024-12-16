@@ -13,7 +13,7 @@
 <form method="post">
     {% csrf_token %}
     <label for="admin_comment">Provide a reason for rejection:</label><br>
-    <textarea id="admin_comment" name="admin_comment" rows="4" cols="50" placeholder="Add a comment for the user..."></textarea><br><br>
+    <textarea id="admin_comment" name="admin_comment" rows="4" cols="50" placeholder="Add a comment for the user..." required></textarea><br><br>
     <button type="submit">Reject Report</button>
     <a href="{% url 'reports:pending_reports' %}">Cancel</a>
 </form>

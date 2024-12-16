@@ -12,4 +12,5 @@ urlpatterns = [
     path('approve/<int:report_id>/', views.approve_report, name='approve_report'),
     path('reject/<int:report_id>/', views.reject_report, name='reject_report'),
     path('pending-reports/', views.pending_reports, name='pending_reports'),
+    path('help/<int:report_id>/', views.help_report, name='help_report'),
 ]

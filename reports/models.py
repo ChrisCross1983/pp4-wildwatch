@@ -3,6 +3,37 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 class InjuryReport(models.Model):
+
+    PUBLICATION_STATUS_CHOICES = [
+        ("Pending", "Pending"),
+        ("Approved", "Approved"),
+        ("Rejected", "Rejected"),
+    ]
+    
+    STATUS_CHOICES = [
+        ("Open", "Open"),
+        ("In Progress", "In Progress"),
+        ("Completed", "Completed"),
+    ]
+
+    publication_status = models.CharField(
+        max_length=10,
+        choices=PUBLICATION_STATUS_CHOICES,
+        default="Open",
+    )
+
+    status = models.CharField(
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default="Pending",
+    )
+    
+    title = models.CharField(
+        max_length=255,
+        help_text="Provide a specific title for the report (e.g., 'Cat injured on left paw').",
+        blank=False
+    )
+
     SPECIES_CHOICES = [
         ('Cat', 'Cat'),
         ('Dog', 'Dog'),
@@ -21,29 +52,17 @@ class InjuryReport(models.Model):
         ('Not Injured', 'Not Injured')
     ]
     
-    STATUS_CHOICES = [
-        ('Pending', 'Pending'),
-        ('Approved', 'Approved'),
-        ('Rejected', 'Rejected'),
-    ]
-
     description = models.TextField(help_text="Provide a detailed description of the situation.")
     species = models.CharField(max_length=50, choices=SPECIES_CHOICES, help_text="Select the species of the animal.")
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, help_text="Select the gender of the animal if known.")
     injury_condition = models.CharField(max_length=50, choices=INJURY_CONDITION_CHOICES, help_text="Describe the severity of the injury.")
     location = models.CharField(max_length=255, blank=True, null=True, help_text="Enter the nearest city or coordinates.")
     image = models.ImageField(upload_to='injury_reports/', blank=True, null=True, help_text="Upload a clear image if possible.")
-
     date_reported = models.DateTimeField(auto_now_add=True)
     reported_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    
+    helper = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='helper', help_text="User who is taking care of this report.",)
     admin_comment = models.TextField(blank=True, null=True)
-    
-    status = models.CharField(
-        max_length=10,
-        choices=STATUS_CHOICES,
-        default='Pending',
-    )
+    edit_history = models.TextField(blank=True, null=True, help_text="Track changes made to the report.")
 
     def __str__(self):
         return f"{self.species} - {self.injury_condition}"
@@ -52,13 +71,31 @@ class InjuryReport(models.Model):
         return reverse('reports:report_detail', args=[self.id])
     
     def approve(self):
-        self.status = 'Approved'
+        self.publication_status = 'Approved'
         self.save()
 
     def reject(self, comment=None):
-        self.status = 'Rejected'
+        self.publication_status = 'Rejected'
         if comment:
             self.admin_comment = comment
+        self.save()
+        
+    def add_to_history(self, user, change_description):
+        """Append a change log entry to the edit history."""
+        import datetime
+        
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        entry = f"{timestamp} - {user.username}: {change_description}\n"
+        if self.edit_history:
+            self.edit_history += entry
+        else:
+            self.edit_history = entry
+        self.save()
+
+    def set_status(self, new_status, user=None):
+        self.status = new_status
+        if user and new_status == 'In Progress':
+            self.helper = user
         self.save()
 
 class Location(models.Model):

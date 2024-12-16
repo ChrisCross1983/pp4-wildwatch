@@ -35,3 +35,6 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['profile_picture']
+        widgets = {
+            'profile_picture': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
