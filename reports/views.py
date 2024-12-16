@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 
 @login_required
@@ -26,19 +27,36 @@ def create_report(request):
 def all_reports(request):
     reports = InjuryReport.objects.all().order_by('-date_reported')
 
+    query = request.GET.get('query')
     species = request.GET.get('species')
     status = request.GET.get('status')
+
+    if query:
+        reports = reports.filter(
+            Q(description__icontains=query) |
+            Q(location__icontains=query) |
+            Q(species__icontains=query) |
+            Q(injury_condition__icontains=query) |
+            Q(reported_by__username__icontains=query)
+        )
     if species:
         reports = reports.filter(species=species)
     if status:
         reports = reports.filter(injury_condition=status)
+
+    # Count results
+    results_count = reports.count()
 
     # Pagination
     paginator = Paginator(reports, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'reports/all_reports.html', {'page_obj': page_obj})
+    return render(request, 'reports/all_reports.html', {
+        'page_obj': page_obj,
+        'query': query,
+        'results_count': results_count,
+    })
 
 def report_detail(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)

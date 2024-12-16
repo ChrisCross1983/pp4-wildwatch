@@ -4,21 +4,31 @@
 <h1>Animal Report Feed</h1>
 
 <form method="get" action=".">
+    <!-- Free text search -->
+    <label for="query">Search:</label>
+    <input type="text" id="query" name="query" placeholder="Search reports or users..." value="{{ query }}">
+
     <label for="species">Filter by Species:</label>
     <select name="species" id="species">
         <option value="">All</option>
-        <option value="Cat">Cat</option>
-        <option value="Dog">Dog</option>
+        <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
+        <option value="Dog" {% if request.GET.species == "Dog" %}selected{% endif %}>Dog</option>
     </select>
+
     <label for="status">Filter by Injury Condition:</label>
     <select name="status" id="status">
         <option value="">All</option>
-        <option value="Slightly Injured">Slightly Injured</option>
-        <option value="Seriously Injured">Seriously Injured</option>
-        <option value="Not Injured">Not Injured</option>
+        <option value="Slightly Injured" {% if request.GET.status == "Slightly Injured" %}selected{% endif %}>Slightly Injured</option>
+        <option value="Seriously Injured" {% if request.GET.status == "Seriously Injured" %}selected{% endif %}>Seriously Injured</option>
+        <option value="Not Injured" {% if request.GET.status == "Not Injured" %}selected{% endif %}>Not Injured</option>
     </select>
-    <button type="submit">Apply Filters</button>
+
+    <button type="submit">Search</button>
+    <a href="{% url 'reports:all_reports' %}" class="reset-button">Reset Filters</a>
 </form>
+
+<!-- Search Results -->
+<p><strong>Search Results:</strong> {{ results_count }} reports found.</p>
 
 <ul>
     {% for report in page_obj %}
@@ -34,7 +44,7 @@
         <a href="{% url 'reports:report_detail' report.id %}">View Details</a>
     </li>
     {% empty %}
-    <p>No reports available.</p>
+    <p>No reports found matching your search.</p>
     {% endfor %}
 </ul>
 
