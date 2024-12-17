@@ -4,8 +4,8 @@
 
 <div class="report-details">
   <h2>{{ report.title }}</h2>
-  <p><strong>Species:</strong> {{ report.species }}</p>
-  
+
+  <!-- Report Image -->
   {% if report.image %}
   <img
     src="{{ report.image.url }}"
@@ -13,67 +13,74 @@
     style="max-width: 300px; margin-bottom: 20px"
   />
   {% endif %}
-  
-  {% if report.status == "Open" %}
-  <form method="post" action="{% url 'reports:help_report' report.id %}">
-    {% csrf_token %}
-    <button type="submit">I want to help</button>
-  </form>
-  {% elif report.helper %}
-  <p style="background-color: #f0f0a0; padding: 10px">
-    This case is being handled by {{ report.helper.username }}.
-  </p>
-  {% endif %}
-  
-  {% if report.helper == user %}
-    <p>You are helping with this case. Contact the reporter: {{ report.reported_by.email }}</p>
-    {% if report.status == "In Progress" %}
-        <a href="{% url 'reports:close_report' report.id %}">Mark as Completed</a>
+
+<!-- Admin-User Communication History -->
+{% if user.is_staff %}
+    <div class="admin-user-history" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+        <h3>Admin-User Communication</h3>
+        {% if report.edit_history %}
+            <div class="edit-history" style="background-color: #f7f7f7; padding: 10px; border-radius: 5px;">
+                <h4>Change History</h4>
+                <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%;">
+                    {% for line in report.edit_history.splitlines %}
+                        {% if 'Admin rejected:' in line %}
+                            <span style="color: red;">{{ line }}</span>
+                        {% else %}
+                            <span style="color: green;">{{ line }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </pre>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+<!-- Help Button Area -->
+{% if user != report.reported_by and not user.is_staff %}
+    {% if report.status == "Open" %}
+        <form method="post" action="{% url 'reports:help_report' report.id %}">
+            {% csrf_token %}
+            <button type="submit">I want to help</button>
+        </form>
     {% endif %}
 {% endif %}
-  
+    
+  <!-- General Report Information -->
   <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
+  <p><strong>Species:</strong> {{ report.species }}</p>
   <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
   <p><strong>Gender:</strong> {{ report.gender }}</p>
   <p><strong>Injury Condition:</strong> {{ report.injury_condition }}</p>
   <p><strong>Status:</strong> {{ report.status }}</p>
   <p><strong>Publication Status:</strong> {{ report.publication_status }}</p>
-  <p>
-    <strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}
-  </p>
+  <p><strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
   <p><strong>Description:</strong> {{ report.description|linebreaks }}</p>
-  
-  {% if report.admin_comment %}
-  <p><strong>Admin Feedback:</strong> {{ report.admin_comment }}</p>
-  {% endif %}
   
   {% if report.publication_date %}
   <p><strong>Publication Date:</strong> {{ report.publication_date|date:"Y-m-d H:i" }}</p>
   {% endif %}
 </div>
 
-<!-- Admin-specific buttons -->
-{% if user.is_staff %}
-<a href="{% url 'reports:approve_report' report.id %}">Approve</a>
-<a href="{% url 'reports:reject_report' report.id %}">Reject</a>
-<a href="{% url 'reports:pending_reports' %}">&larr; Back to Pending Reports</a>
-
-<!-- User-specific buttons -->
-{% elif report.reported_by == user %}
-<a href="{% url 'reports:edit_report' report.id %}">Edit this Report</a>
-{% if request.META.HTTP_REFERER and 'my-reports' in request.META.HTTP_REFERER %}
-<a href="{% url 'reports:my_reports' %}">&larr; Back to My Reports</a>
-{% else %}
-<a href="{% url 'reports:all_reports' %}">&larr; Back to All Reports</a>
-{% endif %}
-
-<!-- Default button for other users -->
-{% else %}
-<a href="{% url 'reports:all_reports' %}">&larr; Back to All Reports</a>
-{% endif %}
+<!-- Action Buttons -->
+<div class="actions" style="margin-top: 20px;">
+  {% if user.is_staff %}
+    <a href="{% url 'reports:approve_report' report.id %}" class="btn btn-success">Approve</a>
+    <a href="{% url 'reports:reject_report' report.id %}" class="btn btn-danger">Reject</a>
+    <a href="{% url 'reports:pending_reports' %}" class="btn btn-secondary">&larr; Back to Manage Reports</a>
+  {% elif report.reported_by == user %}
+    <a href="{% url 'reports:edit_report' report.id %}" class="btn btn-primary">Edit this Report</a>
+    {% if request.META.HTTP_REFERER and 'my-reports' in request.META.HTTP_REFERER %}
+      <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary">&larr; Back to My Reports</a>
+    {% else %}
+      <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary">&larr; Back to All Reports</a>
+    {% endif %}
+  {% else %}
+    <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary">&larr; Back to All Reports</a>
+  {% endif %}
+</div>
 
 <!-- Future Features -->
-<div class="comments-section">
+<div class="comments-section" style="margin-top: 30px;">
   <h3>Comments</h3>
   <p>Feature coming soon...</p>
 </div>

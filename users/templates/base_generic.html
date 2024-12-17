@@ -16,19 +16,19 @@
       <nav>
         <ul>
           {% if user.is_authenticated %}
-          <li><a href="{% url 'reports:all_reports' %}">All Reports</a></li>
-          <li><a href="{% url 'users:profile' %}">My Profile</a></li>
+          <li><a href="{% url 'home' %}">Home</a></li>
           <li><a href="{% url 'reports:create_report' %}">Submit a Report</a></li>
+          <li><a href="{% url 'reports:all_reports' %}">All Reports</a></li>
           <li><a href="{% url 'reports:my_reports' %}">My Reports</a></li>
+          <li><a href="{% url 'users:profile' %}">My Profile</a></li>
           {% if user.is_staff %}
-          <li><a href="{% url 'reports:pending_reports' %}">ADMIN Area - Pending Reports</a></li>
+          <li><a href="{% url 'reports:pending_reports' %}">ADMIN - Pending Reports</a></li>
           {% endif %}
           <li><a href="{% url 'users:logout' %}">Logout</a></li>
           {% else %}
           <li><a href="{% url 'users:login' %}">Login</a></li>
           <li><a href="{% url 'users:signup' %}">Signup</a></li>
           {% endif %}
-          <li><a href="{% url 'home' %}">Home</a></li>
         </ul>
       </nav>
     </header>

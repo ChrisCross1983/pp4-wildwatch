@@ -24,6 +24,15 @@ def create_report(request):
             report.status = "Open"
             report.save()
             
+            send_mail(
+                "New Report Submitted - Review Required",
+                f"A new report titled '{report.title}' has been submitted by {request.user.username}.\n\n"
+                "Please review it in the pending reports section.",
+                'WildWatch Admin <cborza83@gmail.com>',
+                ['cborza83@gmail.com'],
+                fail_silently=False,
+            )
+
             if request.user.email:
                 subject = "Your WildWatch Report is Pending"
                 message = (
@@ -50,29 +59,39 @@ def create_report(request):
 
 @login_required
 def all_reports(request):
+
     reports = InjuryReport.objects.filter(publication_status="Approved", status__in=["Open", "In Progress"]).order_by('-date_reported')
 
-    query = request.GET.get('query')
+    query = request.GET.get('query', '').strip()
     species = request.GET.get('species')
-    status = request.GET.get('status')
+    injury_condition = request.GET.get('injury_condition')
+    report_status = request.GET.get('status_filter')
+    user_filter = request.GET.get('user')
 
     if query:
         reports = reports.filter(
+            Q(title__icontains=query) |
             Q(description__icontains=query) |
             Q(location__icontains=query) |
             Q(species__icontains=query) |
             Q(injury_condition__icontains=query) |
             Q(reported_by__username__icontains=query)
         )
+
     if species:
         reports = reports.filter(species=species)
-    if status:
-        reports = reports.filter(status=status)
 
-    # Count results
+    if injury_condition:
+        reports = reports.filter(injury_condition=injury_condition)
+
+    if report_status:
+        reports = reports.filter(status=report_status)
+
+    if user_filter == "self":
+        reports = reports.filter(reported_by=request.user)
+
     results_count = reports.count()
 
-    # Pagination
     paginator = Paginator(reports, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -82,6 +101,7 @@ def all_reports(request):
         'query': query,
         'results_count': results_count,
     })
+
 
 def report_detail(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
@@ -99,45 +119,74 @@ def edit_report(request, report_id):
     else:
         report = get_object_or_404(InjuryReport, id=report_id, reported_by=request.user)
 
+    old_data = {field.name: getattr(report, field.name) for field in report._meta.fields}
+
     if request.method == 'POST':
         form = InjuryReportForm(request.POST, request.FILES, instance=report)
+
         if form.is_valid():
+            updated_fields = {}
+            for field in form.changed_data:
+                old_value = old_data.get(field, "N/A")
+                new_value = form.cleaned_data.get(field, "N/A")
+                updated_fields[field] = (old_value, new_value)
 
-            report.add_to_history(request.user, "Report edited and resubmitted.")
-            if report.status in ["Rejected", "Approved"]:
-                report.status = "Pending"
-                messages.success(request, "The status of your report has been reset to 'Pending' after editing.")
-                
+            changes = "\n".join([f"Field '{field}' changed from '{old}' to '{new}'"
+                                 for field, (old, new) in updated_fields.items()])
 
-                if report.reported_by.email:
-                    subject = "Your WildWatch Report Was Resubmitted"
-                    message = (
-                        f"Hello {report.reported_by.username},\n\n"
-                        f"Your report titled '{report.title}' has been resubmitted and is now pending approval.\n\n"
-                        "Thank you for your patience.\n\n"
-                        "WildWatch Team"
-                    )
-                    send_mail(
-                        subject,
-                        message,
-                        'WildWatch <cborza83@gmail.com>',
-                        [report.reported_by.email],
-                        fail_silently=False,
-                    )
+            # Resubmission logic: Change status to pending and notify admin
+            if report.publication_status == "Rejected":
+                report.publication_status = "Pending"
+                report.add_to_history(request.user, f"User resubmitted the report after rejection:\n{changes}")
+                messages.success(request, "The report has been resubmitted for approval.")
 
+                # Notify Admin
+                send_mail(
+                    "Report Resubmitted for Approval",
+                    f"Report '{report.title}' has been resubmitted by {request.user.username}.\n\n"
+                    "Please review it in the pending reports section.",
+                    'WildWatch <cborza83@gmail.com>',
+                    ['cborza83@gmail.com'],
+                    fail_silently=False,
+                )
+
+            # General edit: Add changes to history only if fields were updated
+            elif updated_fields:
+                report.add_to_history(request.user, f"Report edited:\n{changes}")
+
+            # Notify Admin for a new submission (or resubmit, covered above)
+            if report.publication_status == "Pending" and not report.id:
+                send_mail(
+                    "New Report Submitted - Review Required",
+                    f"A new report titled '{report.title}' has been submitted by {request.user.username}.\n\n"
+                    "Please review it in the pending reports section.",
+                    'WildWatch Admin <cborza83@gmail.com>',
+                    ['cborza83@gmail.com'],
+                    fail_silently=False,
+                )
+
+            # Notify User (on successful resubmission or edit)
+            if report.publication_status == "Pending" and report.reported_by.email:
+                send_mail(
+                    "Your WildWatch Report Was Resubmitted",
+                    f"Hello {report.reported_by.username},\n\n"
+                    f"Your report titled '{report.title}' has been resubmitted and is now pending approval.\n\n"
+                    "Thank you for your patience.\n\n"
+                    "WildWatch Team",
+                    'WildWatch Admin <cborza83@gmail.com>',
+                    [report.reported_by.email],
+                    fail_silently=False,
+                )
+
+            # Save the form
             form.save()
 
-            referer = request.META.get('HTTP_REFERER', None)
-            if referer and 'all_reports' in referer:
-                return redirect('reports:all_reports')
-            else:
-                return redirect('reports:my_reports')
+            return redirect('reports:my_reports')
 
     else:
         form = InjuryReportForm(instance=report)
 
     return render(request, 'reports/edit_report.html', {'form': form, 'report': report})
-
 
 @login_required
 @user_passes_test(is_staff_user)
@@ -178,11 +227,12 @@ def reject_report(request, report_id):
             messages.error(request, "A comment is required to reject a report.")
             return redirect('reports:reject_report', report_id=report.id)
         
-        report.status = "Rejected"
+        # Set publication_status to Rejected
+        report.publication_status = "Rejected"
+        report.add_to_history(request.user, f"Admin rejected: {admin_comment}")
         report.admin_comment = admin_comment
         report.save()
         
-        # Send Email to user
         if report.reported_by and report.reported_by.email:
             subject = "Your WildWatch Report Has Been Rejected"
             message = (
@@ -208,21 +258,17 @@ def reject_report(request, report_id):
     
     return render(request, 'reports/reject_report.html', {'report': report})
 
-
-@login_required
 @user_passes_test(is_staff_user)
 def pending_reports(request):
 
     pending_reports = InjuryReport.objects.filter(publication_status="Pending").order_by('-date_reported')
-
     rejected_reports = InjuryReport.objects.filter(publication_status="Rejected").order_by('-date_reported')
 
     status_filter = request.GET.get('filter_status')
-    if status_filter:
-        if status_filter == "Pending":
-            rejected_reports = []
-        elif status_filter == "Rejected":
-            pending_reports = []
+    if status_filter == "Pending":
+        rejected_reports = []
+    elif status_filter == "Rejected":
+        pending_reports = []
 
     return render(request, 'reports/pending_reports.html', {
         'pending_reports': pending_reports,

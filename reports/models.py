@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from datetime import datetime
 
 class InjuryReport(models.Model):
 
@@ -19,13 +20,13 @@ class InjuryReport(models.Model):
     publication_status = models.CharField(
         max_length=10,
         choices=PUBLICATION_STATUS_CHOICES,
-        default="Open",
+        default="Pending",
     )
 
     status = models.CharField(
         max_length=15,
         choices=STATUS_CHOICES,
-        default="Pending",
+        default="Open",
     )
     
     title = models.CharField(
@@ -74,22 +75,29 @@ class InjuryReport(models.Model):
         self.publication_status = 'Approved'
         self.save()
 
-    def reject(self, comment=None):
+    def reject(self, comment=None, admin_user=None):
         self.publication_status = 'Rejected'
         if comment:
             self.admin_comment = comment
-        self.save()
+            if admin_user:
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                history_entry = f"{timestamp} - {admin_user.username}: Report rejected with comment: '{comment}'\n"
+                self.edit_history = (self.edit_history or "") + history_entry
+            self.save()
         
-    def add_to_history(self, user, change_description):
-        """Append a change log entry to the edit history."""
-        import datetime
+    def add_to_history(self, user, change_description, updated_fields=None):
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        history_entry = f"{timestamp} - {user.username}: {change_description}"
         
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        entry = f"{timestamp} - {user.username}: {change_description}\n"
-        if self.edit_history:
-            self.edit_history += entry
-        else:
-            self.edit_history = entry
+        if updated_fields:
+            changes = "\n".join([f"  Field '{field}' changed from '{old}' to '{new}'"
+                                 for field, (old, new) in updated_fields.items()])
+            history_entry += f"\n{changes}"
+
+        if self.edit_history and history_entry.strip() in self.edit_history:
+            return
+        
+        self.edit_history = (self.edit_history or "") + history_entry + "\n"
         self.save()
 
     def set_status(self, new_status, user=None):

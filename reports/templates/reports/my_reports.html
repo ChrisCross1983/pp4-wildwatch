@@ -9,7 +9,7 @@
     <li class="{% if report.publication_status == 'Rejected' %}rejected-report{% endif %}">
         {% if report.publication_status == "Rejected" %}
         <div class="alert alert-danger">
-            <strong>Rejected:</strong> {{ report.admin_comment }}
+            <strong style="border: 1px solid black">Rejected:</strong> {{ report.admin_comment }}
         </div>
         {% endif %}
         <strong>Title:</strong> {{ report.title }} <br>
@@ -23,8 +23,6 @@
         {% endif %}
         <a href="{% url 'reports:edit_report' report.id %}">Edit Report</a>
         <a href="{% url 'reports:delete_report' report.id %}" onclick="return confirm('Are you sure you want to delete this report?');">Delete Report</a>
-    </li>
-
         <!-- New Buttons -->
         {% if report.publication_status == "Approved" and report.status == "Open" %}
             <a href="{% url 'reports:help_report' report.id %}">I want to help</a>

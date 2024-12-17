@@ -3,12 +3,14 @@
 {% block content %}
 <h1>Animal Report Feed</h1>
 
-<form method="get" action=".">
-    <!-- Free text search -->
+<!-- Filter and Search Form -->
+<form method="get" action="." style="margin-bottom: 20px;">
+    <!-- Free Text Search -->
     <label for="query">Search:</label>
     <input type="text" id="query" name="query" placeholder="Search reports or users..." value="{{ query }}">
 
-    <label for="species">Filter by Species:</label>
+    <!-- Filter by Species -->
+    <label for="species">Species:</label>
     <select name="species" id="species">
         <option value="">All</option>
         <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
@@ -16,54 +18,43 @@
         <option value="Other" {% if request.GET.species == "Other" %}selected{% endif %}>Other</option>
     </select>
 
-    <label for="status">Filter by Injury Condition:</label>
-    <select name="status" id="status">
+    <!-- Filter by Injury Condition -->
+    <label for="injury_condition">Injury Condition:</label>
+    <select name="injury_condition" id="injury_condition">
         <option value="">All</option>
-        <option value="Slightly Injured" {% if request.GET.status == "Slightly Injured" %}selected{% endif %}>Slightly Injured</option>
-        <option value="Seriously Injured" {% if request.GET.status == "Seriously Injured" %}selected{% endif %}>Seriously Injured</option>
-        <option value="Not Injured" {% if request.GET.status == "Not Injured" %}selected{% endif %}>Not Injured</option>
+        <option value="Slightly Injured" {% if request.GET.injury_condition == "Slightly Injured" %}selected{% endif %}>Slightly Injured</option>
+        <option value="Seriously Injured" {% if request.GET.injury_condition == "Seriously Injured" %}selected{% endif %}>Seriously Injured</option>
+        <option value="Not Injured" {% if request.GET.injury_condition == "Not Injured" %}selected{% endif %}>Not Injured</option>
     </select>
 
-    <!-- User filter -->
-    <label for="user_filter">Filter:</label>
+    <!-- Filter by Status -->
+    <label for="report_status">Status:</label>
+    <select name="status_filter" id="report_status">
+        <option value="">All</option>
+        <option value="Open" {% if request.GET.status_filter == "Open" %}selected{% endif %}>Open</option>
+        <option value="In Progress" {% if request.GET.status_filter == "In Progress" %}selected{% endif %}>In Progress</option>
+        <option value="Completed" {% if request.GET.status_filter == "Completed" %}selected{% endif %}>Completed</option>
+    </select>
+
+    <!-- User Filter -->
+    <label for="user_filter">Reports:</label>
     <select name="user" id="user_filter">
         <option value="">All Reports</option>
         <option value="self" {% if request.GET.user == "self" %}selected{% endif %}>My Reports</option>
     </select>
 
-    <label for="status_filter">Filter status:</label>
-    <select name="status" id="status_filter">
-        <option value="">Alle</option>
-        <option value="Open" {% if request.GET.status == "Open" %}selected{% endif %}>Open</option>
-        <option value="In Progress" {% if request.GET.status == "In Progress" %}selected{% endif %}>In <Progress></Progress></option>
-        <option value="Completed" {% if request.GET.status == "Completed" %}selected{% endif %}>Completed</option>
-    </select>
-    <button type="submit">Filtern</button>
-
-    <button type="submit">Search</button>
-    <a href="{% url 'reports:all_reports' %}" class="reset-button">Reset Filters</a>
+    <!-- Buttons -->
+    <button type="submit" class="btn btn-primary">Apply Filters</button>
+    <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary">Reset Filters</a>
 </form>
 
 <!-- Search Results -->
 <p><strong>Search Results:</strong> {{ results_count }} reports found.</p>
 
-{% if report.status == "Offen" %}
-    <a href="{% url 'reports:take_care_of_report' report.id %}">I take care of this</a>
-{% endif %}
-
-<p><strong>Status:</strong>
-    {% if report.status == "Open" %}
-        <span style="color: blue;">Offen</span>
-    {% elif report.status == "In Progress" %}
-        <span style="color: orange;">In Bearbeitung</span>
-    {% elif report.status == "Completed" %}
-        <span style="color: green;">Abgeschlossen</span>
-    {% endif %}
-</p>
-
+<!-- Reports List -->
 <ul>
     {% for report in page_obj %}
-    <li>
+    <li style="margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
         <strong>Title:</strong> {{ report.title }} <br>
         <strong>Species:</strong> {{ report.species }} <br>
         <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
@@ -72,10 +63,11 @@
         <strong>Injury Condition:</strong> {{ report.injury_condition }} <br>
         <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
         <strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }} <br>
+
         {% if report.image %}
-        <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px;"><br>
+        <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px; margin-top: 10px;"><br>
         {% endif %}
-        <a href="{% url 'reports:report_detail' report.id %}">View Details</a>
+        <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm" style="margin-top: 10px;">View Details</a>
     </li>
     {% empty %}
     <p>No reports found matching your search.</p>
@@ -83,11 +75,11 @@
 </ul>
 
 <!-- Pagination -->
-<div class="pagination">
+<div class="pagination" style="margin-top: 20px;">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
         {% endif %}
 
         <span class="current">
@@ -95,8 +87,8 @@
         </span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
         {% endif %}
     </span>
 </div>

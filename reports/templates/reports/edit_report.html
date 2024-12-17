@@ -4,7 +4,7 @@
 <h1>Edit Report</h1>
 
 <!-- Admin-Comment -->
-{% if report.status == "Rejected" and report.admin_comment %}
+{% if not user.is_staff and report.publication_status == "Rejected" and report.admin_comment %}
     <div class="admin-feedback">
         <p><strong>Admin Feedback:</strong> {{ report.admin_comment }}</p>
     </div>
