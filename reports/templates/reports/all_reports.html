@@ -52,9 +52,15 @@
 <p><strong>Search Results:</strong> {{ results_count }} reports found.</p>
 
 <!-- Reports List -->
+{% for report in page_obj %}
 <ul>
-    {% for report in page_obj %}
-    <li style="margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+    <li style="
+    margin-bottom: 20px; 
+    padding: 10px; 
+    border: 1px solid {% if report.helper == user %}#7ec16d{% else %}#ddd{% endif %}; 
+    background-color: {% if report.helper == user %}#e8f5e9{% else %}#fff{% endif %}; 
+    border-radius: 5px;">
+
         <strong>Title:</strong> {{ report.title }} <br>
         <strong>Species:</strong> {{ report.species }} <br>
         <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
@@ -64,6 +70,12 @@
         <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
         <strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }} <br>
 
+        {% if report.helper == user %}
+        <span style="color: #388e3c; font-weight: bold;">
+            You are helping with this report.
+        </span>
+        {% endif %}
+        
         {% if report.image %}
         <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px; margin-top: 10px;"><br>
         {% endif %}

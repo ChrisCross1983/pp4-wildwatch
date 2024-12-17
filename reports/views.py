@@ -347,7 +347,6 @@ def close_report(request, report_id):
     messages.error(request, "You are not authorized to close this report.")
     return redirect('reports:my_reports')
 
-
 @login_required
 def help_report(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
@@ -356,11 +355,11 @@ def help_report(request, report_id):
         report.status = "In Progress"
         report.save()
 
-        # Optional: Mail to report creater
+        # Mail to report creator
         if report.reported_by and report.reported_by.email:
             send_mail(
                 "WildWatch: Help for your case",
-                f"Hallo {report.reported_by.username},\n\n"
+                f"Hello {report.reported_by.username},\n\n"
                 f"The user {request.user.username} has agreed to help with your reported case ('{report.title}').\n"
                 "Thank you for your support in protecting the animals!\n\n"
                 "WildWatch Team",
@@ -369,7 +368,19 @@ def help_report(request, report_id):
                 fail_silently=False,
             )
 
-        messages.success(request, f"You are now helping with this report.")
+        # Mail to the helper
+        send_mail(
+            "WildWatch: You are now helping with a case",
+            f"Hello {request.user.username},\n\n"
+            f"You are now helping with the reported case titled '{report.title}'.\n\n"
+            "Thank you for your valuable contribution to protecting wildlife!\n\n"
+            "WildWatch Team",
+            "WildWatch <cborza83@gmail.com>",
+            [request.user.email],
+            fail_silently=False,
+        )
+
+        messages.success(request, "You are now helping with this report.")
     else:
         messages.error(request, "This report is no longer available for help.")
     return redirect('reports:all_reports')

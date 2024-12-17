@@ -36,6 +36,12 @@
 {% endif %}
 
 <!-- Help Button Area -->
+{% if report.helper == user %}
+<div style="background-color: #e8f5e9; border: 1px solid #7ec16d; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+    <strong>You are currently helping with this report.</strong>
+</div>
+{% endif %}
+
 {% if user != report.reported_by and not user.is_staff %}
     {% if report.status == "Open" %}
         <form method="post" action="{% url 'reports:help_report' report.id %}">
