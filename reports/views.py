@@ -80,16 +80,16 @@ def all_reports(request):
 
     if species:
         reports = reports.filter(species=species)
-
     if injury_condition:
         reports = reports.filter(injury_condition=injury_condition)
-
     if report_status:
         reports = reports.filter(status=report_status)
-
     if user_filter == "self":
         reports = reports.filter(reported_by=request.user)
 
+    for report in reports:
+        report.current_helpers = report.helpers.all()
+        
     results_count = reports.count()
 
     paginator = Paginator(reports, 10)
@@ -101,7 +101,6 @@ def all_reports(request):
         'query': query,
         'results_count': results_count,
     })
-
 
 def report_detail(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
@@ -350,25 +349,31 @@ def close_report(request, report_id):
 @login_required
 def help_report(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
-    if report.status == "Open" and not report.helper:
-        report.helper = request.user
+
+    if report.status in ["Open", "In Progress"]:
+        if request.user not in report.helpers.all():
+            report.helpers.add(request.user)
+
+        if not report.helper:
+            report.helper = request.user
+        
         report.status = "In Progress"
         report.save()
 
-        # Mail to report creator
+        # Notify the report creator
         if report.reported_by and report.reported_by.email:
             send_mail(
-                "WildWatch: Help for your case",
+                "WildWatch: Additional Help for Your Case",
                 f"Hello {report.reported_by.username},\n\n"
-                f"The user {request.user.username} has agreed to help with your reported case ('{report.title}').\n"
-                "Thank you for your support in protecting the animals!\n\n"
+                f"The user {request.user.username} has joined to help with your reported case ('{report.title}').\n"
+                "Thank you for your support in protecting wildlife!\n\n"
                 "WildWatch Team",
                 "WildWatch <cborza83@gmail.com>",
                 [report.reported_by.email],
                 fail_silently=False,
             )
 
-        # Mail to the helper
+        # Notify the new helper
         send_mail(
             "WildWatch: You are now helping with a case",
             f"Hello {request.user.username},\n\n"
@@ -383,4 +388,45 @@ def help_report(request, report_id):
         messages.success(request, "You are now helping with this report.")
     else:
         messages.error(request, "This report is no longer available for help.")
+    return redirect('reports:all_reports')
+
+@login_required
+def cancel_help(request, report_id):
+    report = get_object_or_404(InjuryReport, id=report_id)
+    
+    if report.helper == request.user:
+        report.helpers.remove(request.user)
+        report.helper = None
+        report.status = "Open"
+        report.save()
+
+        # Mail to helper
+        send_mail(
+            "WildWatch: You have unregistered from helping",
+            f"Hello {request.user.username},\n\n"
+            f"You have successfully unregistered from helping with the reported case titled '{report.title}'.\n\n"
+            "Thank you for letting us know. If you can help again, please don't hesitate to rejoin.\n\n"
+            "WildWatch Team",
+            "WildWatch <cborza83@gmail.com>",
+            [request.user.email],
+            fail_silently=False,
+        )
+
+        # Mail to report creator
+        if report.reported_by and report.reported_by.email:
+            send_mail(
+                "WildWatch: A helper has unregistered",
+                f"Hello {report.reported_by.username},\n\n"
+                f"The user {request.user.username} can no longer help with your reported case ('{report.title}').\n\n"
+                "We hope someone else can step in to assist soon.\n\n"
+                "WildWatch Team",
+                "WildWatch <cborza83@gmail.com>",
+                [report.reported_by.email],
+                fail_silently=False,
+            )
+
+        messages.success(request, "You have successfully unregistered from helping with this report.")
+    else:
+        messages.error(request, "You are not the current helper for this report.")
+
     return redirect('reports:all_reports')

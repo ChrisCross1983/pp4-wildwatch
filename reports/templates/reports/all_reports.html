@@ -52,34 +52,47 @@
 <p><strong>Search Results:</strong> {{ results_count }} reports found.</p>
 
 <!-- Reports List -->
-{% for report in page_obj %}
 <ul>
-    <li style="
-    margin-bottom: 20px; 
-    padding: 10px; 
-    border: 1px solid {% if report.helper == user %}#7ec16d{% else %}#ddd{% endif %}; 
-    background-color: {% if report.helper == user %}#e8f5e9{% else %}#fff{% endif %}; 
-    border-radius: 5px;">
+    {% for report in page_obj %}
+    <li class="
+    {% if report.helper %}
+        helper-report
+    {% elif report.reported_by == request.user %}
+        user-report
+    {% endif %}">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong>Title:</strong> {{ report.title }} <br>
+                <strong>Species:</strong> {{ report.species }} <br>
+                <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
+                <strong>Status:</strong> {{ report.status }} <br>
+                <strong>Publication Status:</strong> {{ report.publication_status }} <br>
+                <strong>Injury Condition:</strong> {{ report.injury_condition }} <br>
+                <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
+                <strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }} <br>
+                {% if report.helpers.exists %}
+                <strong>Helpers:</strong> {{ report.helpers.all|join:", " }}
+                {% endif %}
+            </div>
+            <div style="text-align: right;">
+                <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm">View Details</a>
 
-        <strong>Title:</strong> {{ report.title }} <br>
-        <strong>Species:</strong> {{ report.species }} <br>
-        <strong>Location:</strong> {{ report.location|default:"Unknown" }} <br>
-        <strong>Status:</strong> {{ report.status }} <br>
-        <strong>Publication Status:</strong> {{ report.publication_status }} <br>
-        <strong>Injury Condition:</strong> {{ report.injury_condition }} <br>
-        <strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }} <br>
-        <strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }} <br>
-
-        {% if report.helper == user %}
-        <span style="color: #388e3c; font-weight: bold;">
-            You are helping with this report.
-        </span>
-        {% endif %}
-        
-        {% if report.image %}
-        <img src="{{ report.image.url }}" alt="Report Image" style="max-height: 150px; margin-top: 10px;"><br>
-        {% endif %}
-        <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm" style="margin-top: 10px;">View Details</a>
+                <!-- Help Buttons -->
+                {% if report.reported_by != request.user %}
+                    {% if request.user in report.helpers.all %}
+                    <form method="post" action="{% url 'reports:cancel_help' report.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm">I can no longer help</button>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{% url 'reports:help_report' report.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-primary btn-sm">I want to help</button>
+                    </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
     </li>
     {% empty %}
     <p>No reports found matching your search.</p>

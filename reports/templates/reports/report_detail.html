@@ -5,6 +5,14 @@
 <div class="report-details">
   <h2>{{ report.title }}</h2>
 
+  <!-- Report Helper -->
+  {% if report.helpers.count > 0 %}
+    <strong>Helpers:</strong>
+    {{ report.helpers.all|join:", " }}
+  {% else %}
+    <strong>Helpers:</strong> None
+  {% endif %}
+
   <!-- Report Image -->
   {% if report.image %}
   <img
@@ -14,43 +22,53 @@
   />
   {% endif %}
 
-<!-- Admin-User Communication History -->
-{% if user.is_staff %}
-    <div class="admin-user-history" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
-        <h3>Admin-User Communication</h3>
-        {% if report.edit_history %}
-            <div class="edit-history" style="background-color: #f7f7f7; padding: 10px; border-radius: 5px;">
-                <h4>Change History</h4>
-                <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%;">
-                    {% for line in report.edit_history.splitlines %}
-                        {% if 'Admin rejected:' in line %}
-                            <span style="color: red;">{{ line }}</span>
-                        {% else %}
-                            <span style="color: green;">{{ line }}</span>
-                        {% endif %}
-                    {% endfor %}
-                </pre>
-            </div>
+  <!-- Admin-User Communication History -->
+  {% if user.is_staff %}
+  <div class="admin-user-history" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+    <h3>Admin-User Communication</h3>
+    {% if report.edit_history %}
+    <div class="edit-history" style="background-color: #f7f7f7; padding: 10px; border-radius: 5px;">
+      <h4>Change History</h4>
+      <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%;">
+        {% for line in report.edit_history.splitlines %}
+        {% if 'Admin rejected:' in line %}
+        <span style="color: red;">{{ line }}</span>
+        {% else %}
+        <span style="color: green;">{{ line }}</span>
         {% endif %}
+        {% endfor %}
+      </pre>
     </div>
-{% endif %}
+    {% endif %}
+  </div>
+  {% endif %}
 
-<!-- Help Button Area -->
-{% if report.helper == user %}
-<div style="background-color: #e8f5e9; border: 1px solid #7ec16d; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+  <!-- Help Status -->
+  {% if report.helper == user %}
+  <div style="background-color: #e8f5e9; border: 1px solid #7ec16d; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
     <strong>You are currently helping with this report.</strong>
-</div>
-{% endif %}
+  </div>
+  {% endif %}
 
-{% if user != report.reported_by and not user.is_staff %}
-    {% if report.status == "Open" %}
+  <!-- Help Buttons -->
+  <div style="margin-bottom: 20px;">
+    {% if report.reported_by != user %}
+        {% if report.helper == user %}
+
+        <form method="post" action="{% url 'reports:cancel_help' report.id %}">
+            {% csrf_token %}
+            <button class="btn btn-danger btn-sm" type="submit">I can no longer help</button>
+        </form>
+        {% else %}
+
         <form method="post" action="{% url 'reports:help_report' report.id %}">
             {% csrf_token %}
-            <button type="submit">I want to help</button>
+            <button class="btn btn-primary btn-sm" type="submit">I want to help</button>
         </form>
+        {% endif %}
     {% endif %}
-{% endif %}
-    
+  </div>
+
   <!-- General Report Information -->
   <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
   <p><strong>Species:</strong> {{ report.species }}</p>
@@ -61,7 +79,7 @@
   <p><strong>Publication Status:</strong> {{ report.publication_status }}</p>
   <p><strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
   <p><strong>Description:</strong> {{ report.description|linebreaks }}</p>
-  
+
   {% if report.publication_date %}
   <p><strong>Publication Date:</strong> {{ report.publication_date|date:"Y-m-d H:i" }}</p>
   {% endif %}
@@ -70,18 +88,18 @@
 <!-- Action Buttons -->
 <div class="actions" style="margin-top: 20px;">
   {% if user.is_staff %}
-    <a href="{% url 'reports:approve_report' report.id %}" class="btn btn-success">Approve</a>
-    <a href="{% url 'reports:reject_report' report.id %}" class="btn btn-danger">Reject</a>
-    <a href="{% url 'reports:pending_reports' %}" class="btn btn-secondary">&larr; Back to Manage Reports</a>
+  <a href="{% url 'reports:approve_report' report.id %}" class="btn btn-success">Approve</a>
+  <a href="{% url 'reports:reject_report' report.id %}" class="btn btn-danger">Reject</a>
+  <a href="{% url 'reports:pending_reports' %}" class="btn btn-secondary">&larr; Back to Manage Reports</a>
   {% elif report.reported_by == user %}
-    <a href="{% url 'reports:edit_report' report.id %}" class="btn btn-primary">Edit this Report</a>
-    {% if request.META.HTTP_REFERER and 'my-reports' in request.META.HTTP_REFERER %}
-      <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary">&larr; Back to My Reports</a>
-    {% else %}
-      <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary">&larr; Back to All Reports</a>
-    {% endif %}
+  <a href="{% url 'reports:edit_report' report.id %}" class="btn btn-primary">Edit this Report</a>
+  {% if request.META.HTTP_REFERER and 'my-reports' in request.META.HTTP_REFERER %}
+  <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary">&larr; Back to My Reports</a>
   {% else %}
-    <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary">&larr; Back to All Reports</a>
+  <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary">&larr; Back to All Reports</a>
+  {% endif %}
+  {% else %}
+  <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary">&larr; Back to All Reports</a>
   {% endif %}
 </div>
 

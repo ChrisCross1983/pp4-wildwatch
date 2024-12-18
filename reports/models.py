@@ -62,6 +62,7 @@ class InjuryReport(models.Model):
     date_reported = models.DateTimeField(auto_now_add=True)
     reported_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     helper = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='helper', help_text="User who is taking care of this report.",)
+    helpers = models.ManyToManyField(User, related_name='helped_reports', blank=True)
     admin_comment = models.TextField(blank=True, null=True)
     edit_history = models.TextField(blank=True, null=True, help_text="Track changes made to the report.")
 
@@ -105,6 +106,11 @@ class InjuryReport(models.Model):
         if user and new_status == 'In Progress':
             self.helper = user
         self.save()
+
+    def save(self, *args, **kwargs):
+        if self.helper and self.helper not in self.helpers.all():
+            self.helpers.add(self.helper)
+        super().save(*args, **kwargs)
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
