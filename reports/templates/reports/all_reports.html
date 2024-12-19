@@ -43,28 +43,29 @@
                 <div class="card-header bg-primary text-white">
                     <h5 class="card-title m-0">{{ report.title }}</h5>
                 </div>
-                <div class="card-body">
-                    <!-- Image -->
-                    {% if report.image %}
-                    <div class="mb-3">
-                        <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid report-image rounded">
-                    </div>
-                    {% endif %}
-                    
-                    <!-- Basic Details -->
-                    <p class="text-center"><strong>Species:</strong> {{ report.species }}</p>
-                    <p class="text-center"><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
-                    <p class="text-center"><strong>Status:</strong> {{ report.status }}</p>
-                    
+                <div class="card-body text-center">
                     <!-- "You're Helping" Label -->
                     {% if report.user_is_helping %}
                     <div class="helping-label mx-auto">You're Helping!</div>
                     {% endif %}
-    
+                    <!-- Image -->
+                    {% if report.image %}
+                    <div class="mb-3 text-center">
+                        <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid report-image rounded mx-auto d-block">
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Basic Details -->
+                    <p><strong>Species:</strong> {{ report.species }}</p>
+                    <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
+                    <p><strong>Status:</strong> {{ report.status }}</p>
+                
                     <!-- Description -->
-                    <p class="text-justify"><strong>Details:</strong> {{ report.description|truncatewords:20 }}</p>
-                    <p class="text-center"><strong>Helpers:</strong> {{ report.helpers.all|join:", " }}</p>
+                    <p><strong>Details:</strong> {{ report.description|truncatewords:20 }}</p>
+                    <p><strong>Helpers:</strong> {{ report.helpers.all|join:", " }}</p>
                 </div>
+                
+                <!-- Help Buttons -->
                 <div class="card-footer d-flex justify-content-between">
                     <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm">View Details</a>
                     {% if report.reported_by != request.user %}

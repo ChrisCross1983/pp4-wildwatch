@@ -11,10 +11,28 @@ li {
     background-color: #f9f9f9;
 }
 
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+pre {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
 .card {
     border: 1px solid #ddd;
     border-radius: 10px;
+    max-width: 700px;
     overflow: hidden;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .card:hover {
@@ -22,11 +40,20 @@ li {
     transition: box-shadow 0.3s ease;
 }
 
+.card-body {
+    text-align: center;
+    padding: 20px;
+}
+
 .report-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     max-width: 100%;
-    max-height: 300px;
+    max-height: 150px;
     object-fit: cover;
     border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .username {
