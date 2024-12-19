@@ -84,17 +84,23 @@ def all_reports(request):
             Q(reported_by__username__icontains=query)
         )
 
+    # Filter by species
     if species:
         reports = reports.filter(species=species)
     if injury_condition:
         reports = reports.filter(injury_condition=injury_condition)
     if report_status:
         reports = reports.filter(status=report_status)
+
+    # Filter by user logic
     if user_filter == "self":
         reports = reports.filter(reported_by=request.user)
+    elif user_filter == "helping":
+        reports = reports.filter(helpers__in=[request.user])
 
     for report in reports:
         report.current_helpers = report.helpers.all()
+        report.user_is_helping = request.user in report.helpers.all()
 
     results_count = reports.count()
 
@@ -108,11 +114,9 @@ def all_reports(request):
         'results_count': results_count,
     })
 
-
 def report_detail(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
     return render(request, 'reports/report_detail.html', {'report': report})
-
 
 @login_required
 def my_reports(request):

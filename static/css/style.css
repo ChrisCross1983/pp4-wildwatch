@@ -11,6 +11,24 @@ li {
     background-color: #f9f9f9;
 }
 
+.card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+}
+
+.report-image {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
 .username {
     font-style: italic;
     color: #555;
@@ -21,6 +39,14 @@ li {
 .helper-report {
     background-color: #eaffea;
     border: 2px solid #58a758;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.helper-report:hover {
+    background-color: #d7ffd7;
+    transition: background-color 0.3s ease;
 }
 
 .helper-badge {
@@ -39,6 +65,19 @@ li {
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 15px;
+}
+
+.helping-label {
+    background-color: #28a745;
+    color: white;
+    font-size: 1.1rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .user-report {
