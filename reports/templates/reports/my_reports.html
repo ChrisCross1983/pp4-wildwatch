@@ -9,9 +9,12 @@
         {% for report in reports %}
         <div class="col-md-8 mb-4">
             <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <h5 class="m-0">{{ report.title }}</h5>
-                    <span class="badge badge-{{ report.publication_status|lower }}">{{ report.publication_status }}</span>
+                    <div>
+                        <span class="badge {{ report.status_class }}">{{ report.status }}</span>
+                        <span class="badge {{ report.publication_class }}">{{ report.publication_status }}</span>
+                    </div>
                 </div>
                 <div class="card-body">
                     <!-- Rejection Comment -->

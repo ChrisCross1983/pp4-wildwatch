@@ -100,6 +100,16 @@ def all_reports(request):
     for report in reports:
         report.current_helpers = report.helpers.all()
         report.user_is_helping = request.user in report.helpers.all()
+        report.status_class = {
+            "Open": "badge-open",
+            "In Progress": "badge-in-progress",
+            "Completed": "badge-completed",
+        }.get(report.status, "badge-secondary")
+        report.publication_class = {
+            "Pending": "badge-pending",
+            "Approved": "badge-approved",
+            "Rejected": "badge-rejected",
+        }.get(report.publication_status, "badge-secondary")
 
     results_count = reports.count()
 
@@ -116,14 +126,37 @@ def all_reports(request):
 @login_required
 def report_detail(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
+
+    report.status_class = {
+        "Open": "badge-open",
+        "In Progress": "badge-in-progress",
+        "Completed": "badge-completed",
+    }.get(report.status, "badge-secondary")
+    report.publication_class = {
+            "Pending": "badge-pending",
+            "Approved": "badge-approved",
+            "Rejected": "badge-rejected",
+        }.get(report.publication_status, "badge-secondary")
+    
     return render(request, 'reports/report_detail.html', {'report': report})
 
 @login_required
 def my_reports(request):
-    reports = InjuryReport.objects.filter(
-        reported_by=request.user).order_by('-date_reported')
+    reports = InjuryReport.objects.filter(reported_by=request.user).order_by('-date_reported')
+    
+    for report in reports:
+        report.status_class = {
+            "Open": "badge-open",
+            "In Progress": "badge-in-progress",
+            "Completed": "badge-completed",
+        }.get(report.status, "badge-secondary")
+        report.publication_class = {
+            "Pending": "badge-pending",
+            "Approved": "badge-approved",
+            "Rejected": "badge-rejected",
+        }.get(report.publication_status, "badge-secondary")
+        
     return render(request, 'reports/my_reports.html', {'reports': reports})
-
 
 @login_required
 def edit_report(request, report_id):

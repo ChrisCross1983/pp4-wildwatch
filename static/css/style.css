@@ -38,9 +38,15 @@ pre {
     border: 1px solid #ddd;
     border-radius: 10px;
     max-width: 700px;
-    overflow: hidden;
+    overflow: hidden; 
     margin: 0 auto;
     text-align: center;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .card:hover {
@@ -151,6 +157,33 @@ pre {
 .badge-pending {
     background-color: #ffc107;
     color: #212529;
+}
+
+.badge-open {
+    background-color: #17a2b8; /* Light Blue for Open */
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+}
+
+.badge-in-progress {
+    background-color: #ffc107; /* Yellow for In Progress */
+    color: #212529;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+}
+
+.badge-completed {
+    background-color: #28a745; /* Green for Completed */
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
 }
 
 .edit-history {
