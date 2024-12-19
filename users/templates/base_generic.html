@@ -15,15 +15,23 @@
     <header>
       <nav>
         <ul>
-          {% if user.is_authenticated %}
           <li><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="{% url 'reports:create_report' %}">Submit a Report</a></li>
-          <li><a href="{% url 'reports:all_reports' %}">All Reports</a></li>
+          {% if user.is_authenticated %} {% if user.is_staff %}
+          <li><a href="{% url 'reports:all_reports' %}">All Reports Feed</a></li>
+          <li>
+            <a href="{% url 'reports:pending_reports' %}"
+              >ADMIN - Manage Reports</a
+            >
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'reports:create_report' %}">Create a Report</a>
+          </li>
+          <li><a href="{% url 'reports:all_reports' %}">All Reports Feed</a></li>
           <li><a href="{% url 'reports:my_reports' %}">My Reports</a></li>
-          <li><a href="{% url 'users:profile' %}">My Profile</a></li>
-          {% if user.is_staff %}
-          <li><a href="{% url 'reports:pending_reports' %}">ADMIN - Pending Reports</a></li>
+          <li><a href="{% url 'users:profile' %}">Settings</a></li>
           {% endif %}
+          <li class="username">Logged in as {{ user.username }}</li>
           <li><a href="{% url 'users:logout' %}">Logout</a></li>
           {% else %}
           <li><a href="{% url 'users:login' %}">Login</a></li>
