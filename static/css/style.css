@@ -11,6 +11,14 @@ li {
     background-color: #f9f9f9;
 }
 
+.alert-info {
+    background-color: #d9f0ff;
+    color: #31708f;
+    border: 1px solid #bcdff1;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
 .img-fluid {
     max-width: 100%;
     height: auto;
@@ -52,7 +60,7 @@ pre {
     max-width: 100%;
     max-height: 150px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -128,6 +136,21 @@ pre {
     margin-top: 20px;
     border-top: 1px solid #ccc;
     padding-top: 10px;
+}
+
+.badge-rejected {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.badge-approved {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.badge-pending {
+    background-color: #ffc107;
+    color: #212529;
 }
 
 .edit-history {

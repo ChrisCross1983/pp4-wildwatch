@@ -9,7 +9,6 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
 
-
 def is_staff_user(user):
     return user.is_staff
 
@@ -114,6 +113,7 @@ def all_reports(request):
         'results_count': results_count,
     })
 
+@login_required
 def report_detail(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
     return render(request, 'reports/report_detail.html', {'report': report})

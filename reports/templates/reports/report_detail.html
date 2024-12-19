@@ -2,6 +2,33 @@
 
 {% block content %}
 <div class="container mt-5">
+
+<!-- Admin Communication Section -->
+{% if user.is_staff %}
+<div class="mt-4">
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h3>Admin-User Communication</h3>
+        </div>
+        <div class="card-body">
+            {% if report.edit_history %}
+            <h5>Change History</h5>
+            <pre class="bg-light p-3 rounded" style="white-space: pre-wrap; word-wrap: break-word;">
+                {% for line in report.edit_history.splitlines %}
+                {% if 'Admin rejected:' in line %}
+                <span style="color: red;">{{ line }}</span>
+                {% else %}
+                <span style="color: green;">{{ line }}</span>
+                {% endif %}
+                {% endfor %}
+            </pre>
+            {% else %}
+            <p>No history available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
     <div class="card mx-auto shadow-lg" style="max-width: 800px;">
         <div class="card-header bg-primary text-white text-center">
             <h1 class="card-title">{{ report.title }}</h1>
@@ -97,32 +124,5 @@
             {% endif %}
         </div>
     </div>
-
-    <!-- Admin Communication Section -->
-    {% if user.is_staff %}
-    <div class="mt-4">
-        <div class="card">
-            <div class="card-header bg-secondary text-white">
-                <h3>Admin-User Communication</h3>
-            </div>
-            <div class="card-body">
-                {% if report.edit_history %}
-                <h5>Change History</h5>
-                <pre class="bg-light p-3 rounded" style="white-space: pre-wrap; word-wrap: break-word;">
-                    {% for line in report.edit_history.splitlines %}
-                    {% if 'Admin rejected:' in line %}
-                    <span style="color: red;">{{ line }}</span>
-                    {% else %}
-                    <span style="color: green;">{{ line }}</span>
-                    {% endif %}
-                    {% endfor %}
-                </pre>
-                {% else %}
-                <p>No history available.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
 </div>
 {% endblock %}

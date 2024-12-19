@@ -1,117 +1,138 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="mb-4 text-center">Animal Report Feed</h1>
-
-    <!-- Filter and Search Form -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
-        <form class="form-inline w-100" method="get" action=".">
-            <div class="input-group mr-2 w-25">
-                <input type="text" class="form-control" name="query" placeholder="Search..." value="{{ query }}">
-            </div>
-            <select class="custom-select mr-2 w-25" name="species">
-                <option value="">All Species</option>
-                <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
-                <option value="Dog" {% if request.GET.species == "Dog" %}selected{% endif %}>Dog</option>
-                <option value="Other" {% if request.GET.species == "Other" %}selected{% endif %}>Other</option>
-            </select>
-            <select class="custom-select mr-2 w-25" name="status_filter">
-                <option value="">All Status</option>
-                <option value="Open" {% if request.GET.status_filter == "Open" %}selected{% endif %}>Open</option>
-                <option value="In Progress" {% if request.GET.status_filter == "In Progress" %}selected{% endif %}>In Progress</option>
-                <option value="Completed" {% if request.GET.status_filter == "Completed" %}selected{% endif %}>Completed</option>
-            </select>
-            <select class="custom-select mr-2 w-25" name="user">
-                <option value="">All Reports</option>
-                <option value="self" {% if request.GET.user == "self" %}selected{% endif %}>My Reports</option>
-                <option value="helping" {% if request.GET.user == "helping" %}selected{% endif %}>I Help Reports</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Apply Filters</button>
-            <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary ml-2">Reset Filters</a>
-        </form>
-    </nav>
-
-    <!-- Search Results -->
-    <p><strong>{{ results_count }}</strong> reports found.</p>
-
-    <!-- Reports List -->
-    <div class="row justify-content-center">
-        {% for report in page_obj %}
-        <div class="col-md-8 mb-4">
-            <div class="card shadow-sm mx-auto text-center" style="max-width: 700px;">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title m-0">{{ report.title }}</h5>
-                </div>
-                <div class="card-body text-center">
-                    <!-- "You're Helping" Label -->
-                    {% if report.user_is_helping %}
-                    <div class="helping-label mx-auto">You're Helping!</div>
-                    {% endif %}
-                    <!-- Image -->
-                    {% if report.image %}
-                    <div class="mb-3 text-center">
-                        <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid report-image rounded mx-auto d-block">
-                    </div>
-                    {% endif %}
-                    
-                    <!-- Basic Details -->
-                    <p><strong>Species:</strong> {{ report.species }}</p>
-                    <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
-                    <p><strong>Status:</strong> {{ report.status }}</p>
-                
-                    <!-- Description -->
-                    <p><strong>Details:</strong> {{ report.description|truncatewords:20 }}</p>
-                    <p><strong>Helpers:</strong> {{ report.helpers.all|join:", " }}</p>
-                </div>
-                
-                <!-- Help Buttons -->
-                <div class="card-footer d-flex justify-content-between">
-                    <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm">View Details</a>
-                    {% if report.reported_by != request.user %}
-                        {% if request.user in report.helpers.all %}
-                        <form method="post" action="{% url 'reports:cancel_help' report.id %}" style="display: inline;">
-                            {% csrf_token %}
-                            <button class="btn btn-danger btn-sm">I can no longer help</button>
-                        </form>
-                        {% else %}
-                        <form method="post" action="{% url 'reports:help_report' report.id %}" style="display: inline;">
-                            {% csrf_token %}
-                            <button class="btn btn-success btn-sm">I want to help</button>
-                        </form>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left Sidebar (Navigation) -->
+        <div class="col-md-2 bg-light border-right vh-100">
+            <h5 class="text-center mt-4">Navigation</h5>
+            <ul class="nav flex-column">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'reports:create_report' %}">Submit a new report</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'reports:my_reports' %}">My Reports</a>
+                </li>
+                {% endif %}
+            </ul>
         </div>
-        {% empty %}
-        <p class="text-center">No reports found matching your search.</p>
-        {% endfor %}
-    </div>    
 
-    <!-- Pagination -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page=1" aria-label="First">&laquo;</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            </li>
-            {% endif %}
-            <li class="page-item disabled">
-                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-            </li>
-            {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">&raquo;</a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
+        <!-- Main Content (Animal Feed) -->
+        <div class="col-md-8">
+            <h1 class="text-center mt-4">Animal Report Feed</h1>
+
+             <!-- Search Results Info -->
+             <p class="text-center"><strong>{{ results_count }}</strong> report(s) found.</p>
+
+            <!-- Reports List -->
+            <div class="row">
+                {% for report in page_obj %}
+                <div class="col-md-12 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title m-0">{{ report.title }}</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            {% if report.image %}
+                            <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" style="max-height: 200px;">
+                            {% endif %}
+                            <p><strong>Species:</strong> {{ report.species }}</p>
+                            <p><strong>Injury Condition:</strong> {{ report.injury_condition }}</p>
+                            <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
+                            <p><strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
+
+                            {% if report.user_is_helping %}
+                            <div class="alert alert-success">You're Helping!</div>
+                            {% endif %}
+
+                            <p><strong>Helpers:</strong> 
+                                {% if report.helpers.count > 0 %}
+                                {{ report.helpers.all|join:", " }}
+                                {% else %}
+                                No helpers yet
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm">View Details</a>
+                            {% if report.reported_by != request.user %}
+                                {% if request.user in report.helpers.all %}
+                                <form method="post" action="{% url 'reports:cancel_help' report.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger btn-sm">I can no longer help</button>
+                                </form>
+                                {% else %}
+                                <form method="post" action="{% url 'reports:help_report' report.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button class="btn btn-success btn-sm">I want to help</button>
+                                </form>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center">No reports found matching your criteria.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="col-md-2 bg-light border-left vh-100">
+            <h5 class="text-center mt-4">Filters</h5>
+            <form class="p-3" method="get" action=".">
+                <div class="form-group mb-3">
+                    <label for="query">Search</label>
+                    <input type="text" class="form-control" id="query" name="query" placeholder="Search..." value="{{ query }}">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="species">Species</label>
+                    <select class="form-control" id="species" name="species">
+                        <option value="">All</option>
+                        <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
+                        <option value="Dog" {% if request.GET.species == "Dog" %}selected{% endif %}>Dog</option>
+                        <option value="Other" {% if request.GET.species == "Other" %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="status_filter">Status</label>
+                    <select class="form-control" id="status_filter" name="status_filter">
+                        <option value="">All</option>
+                        <option value="Open" {% if request.GET.status_filter == "Open" %}selected{% endif %}>Open</option>
+                        <option value="In Progress" {% if request.GET.status_filter == "In Progress" %}selected{% endif %}>In Progress</option>
+                        <option value="Completed" {% if request.GET.status_filter == "Completed" %}selected{% endif %}>Completed</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-2">Apply Filters</button>
+                <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary w-100">Reset Filters</a>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

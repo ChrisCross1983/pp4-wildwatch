@@ -1,22 +1,36 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<h1>Edit Report</h1>
+<div class="container mt-5">
+    <div class="card mx-auto shadow-lg" style="max-width: 600px;">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>Edit Report</h2>
+        </div>
+        <div class="card-body">
+            <!-- Admin Feedback -->
+            {% if not user.is_staff and report.publication_status == "Rejected" and report.admin_comment %}
+            <div class="alert alert-danger">
+                <strong>Admin Feedback:</strong> {{ report.admin_comment }}
+            </div>
+            {% endif %}
 
-<!-- Admin-Comment -->
-{% if not user.is_staff and report.publication_status == "Rejected" and report.admin_comment %}
-    <div class="admin-feedback">
-        <p><strong>Admin Feedback:</strong> {{ report.admin_comment }}</p>
+            <!-- Form -->
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-success w-100">Save Changes</button>
+            </form>
+        </div>
+        <div class="card-footer text-center">
+            <!-- Back Button -->
+            {% if request.META.HTTP_REFERER %}
+            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary mt-2">Cancel</a>
+            {% else %}
+            <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary mt-2">Cancel</a>
+            {% endif %}
+        </div>
     </div>
-{% endif %}
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    
-    <!-- Display the form -->
-    {{ form.as_p }}
-    
-    <button type="submit">Save Changes</button>
-</form>
-<a href="{{ request.META.HTTP_REFERER|default:request.build_absolute_uri }}">Cancel</a>
+</div>
 {% endblock %}
