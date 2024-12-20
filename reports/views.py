@@ -161,14 +161,14 @@ def my_reports(request):
 
 @login_required
 def edit_report(request, report_id):
-
     try:
         report = InjuryReport.objects.get(id=report_id)
     except InjuryReport.DoesNotExist:
         raise Http404("Report does not exist.")
 
     if report.reported_by != request.user and not request.user.is_staff:
-        return HttpResponseForbidden("You are not authorized to edit this report.")
+        messages.error(request, "You are not authorized to edit this report.")
+        return redirect('home')
 
     old_data = {field.name: getattr(report, field.name) for field in report._meta.fields}
 

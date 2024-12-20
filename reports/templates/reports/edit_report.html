@@ -25,11 +25,7 @@
         </div>
         <div class="card-footer text-center">
             <!-- Back Button -->
-            {% if request.META.HTTP_REFERER %}
-            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary mt-2">Cancel</a>
-            {% else %}
-            <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary mt-2">Cancel</a>
-            {% endif %}
+            <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary mt-2">Cancel</a>
         </div>
     </div>
 </div>
