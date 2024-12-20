@@ -45,6 +45,7 @@
                             <p><strong>Injury Condition:</strong> {{ report.injury_condition }}</p>
                             <p><strong>Location:</strong> {{ report.location|default:"Unknown" }}</p>
                             <p><strong>Date Reported:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
+                            <p><strong>Contributor:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
 
                             {% if report.user_is_helping %}
                             <div class="alert alert-success">You're Helping!</div>

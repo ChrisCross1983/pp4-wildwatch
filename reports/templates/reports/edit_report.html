@@ -2,30 +2,113 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="card mx-auto shadow-lg" style="max-width: 600px;">
+    <div class="card mx-auto shadow-lg" style="max-width: 700px;">
+        <!-- Header -->
         <div class="card-header bg-primary text-white text-center">
             <h2>Edit Report</h2>
         </div>
-        <div class="card-body">
-            <!-- Admin Feedback -->
-            {% if not user.is_staff and report.publication_status == "Rejected" and report.admin_comment %}
-            <div class="alert alert-danger">
-                <strong>Admin Feedback:</strong> {{ report.admin_comment }}
-            </div>
-            {% endif %}
 
-            <!-- Form -->
+        <!-- Admin Feedback -->
+        {% if not user.is_staff and report.publication_status == "Rejected" and report.admin_comment %}
+        <div class="alert alert-danger mx-3 mt-3">
+            <strong>Admin Feedback:</strong> {{ report.admin_comment }}
+        </div>
+        {% endif %}
+
+        <!-- Form Body -->
+        <div class="card-body">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="form-group">
-                    {{ form.as_p }}
+
+                <!-- Title -->
+                <div class="mb-3 border-bottom pb-2">
+                    <label for="id_title" class="form-label"><strong>Title</strong></label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                    <div class="text-danger mt-1">{{ form.title.errors|join:", " }}</div>
+                    {% endif %}
                 </div>
-                <button type="submit" class="btn btn-success w-100">Save Changes</button>
-            </form>
-        </div>
-        <div class="card-footer text-center">
-            <!-- Back Button -->
-            <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary mt-2">Cancel</a>
+
+                <!-- Species -->
+                <div class="mb-3 border-bottom pb-2">
+                    <label for="id_species" class="form-label"><strong>Species</strong></label>
+                    {{ form.species }}
+                    {% if form.species.errors %}
+                    <div class="text-danger mt-1">{{ form.species.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Gender -->
+                <div class="mb-3 border-bottom pb-2">
+                    <label for="id_gender" class="form-label"><strong>Gender</strong></label>
+                    {{ form.gender }}
+                    {% if form.gender.errors %}
+                    <div class="text-danger mt-1">{{ form.gender.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3 border-bottom pb-2">
+                    <label for="id_location" class="form-label"><strong>Location</strong></label>
+                    {{ form.location }}
+                    {% if form.location.errors %}
+                    <div class="text-danger mt-1">{{ form.location.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Injury Condition -->
+                <div class="mb-3 border-bottom pb-2">
+                    <label for="id_injury_condition" class="form-label"><strong>Injury Condition</strong></label>
+                    {{ form.injury_condition }}
+                    {% if form.injury_condition.errors %}
+                    <div class="text-danger mt-1">{{ form.injury_condition.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3 border-bottom pb-2">
+                    <label for="id_description" class="form-label"><strong>Description</strong></label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                    <div class="text-danger mt-1">{{ form.description.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Image Upload -->
+                <div class="mb-3">
+                    <label for="id_image" class="form-label"><strong>Upload Image</strong></label>
+                    {{ form.image }}
+                    {% if form.image.errors %}
+                    <div class="text-danger mt-1">{{ form.image.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                    <button type="submit" class="btn btn-success px-4">Save Changes</button>
+                    <div>
+                        {% if request.GET.next %}
+                            {% if 'all_reports' in request.GET.next %}
+                                <a href="{{ request.GET.next }}" class="btn btn-secondary px-4">Back to All Reports</a>
+                            {% elif 'my-reports' in request.GET.next %}
+                                <a href="{{ request.GET.next }}" class="btn btn-secondary px-4">Back to My Reports</a>
+                            {% else %}
+                                <a href="{{ request.GET.next }}" class="btn btn-secondary px-4">Back</a>
+                            {% endif %}
+                        {% elif request.META.HTTP_REFERER %}
+                            {% if '/all_reports' in request.META.HTTP_REFERER %}
+                                <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary px-4">Back to All Reports</a>
+                            {% elif '/my-reports' in request.META.HTTP_REFERER %}
+                                <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary px-4">Back to My Reports</a>
+                            {% else %}
+                                <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary px-4">Back</a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary px-4">Back to My Reports</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>            
         </div>
     </div>
 </div>

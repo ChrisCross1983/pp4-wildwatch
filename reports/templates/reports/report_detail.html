@@ -1,4 +1,6 @@
-{% extends 'base_generic.html' %} {% block content %}
+{% extends 'base_generic.html' %}
+
+{% block content %}
 <div class="container mt-5">
   <!-- Admin Communication Section -->
   {% if user.is_staff %}
@@ -17,7 +19,7 @@
                 {% else %}
                 <span style="color: green;">{{ line }}</span>
               {% endif %}
-              {% endfor %}
+            {% endfor %}
           </pre>
           {% else %}
           <p>No history available.</p>
@@ -26,13 +28,14 @@
     </div>
   </div>
   {% endif %}
+  
   <div class="card shadow-lg mx-auto" style="max-width: 700px">
     <div class="card-header">
       <h5 class="m-0">{{ report.title }}</h5>
       <div>
         <span class="badge {{ report.status_class }}">{{ report.status }}</span>
         <span class="badge {{ report.publication_class }}">{{ report.publication_status }}</span>
-    </div>
+      </div>
     </div>
     <div class="card-body">
       <!-- Report Image -->
@@ -118,23 +121,30 @@
       {% elif report.reported_by == user %}
       <!-- User Actions -->
       <div>
-        <a href="{% url 'reports:edit_report' report.id %}" class="btn btn-warning btn-sm">Edit</a>
-        <a href="{% url 'reports:delete_report' report.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</a>
+        <a href="{% url 'reports:edit_report' report.id %}?next={{ request.GET.next|default:request.path }}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="{% url 'reports:delete_report' report.id %}?next={{ request.GET.next|default:request.path }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</a>
       </div>
       {% endif %}
 
-      <!-- Back or Cancel Button -->
+      <!-- Back Button -->
       <div>
-        {% if request.META.HTTP_REFERER %}
-          {% if 'all_reports' in request.META.HTTP_REFERER %}
-              <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Cancel</a>
-          {% elif 'my_reports' in request.META.HTTP_REFERER %}
-              <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary btn-sm">Cancel</a>
+        {% if request.GET.next %}
+          {% if 'all_reports' in request.GET.next %}
+            <a href="{{ request.GET.next }}" class="btn btn-secondary btn-sm">Back to All Reports</a>
+          {% elif 'my-reports' in request.GET.next %}
+            <a href="{{ request.GET.next }}" class="btn btn-secondary btn-sm">Back to My Reports</a>
           {% else %}
-              <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary btn-sm">Cancel</a>
+          <a href="{{ request.GET.next }}" class="btn btn-secondary btn-sm">Back</a>
           {% endif %}
         {% else %}
-          <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Cancel</a>
+          <!-- Wenn kein 'next' gesetzt ist -->
+          {% if '/all_reports' in request.META.HTTP_REFERER %}
+            <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back to All Reports</a>
+          {% elif '/my-reports' in request.META.HTTP_REFERER %}
+            <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary btn-sm">Back to My Reports</a>
+          {% else %}
+            <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back to All Reports</a>
+          {% endif %}
         {% endif %}
       </div>
     </div>

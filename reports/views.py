@@ -232,8 +232,11 @@ def edit_report(request, report_id):
 
             # Save the form
             form.save()
-
+            messages.success(request, "Your changes have been saved successfully.")
             return redirect(request.GET.get('next', 'reports:my_reports'))
+        else:
+            print("Form errors:", form.errors)
+            messages.error(request, "Please correct the errors in the form.")
 
     else:
         form = InjuryReportForm(instance=report)
