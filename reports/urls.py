@@ -6,7 +6,7 @@ app_name = 'reports'
 urlpatterns = [
     # Default page (redirect to all_reports)
     path('', views.all_reports, name='home'), 
-    path('all', views.all_reports, name='all_reports'),
+    path('all/', views.all_reports, name='all_reports'),
 
     # Report management paths
     path('create/', views.create_report, name='create_report'),

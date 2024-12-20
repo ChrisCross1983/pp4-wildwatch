@@ -16,10 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import handler404, handler403
+
+handler404 = 'wild_watch.views.custom_404'
+handler403 = 'wild_watch.views.custom_403'
 
 urlpatterns = [
+    # Core URLs
     path('', include('core.urls')),
+    
+    # Admin
     path('admin/', admin.site.urls),
+
+    # User Management
     path('users/', include('users.urls')),
+
+    # Report Management
     path('reports/', include('reports.urls')),
 ]

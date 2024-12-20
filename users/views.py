@@ -2,10 +2,27 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.urls import reverse
 from .forms import CustomUserCreationForm, CustomUserUpdateForm, ProfileUpdateForm
 
+# Custom Login View
+class CustomLoginView(LoginView):
+    template_name = 'users/login.html'
+    
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        return reverse('home')
+
+    def get_redirect_url(self):
+        redirect_to = self.request.GET.get('next', '')
+        if redirect_to:
+            return redirect_to
+        return super().get_redirect_url()
 
 # Signup View
 def signup(request):
@@ -43,7 +60,6 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
-
 
 # Logout View
 def logout_view(request):

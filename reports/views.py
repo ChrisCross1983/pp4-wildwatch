@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
+from django.http import HttpResponseForbidden, Http404
 
 def is_staff_user(user):
     return user.is_staff
@@ -160,18 +161,20 @@ def my_reports(request):
 
 @login_required
 def edit_report(request, report_id):
-    if request.user.is_staff:
-        report = get_object_or_404(InjuryReport, id=report_id)
-    else:
-        report = get_object_or_404(
-            InjuryReport, id=report_id, reported_by=request.user)
 
-    old_data = {field.name: getattr(report, field.name)
-                for field in report._meta.fields}
+    try:
+        report = InjuryReport.objects.get(id=report_id)
+    except InjuryReport.DoesNotExist:
+        raise Http404("Report does not exist.")
 
+    if report.reported_by != request.user and not request.user.is_staff:
+        return HttpResponseForbidden("You are not authorized to edit this report.")
+
+    old_data = {field.name: getattr(report, field.name) for field in report._meta.fields}
+
+    # POST-Logic
     if request.method == 'POST':
         form = InjuryReportForm(request.POST, request.FILES, instance=report)
-
         if form.is_valid():
             updated_fields = {}
             for field in form.changed_data:
@@ -185,16 +188,13 @@ def edit_report(request, report_id):
             # Resubmission logic: Change status to pending and notify admin
             if report.publication_status == "Rejected":
                 report.publication_status = "Pending"
-                report.add_to_history(
-                    request.user, f"User resubmitted the report after rejection:\n{changes}")
-                messages.success(
-                    request, "The report has been resubmitted for approval.")
+                report.add_to_history(request.user, f"User resubmitted the report after rejection:\n{changes}")
+                messages.success(request, "The report has been resubmitted for approval.")
 
                 # Notify Admin
                 send_mail(
                     "Report Resubmitted for Approval",
-                    f"Report '{report.title}' has been resubmitted by {
-                        request.user.username}.\n\n"
+                    f"Report '{report.title}' has been resubmitted by {request.user.username}.\n\n"
                     "Please review it in the pending reports section.",
                     'WildWatch <cborza83@gmail.com>',
                     ['cborza83@gmail.com'],
@@ -210,8 +210,7 @@ def edit_report(request, report_id):
             if report.publication_status == "Pending" and not report.id:
                 send_mail(
                     "New Report Submitted - Review Required",
-                    f"A new report titled '{report.title}' has been submitted by {
-                        request.user.username}.\n\n"
+                    f"A new report titled '{report.title}' has been submitted by {request.user.username}.\n\n"
                     "Please review it in the pending reports section.",
                     'WildWatch Admin <cborza83@gmail.com>',
                     ['cborza83@gmail.com'],
@@ -223,8 +222,7 @@ def edit_report(request, report_id):
                 send_mail(
                     "Your WildWatch Report Was Resubmitted",
                     f"Hello {report.reported_by.username},\n\n"
-                    f"Your report titled '{
-                        report.title}' has been resubmitted and is now pending approval.\n\n"
+                    f"Your report titled '{report.title}' has been resubmitted and is now pending approval.\n\n"
                     "Thank you for your patience.\n\n"
                     "WildWatch Team",
                     'WildWatch Admin <cborza83@gmail.com>',
@@ -235,13 +233,12 @@ def edit_report(request, report_id):
             # Save the form
             form.save()
 
-            return redirect('reports:my_reports')
+            return redirect(request.GET.get('next', 'reports:my_reports'))
 
     else:
         form = InjuryReportForm(instance=report)
 
     return render(request, 'reports/edit_report.html', {'form': form, 'report': report})
-
 
 @login_required
 @user_passes_test(is_staff_user)

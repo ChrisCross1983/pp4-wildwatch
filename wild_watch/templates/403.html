@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1 class="display-4 text-warning">403 - Forbidden</h1>
+    <p>You do not have permission to access this page.</p>
+    <a href="{% url 'users:home' %}" class="btn btn-primary">Return Home</a>
+</div>
+{% endblock %}

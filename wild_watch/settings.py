@@ -79,8 +79,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wild_watch.wsgi.application'
 
-LOGIN_URL = '/users/login/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'reports:my_reports'
+LOGOUT_REDIRECT_URL = 'users:login'
 
 #Password Reset Config
 
