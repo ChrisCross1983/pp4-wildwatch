@@ -60,7 +60,7 @@
                             </p>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm">View Details</a>
+                            <a href="{% url 'reports:report_detail' report.id %}?source=all_reports" class="btn btn-info btn-sm">View Details</a>
                             {% if report.reported_by != request.user %}
                                 {% if request.user in report.helpers.all %}
                                 <form method="post" action="{% url 'reports:cancel_help' report.id %}" style="display: inline;">

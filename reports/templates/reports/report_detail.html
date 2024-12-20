@@ -121,30 +121,18 @@
       {% elif report.reported_by == user %}
       <!-- User Actions -->
       <div>
-        <a href="{% url 'reports:edit_report' report.id %}?next={{ request.GET.next|default:request.path }}" class="btn btn-warning btn-sm">Edit</a>
-        <a href="{% url 'reports:delete_report' report.id %}?next={{ request.GET.next|default:request.path }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</a>
+        <a href="{% url 'reports:edit_report' report.id %}?source={{ request.GET.source|default:'my_reports' }}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="{% url 'reports:delete_report' report.id %}?source={{ request.GET.source|default:'my_reports' }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</a>
       </div>
       {% endif %}
-
       <!-- Back Button -->
       <div>
-        {% if request.GET.next %}
-          {% if 'all_reports' in request.GET.next %}
-            <a href="{{ request.GET.next }}" class="btn btn-secondary btn-sm">Back to All Reports</a>
-          {% elif 'my-reports' in request.GET.next %}
-            <a href="{{ request.GET.next }}" class="btn btn-secondary btn-sm">Back to My Reports</a>
-          {% else %}
-          <a href="{{ request.GET.next }}" class="btn btn-secondary btn-sm">Back</a>
-          {% endif %}
-        {% else %}
-          <!-- Wenn kein 'next' gesetzt ist -->
-          {% if '/all_reports' in request.META.HTTP_REFERER %}
+        {% if request.GET.source == 'all_reports' %}
             <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back to All Reports</a>
-          {% elif '/my-reports' in request.META.HTTP_REFERER %}
+        {% elif request.GET.source == 'my_reports' %}
             <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary btn-sm">Back to My Reports</a>
-          {% else %}
+        {% else %}
             <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back to All Reports</a>
-          {% endif %}
         {% endif %}
       </div>
     </div>

@@ -237,7 +237,6 @@ def edit_report(request, report_id):
         else:
             print("Form errors:", form.errors)
             messages.error(request, "Please correct the errors in the form.")
-
     else:
         form = InjuryReportForm(instance=report)
 

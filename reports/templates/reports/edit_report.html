@@ -19,7 +19,6 @@
         <div class="card-body">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-
                 <!-- Title -->
                 <div class="mb-3 border-bottom pb-2">
                     <label for="id_title" class="form-label"><strong>Title</strong></label>
@@ -86,27 +85,13 @@
                 <!-- Action Buttons -->
                 <div class="d-flex justify-content-between mt-4 pt-3 border-top">
                     <button type="submit" class="btn btn-success px-4">Save Changes</button>
-                    <div>
-                        {% if request.GET.next %}
-                            {% if 'all_reports' in request.GET.next %}
-                                <a href="{{ request.GET.next }}" class="btn btn-secondary px-4">Back to All Reports</a>
-                            {% elif 'my-reports' in request.GET.next %}
-                                <a href="{{ request.GET.next }}" class="btn btn-secondary px-4">Back to My Reports</a>
-                            {% else %}
-                                <a href="{{ request.GET.next }}" class="btn btn-secondary px-4">Back</a>
-                            {% endif %}
-                        {% elif request.META.HTTP_REFERER %}
-                            {% if '/all_reports' in request.META.HTTP_REFERER %}
-                                <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary px-4">Back to All Reports</a>
-                            {% elif '/my-reports' in request.META.HTTP_REFERER %}
-                                <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary px-4">Back to My Reports</a>
-                            {% else %}
-                                <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary px-4">Back</a>
-                            {% endif %}
-                        {% else %}
-                            <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary px-4">Back to My Reports</a>
-                        {% endif %}
-                    </div>
+                    {% if request.GET.source == 'all_reports' %}
+                        <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary px-4" role="button">Cancel</a>
+                    {% elif request.GET.source == 'my_reports' %}
+                        <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary px-4" role="button">Cancel</a>
+                    {% else %}
+                        <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary px-4" role="button">Cancel</a>
+                    {% endif %}
                 </div>
             </form>            
         </div>
