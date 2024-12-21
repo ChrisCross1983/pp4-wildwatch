@@ -1,53 +1,84 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Create Report</title>
-  </head>
-  <body>
-    <h1>Create an Injury Report</h1>
+{% extends 'base_generic.html' %}
+{% load widget_tweaks %}
 
-    <!-- Display messages -->
-    {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card mx-auto shadow-lg" style="max-width: 700px;">
+        <!-- Header -->
+        <div class="card-header bg-primary text-white text-center">
+            <h2>Create an Injury Report</h2>
+        </div>
 
-    <div class="explanation">
-      <p>
-        Reporting injured animals is crucial to ensure timely help. By providing
-        accurate details, you assist in their rescue and treatment.
-      </p>
+        <!-- Explanation Section -->
+        <div class="card-body">
+            <div class="alert alert-info text-center">
+                Reporting injured animals is crucial to ensure timely help. By providing accurate details, you assist in their rescue and treatment.
+            </div>
+
+            <!-- Display Messages -->
+            {% if messages %}
+            <div class="alert alert-warning">
+                <ul class="mb-0">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- Form -->
+            <form method="POST" enctype="multipart/form-data" class="mt-4">
+                {% csrf_token %}
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label for="id_title" class="form-label"><strong>Title:</strong></label>
+                    <input type="text" name="title" id="id_title" class="form-control" required>
+                </div>
+
+                <!-- Species -->
+                <div class="mb-3">
+                    <label for="id_species" class="form-label"><strong>Species:</strong></label>
+                    {{ form.species|add_class:"form-select" }}
+                </div>
+
+                <!-- Gender -->
+                <div class="mb-3">
+                    <label for="id_gender" class="form-label"><strong>Gender:</strong></label>
+                    {{ form.gender|add_class:"form-select" }}
+                </div>
+
+                <!-- Injury Condition -->
+                <div class="mb-3">
+                    <label for="id_injury_condition" class="form-label"><strong>Injury Condition:</strong></label>
+                    {{ form.injury_condition|add_class:"form-select" }}
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="id_description" class="form-label"><strong>Description:</strong></label>
+                    {{ form.description|add_class:"form-control" }}
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="id_location" class="form-label"><strong>Location (optional):</strong></label>
+                    {{ form.location|add_class:"form-control" }}
+                </div>
+
+                <!-- Image Upload -->
+                <div class="mb-3">
+                    <label for="id_image" class="form-label"><strong>Upload Image (optional):</strong></label>
+                    {{ form.image|add_class:"form-control" }}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success px-4">Submit</button>
+                    <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary px-4">Back to All Reports</a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-
-      <label for="id_title">Title:</label>
-      <input type="text" name="title" id="id_title" required>
-      
-      <label for="id_species">Species:</label>
-      {{ form.species }}
-
-      <label for="id_gender">Gender:</label>
-      {{ form.gender }}
-
-      <label for="id_injury_condition">Injury Condition:</label>
-      {{ form.injury_condition }}
-
-      <label for="id_description">Description:</label>
-      {{ form.description }}
-
-      <label for="id_location">Location (optional):</label>
-      {{ form.location }}
-
-      <label for="id_image">Image (optional):</label>
-      {{ form.image }}
-
-      <button type="submit">Submit</button>
-    </form>
-    <a href="{% url 'reports:all_reports' %}">Back to All Reports</a>
-  </body>
-</html>
+</div>
+{% endblock %}
