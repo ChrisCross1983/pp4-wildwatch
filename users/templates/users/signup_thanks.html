@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1>Welcome to Wild Watch!</h1>
+    
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <p>
+        <a href="{% url 'users:email_confirm_resend' %}">Resend Verification Email</a>
+    </p>
+    <a href="{% url 'users:login' %}" class="btn btn-primary mt-3">Go to Login</a>
+</div>
+{% endblock %}

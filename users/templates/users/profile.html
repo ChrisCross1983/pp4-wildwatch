@@ -9,10 +9,10 @@
     <div class="text-center my-4">
         {% if user.profile.profile_picture %}
             <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture"
-                 class="img-thumbnail rounded-circle" style="width: 150px; height: 150px;">
+                 class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;">
         {% else %}
             <img src="{% static 'images/placeholder.jpg' %}" alt="Placeholder"
-                 class="img-thumbnail rounded-circle" style="width: 150px; height: 150px;">
+                 class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;">
         {% endif %}
     </div>
 
@@ -37,5 +37,10 @@
             <button type="submit" class="btn btn-danger">Delete My Account</button>
         </form>
     </div>
+    <div>
+        <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back</a>
+    </div>
+
+
 </div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4>Email Verification</h4>
+        </div>
+        <div class="card-body">
+          {% if success %}
+            <div class="alert alert-success" role="alert">
+              Your email has been successfully verified! You can now <a href="{% url 'users:login' %}" class="alert-link">log in</a>.
+            </div>
+          {% else %}
+            <div class="alert alert-danger" role="alert">
+              The verification link is invalid or has expired.
+            </div>
+            <p>You can request a new verification link below:</p>
+            <a href="{% url 'users:email_resend' %}" class="btn btn-warning">Resend Verification Email</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

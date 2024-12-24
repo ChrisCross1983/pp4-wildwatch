@@ -1,10 +1,14 @@
 from django.contrib.auth.models import User
 from django.db import models
 from cloudinary.models import CloudinaryField
+import uuid
+from django.utils.timezone import now
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_picture = CloudinaryField('image', default='placeholder.jpg')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    email_token = models.UUIDField(default=uuid.uuid4, unique=True, null=True, blank=True)
+    email_token_expiry = models.DateTimeField(null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pics', null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username}'s Profile"

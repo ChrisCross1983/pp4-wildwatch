@@ -8,7 +8,6 @@ class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, label="First Name")
     last_name = forms.CharField(max_length=30, required=True, label="Last Name")
     profile_picture = forms.ImageField(required=False, label="Upload Profile Picture")
-
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'profile_picture', 'password1', 'password2']
@@ -17,6 +16,8 @@ class CustomUserCreationForm(UserCreationForm):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
+        user.email = self.cleaned_data['email']
+        user.is_active = False
         if commit:
             user.save()
             Profile.objects.create(user=user, profile_picture=self.cleaned_data.get('profile_picture'))
