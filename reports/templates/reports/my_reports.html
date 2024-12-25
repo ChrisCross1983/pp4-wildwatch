@@ -1,11 +1,34 @@
 {% extends 'base_generic.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-5">
     <!-- Title and Create Button -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-center mb-0">My Reports</h1>
-        <a href="{% url 'reports:create_report' %}" class="btn btn-primary btn-lg">Submit a New Report</a>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+        <h1 class="text-center flex-grow-1 mb-3 mb-md-0">My Reports</h1>
+        <a href="{% url 'reports:create_report' %}" class="btn btn-primary btn-sm">Submit a New Report</a>
+    </div>
+
+    <!-- Mobile Bubble -->
+    <div class="fab d-md-none" data-bs-toggle="modal" data-bs-target="#bubbleModal">
+        <img src="{% static 'icons/cat-icon.png' %}" alt="Menu" />
+    </div>
+    <div class="fab-tooltip d-md-none">Menu</div>
+
+    <!-- Modal for Bubble -->
+    <div class="modal fade" id="bubbleModal" tabindex="-1" aria-labelledby="bubbleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bubbleModalLabel">Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <a href="{% url 'reports:create_report' %}" class="btn btn-info w-100 mb-2">New Report</a>
+                    <a href="{% url 'reports:all_reports' %}" class="btn btn-primary w-100 mb-2">Animal Report Feed</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Check if user has reports -->

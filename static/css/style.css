@@ -1,3 +1,9 @@
+/* General Reset */
+
+body {
+    padding-top: 98px;
+}
+
 ul {
     list-style-type: none;
     padding: 0;
@@ -11,26 +17,76 @@ li {
     background-color: #f9f9f9;
 }
 
+/* Sticky and Fixed Navbar */
+.navbar {
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
+}
+
+/* Floating Bubble Button */
+.fab {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.fab img {
+    width: 32px;
+    height: 32px;
+}
+
+.fab:hover {
+    background-color: #0056b3;
+}
+
+/* Bubble Tooltip */
+.fab-tooltip {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    z-index: 1050;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+}
+
+.fab:hover + .fab-tooltip {
+    display: block;
+}
+
+/* Other Styling */
 .img-fluid {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
 }
 
-pre {
-    font-size: 0.9rem;
-    color: #333;
-}
-
-.text-justify {
-    text-align: justify;
-}
-
 .card {
     border: 1px solid #ddd;
     border-radius: 10px;
     max-width: 700px;
-    overflow: hidden; 
+    overflow: hidden;
     margin: 0 auto;
     text-align: center;
 }
@@ -160,7 +216,7 @@ pre {
 }
 
 .badge-open {
-    background-color: #17a2b8; /* Light Blue for Open */
+    background-color: #17a2b8;
     color: #fff;
     font-size: 0.9rem;
     font-weight: bold;
@@ -169,7 +225,7 @@ pre {
 }
 
 .badge-in-progress {
-    background-color: #ffc107; /* Yellow for In Progress */
+    background-color: #ffc107;
     color: #212529;
     font-size: 0.9rem;
     font-weight: bold;
@@ -178,7 +234,7 @@ pre {
 }
 
 .badge-completed {
-    background-color: #28a745; /* Green for Completed */
+    background-color: #28a745;
     color: #fff;
     font-size: 0.9rem;
     font-weight: bold;
@@ -192,85 +248,33 @@ pre {
     border-radius: 5px;
 }
 
-# Message Notifications
+/* Message Notifications */
 
 .alert-info {
     background-color: #d9f0ff;
     color: #31708f;
     border: 1px solid #bcdff1;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
 }
 
 .alert-success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
 }
 
 .alert-error {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
 }
 
-.btn-sm {
-    font-size: 0.875rem;
-    padding: 5px 10px;
-    margin-left: 5px;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-    border: none;
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-}
-
-.success-highlight {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-.info-highlight {
-    background-color: #d1ecf1;
-    color: #0c5460;
-    border: 1px solid #bee5eb;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-.error-highlight {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-top: 15px;
+/* Media Query: Show Bubble in Mobile */
+@media (max-width: 768px) {    
+    body {
+        padding-top: 40px;
+    }
+    
+    .fab {
+        display: flex;
+    }
 }
