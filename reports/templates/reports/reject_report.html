@@ -34,6 +34,6 @@
   ></textarea
   ><br /><br />
   <button type="submit">Reject Report</button>
-  <a href="{% url 'reports:pending_reports' %}">Cancel</a>
+  <a href="{% url 'reports:report_detail' report.id %}">Cancel</a>
 </form>
 {% endblock %}

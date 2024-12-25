@@ -23,8 +23,7 @@ def send_verification_email(user):
         profile.save()
 
         # Use static domain for verification link
-        domain = getattr(settings, "DEFAULT_DOMAIN", "127.0.0.1:8000")  # Fallback to localhost
-
+        domain = getattr(settings, "DEFAULT_DOMAIN", "127.0.0.1:8000")
         verification_link = f"http://{domain}/users/confirm-email/{token}/"
 
         # Send verification email
@@ -35,15 +34,11 @@ def send_verification_email(user):
                 f"Please click the following link to verify your email address:\n"
                 f"{verification_link}\n\n"
                 f"If you didn’t request this email, you can safely ignore it.\n\n"
-                f"Best regards,\nThe Wild Watch Team"
-            ),
+                f"Best regards,\nThe Wild Watch Team"),
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
             fail_silently=False,
         )
-    except IntegrityError as e:
-        logger.error(f"IntegrityError for user {user.username}: {str(e)}")
-        raise Exception("Error during creating or updating profile.") from e
     except Exception as e:
-        logger.error(f"Unexpected error for user {user.username}: {str(e)}")
+        logger.error(f"Error sending verification email to {user.email}: {e}")
         raise

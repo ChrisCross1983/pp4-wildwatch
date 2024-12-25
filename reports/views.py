@@ -323,26 +323,29 @@ def reject_report(request, report_id):
 
     return render(request, 'reports/reject_report.html', {'report': report})
 
-
+@login_required
 @user_passes_test(is_staff_user)
 def pending_reports(request):
-
-    pending_reports = InjuryReport.objects.filter(
-        publication_status="Pending").order_by('-date_reported')
-    rejected_reports = InjuryReport.objects.filter(
-        publication_status="Rejected").order_by('-date_reported')
+    pending_reports = InjuryReport.objects.filter(publication_status="Pending").order_by('-date_reported')
+    rejected_reports = InjuryReport.objects.filter(publication_status="Rejected").order_by('-date_reported')
 
     status_filter = request.GET.get('filter_status')
     if status_filter == "Pending":
         rejected_reports = []
+        reports = pending_reports
     elif status_filter == "Rejected":
         pending_reports = []
+        reports = rejected_reports
+    else:
+        reports = list(pending_reports) + list(rejected_reports)
+
+    results_count = len(reports)
 
     return render(request, 'reports/pending_reports.html', {
         'pending_reports': pending_reports,
         'rejected_reports': rejected_reports,
+        'results_count': results_count,
     })
-
 
 @login_required
 def take_care_of_report(request, report_id):

@@ -12,16 +12,16 @@
       <div class="card-body">
         {% if report.edit_history %}
           <h5>Change History</h5>
-          <pre class="bg-light p-3 rounded" style="white-space: pre-wrap; word-wrap: break-word">
+          <pre class="bg-light p-3 rounded" style="white-space: pre-wrap; word-wrap: break-word; max-height: 300px; overflow-y: auto;">
             {% for line in report.edit_history.splitlines %}
               {% if 'Admin rejected:' in line %}
                 <span style="color: red;">{{ line }}</span>
-                {% else %}
+              {% else %}
                 <span style="color: green;">{{ line }}</span>
               {% endif %}
             {% endfor %}
           </pre>
-          {% else %}
+        {% else %}
           <p>No history available.</p>
         {% endif %}
       </div>
@@ -38,6 +38,12 @@
       </div>
     </div>
     <div class="card-body">
+      <!-- Rejection Comment -->
+      {% if report.publication_status == "Rejected" %}
+      <div class="alert alert-danger">
+          <strong>Rejected:</strong> {{ report.admin_comment }}
+      </div>
+      {% endif %}
       <!-- Report Image -->
       {% if report.image %}
       <div class="text-center mb-4">
@@ -80,7 +86,7 @@
 
       <!-- Help Buttons -->
       <div class="text-center mt-3">
-        {% if report.reported_by != user %}
+        {% if not user.is_staff and report.reported_by != user %}
           {% if request.user in report.helpers.all %}
             <form
               method="post"
@@ -89,7 +95,7 @@
               {% csrf_token %}
               <button class="btn btn-danger btn-sm">I can no longer help</button>
             </form>
-            {% else %}
+          {% else %}
             <form
               method="post"
               action="{% url 'reports:help_report' report.id %}"
@@ -110,29 +116,51 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="card-footer d-flex justify-content-between">
+    <div class="card-footer d-flex justify-content-between align-items-center">
       <!-- Staff Actions -->
       {% if user.is_staff %}
-      <div>
-        <a href="{% url 'reports:approve_report' report.id %}" class="btn btn-success btn-sm">Approve</a>
-        <a href="{% url 'reports:reject_report' report.id %}" class="btn btn-danger btn-sm">Reject</a>
-        <a href="{% url 'reports:pending_reports' %}" class="btn btn-secondary btn-sm">&larr; Back to Manage Reports</a>
-      </div>
-      {% elif report.reported_by == user %}
-      <!-- User Actions -->
-      <div>
-        <a href="{% url 'reports:edit_report' report.id %}?source={{ request.GET.source|default:'my_reports' }}" class="btn btn-warning btn-sm">Edit</a>
-        <a href="{% url 'reports:delete_report' report.id %}?source={{ request.GET.source|default:'my_reports' }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</a>
-      </div>
+        <div class="d-flex gap-2">
+          {% if report.publication_status == "Rejected" %}
+            <div data-bs-toggle="tooltip" title="Cannot approve a rejected report directly. The user must edit it first.">
+              <button class="btn btn-success btn-sm" disabled>Approve</button>
+            </div>
+            <div data-bs-toggle="tooltip" title="This report is already rejected.">
+              <button class="btn btn-danger btn-sm" disabled>Reject</button>
+            </div>
+          {% elif report.publication_status == "Approved" %}
+            <span class="badge badge-approved">This report is already approved.</span>
+          {% else %}
+            <a href="{% url 'reports:approve_report' report.id %}" class="btn btn-success btn-sm">Approve</a>
+            <a href="{% url 'reports:reject_report' report.id %}" class="btn btn-warning btn-sm">Reject</a>
+          {% endif %}
+          <a href="{% url 'reports:delete_report' report.id %}?source=pending_reports" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</a>
+        </div>
       {% endif %}
+  
+      <!-- User Actions -->
+      {% if report.reported_by == user %}
+        <div class="d-flex gap-2">
+          {% if report.publication_status == "Pending" %}
+            <div data-bs-toggle="tooltip" title="Cannot edit while the report is under review.">
+              <button class="btn btn-warning btn-sm" disabled>Edit</button>
+            </div>
+          {% else %}
+            <a href="{% url 'reports:edit_report' report.id %}?source={{ request.GET.source|default:'my_reports' }}" class="btn btn-warning btn-sm">Edit</a>
+          {% endif %}
+          <a href="{% url 'reports:delete_report' report.id %}?source={{ request.GET.source|default:'my_reports' }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</a>
+        </div>
+      {% endif %}
+  
       <!-- Back Button -->
       <div>
         {% if request.GET.source == 'all_reports' %}
-            <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back to All Reports</a>
+          <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back to all reports</a>
         {% elif request.GET.source == 'my_reports' %}
-            <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary btn-sm">Back to My Reports</a>
-        {% else %}
-            <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back to All Reports</a>
+          <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary btn-sm">Back to my reports</a>
+        {% elif report.reported_by == user %}
+          <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back</a>
+        {% elif user.is_staff %}
+          <a href="{% url 'reports:pending_reports' %}" class="btn btn-secondary btn-sm">Back to Manage Reports</a>
         {% endif %}
       </div>
     </div>

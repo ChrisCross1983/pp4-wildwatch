@@ -49,7 +49,7 @@ def confirm_email(request, token):
         if profile.user.is_active:
             messages.info(request, "This email is already verified. You can log in.")
             return redirect("users:login")
-
+        
         if profile.email_token_expiry and profile.email_token_expiry < now():
             messages.error(request, "This token has expired. Please request a new confirmation email.")
             return redirect("users:email_confirm_resend")
@@ -140,29 +140,40 @@ def profile(request):
 @login_required
 def edit_profile(request):
     profile = request.user.profile
-    
+    old_email = request.user.email
+
     if request.method == 'POST':
         user_form = CustomUserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
         password_form = PasswordChangeForm(user=request.user, data=request.POST)
 
         if 'save_profile' in request.POST:
             if user_form.is_valid() and profile_form.is_valid():
+                new_email = user_form.cleaned_data['email']
+
+                if old_email != new_email:
+                    request.user.is_active = False
+                    request.user.save()
+
+                    send_verification_email(request.user)
+                    messages.success(request, "Your email was updated. Please verify your new email.")
+                    return redirect('users:login')
+
                 user_form.save()
                 profile_form.save()
-                messages.success(request, "Your profile has been updated successfully!", extra_tags='success-highlight')
+                messages.success(request, "Your profile has been updated successfully!")
                 return redirect('users:profile')
-        
+
         elif 'change_password' in request.POST:
             if password_form.is_valid():
                 password_form.save()
                 update_session_auth_hash(request, password_form.user)
-                messages.success(request, "Your password has been updated successfully!", extra_tags='success-highlight')
+                messages.success(request, "Your password has been updated successfully!")
                 return redirect('users:profile')
 
     else:
         user_form = CustomUserUpdateForm(instance=request.user)
-        profile_form = ProfileUpdateForm(instance=request.user.profile)
+        profile_form = ProfileUpdateForm(instance=profile)
         password_form = PasswordChangeForm(user=request.user)
 
     return render(request, 'users/edit_profile.html', {

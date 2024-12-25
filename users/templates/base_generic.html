@@ -14,51 +14,60 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
     <header>
-      <nav>
-        <ul class="nav justify-content-center bg-light py-2">
-          <li class="nav-item">
-            <a class="nav-link text-primary" href="{% url 'home' %}">Home</a>
-          </li>
-          {% if user.is_authenticated %}
-            {% if user.is_staff %}
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand text-primary" href="{% url 'home' %}">WildWatch</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link text-primary" href="{% url 'reports:all_reports' %}">All Reports Feed</a>
+                <a class="nav-link text-primary" href="{% url 'home' %}">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link text-primary" href="{% url 'reports:pending_reports' %}">ADMIN - Manage Reports</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link text-primary" href="{% url 'reports:create_report' %}">Create a Report</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-primary" href="{% url 'reports:all_reports' %}">All Reports Feed</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-primary" href="{% url 'reports:my_reports' %}">My Reports</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-primary" href="{% url 'users:profile' %}">Settings</a>
-              </li>
-            {% endif %}
-            <li class="nav-item">
-              <span class="nav-link disabled">Logged in as {{ user.username }}</span>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-danger" href="{% url 'users:logout' %}">Logout</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link text-primary" href="{% url 'users:login' %}?next={{ request.path }}">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-primary" href="{% url 'users:signup' %}">Signup</a>
-            </li>
-          {% endif %}
-        </ul>
+              {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                  <li class="nav-item">
+                    <a class="nav-link text-primary" href="{% url 'reports:all_reports' %}">All Reports Feed</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-primary" href="{% url 'reports:pending_reports' %}">Manage Reports</a>
+                  </li>
+                {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link text-primary" href="{% url 'reports:create_report' %}">Create a Report</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-primary" href="{% url 'reports:all_reports' %}">All Reports Feed</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-primary" href="{% url 'reports:my_reports' %}">My Reports</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-primary" href="{% url 'users:profile' %}">Settings</a>
+                  </li>
+                {% endif %}
+                <li class="nav-item">
+                  <span class="nav-link disabled">Logged in as {{ user.username }}</span>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-danger" href="{% url 'users:logout' %}">Logout</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link text-primary" href="{% url 'users:login' %}?next={{ request.path }}">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-primary" href="{% url 'users:signup' %}">Signup</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
       </nav>
     </header>
 
@@ -89,4 +98,12 @@
       <p class="m-0">&copy; 2024 WildWatch</p>
     </footer>
   </body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+  </script>
 </html>

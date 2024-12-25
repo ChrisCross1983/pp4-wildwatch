@@ -1,59 +1,63 @@
 {% extends 'base_generic.html' %}
+{% load custom_tags %}
 
 {% block content %}
-<h1>Edit Profile</h1>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Edit Profile</h1>
 
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="alert alert-success">{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    <!-- Profile Update Form -->
+    <h3>Update Profile Details</h3>
+    <form method="post" enctype="multipart/form-data" class="mb-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ user_form.username.label_tag }}
+            {{ user_form.username|add_class:"form-control" }}
+            {% if user_form.username.errors %}
+            <div class="text-danger small">{{ user_form.username.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ user_form.first_name.label_tag }}
+            {{ user_form.first_name|add_class:"form-control" }}
+            {% if user_form.first_name.errors %}
+            <div class="text-danger small">{{ user_form.first_name.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ user_form.last_name.label_tag }}
+            {{ user_form.last_name|add_class:"form-control" }}
+            {% if user_form.last_name.errors %}
+            <div class="text-danger small">{{ user_form.last_name.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ user_form.email.label_tag }}
+            {{ user_form.email|add_class:"form-control" }}
+            {% if user_form.email.errors %}
+            <div class="text-danger small">{{ user_form.email.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ profile_form.profile_picture.label_tag }}
+            {{ profile_form.profile_picture|add_class:"form-control" }}
+            {% if profile_form.profile_picture.errors %}
+            <div class="text-danger small">{{ profile_form.profile_picture.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" name="save_profile" class="btn btn-primary">Save Profile</button>
+    </form>
 
-{% if profile_form.errors %}
-    <div class="alert alert-danger">
-        <strong>Profile Update Errors:</strong>
-        <ul>
-            {% for error in profile_form.errors.values %}
-                {% for sub_error in error %}
-                    <li>{{ sub_error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
+    <!-- Password Change Form -->
+    <h3>Change Password</h3>
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+        {{ password_form.as_p }}
+        <button type="submit" name="change_password" class="btn btn-warning">Change Password</button>
+    </form>
+
+    <!-- Back Button -->
+    <div class="text-center">
+        <a href="{% url 'users:profile' %}" class="btn btn-secondary">Back to Profile</a>
     </div>
-{% endif %}
-
-<h3>Update Profile Details</h3>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ user_form.username.label_tag }} {{ user_form.username }}
-    {{ user_form.first_name.label_tag }} {{ user_form.first_name }}
-    {{ user_form.last_name.label_tag }} {{ user_form.last_name }}
-    {{ user_form.email.label_tag }} {{ user_form.email }}
-    {{ profile_form.profile_picture.label_tag }} {{ profile_form.profile_picture }}
-    <button type="submit" name="save_profile">Save Profile</button>
-</form>
-
-{% if password_form.errors %}
-    <div class="alert alert-danger">
-        <strong>Password Change Errors:</strong>
-        <ul>
-            {% for error in password_form.errors.values %}
-                {% for sub_error in error %}
-                    <li>{{ sub_error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
-
-<h3>Change Password</h3>
-<form method="post">
-    {% csrf_token %}
-    {{ password_form.as_p }}
-    <button type="submit" name="change_password">Change Password</button>
-</form>
-
-<a href="{% url 'users:profile' %}">Back to Profile</a>
+</div>
 {% endblock %}
