@@ -66,10 +66,15 @@
     {% if messages %}
     <div class="container mt-3">
       {% for message in messages %}
-        <div class="alert 
-            {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% else %}alert-info{% endif %}">
-            {{ message }}
-        </div>
+      <div class="alert 
+        {% if message.tags == 'success' %}alert-success
+        {% elif message.tags == 'error' or message.tags == 'danger' %}alert-danger
+        {% elif message.tags == 'warning' %}alert-warning
+        {% else %}alert-info
+        {% endif %}">
+        {{ message }}
+      </div>
+  
       {% endfor %}
     </div>
     {% endif %}

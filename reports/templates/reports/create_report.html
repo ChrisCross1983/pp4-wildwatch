@@ -15,17 +15,6 @@
                 Reporting injured animals is crucial to ensure timely help. By providing accurate details, you assist in their rescue and treatment.
             </div>
 
-            <!-- Display Messages -->
-            {% if messages %}
-            <div class="alert alert-warning">
-                <ul class="mb-0">
-                    {% for message in messages %}
-                    <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
-
             <!-- Form -->
             <form method="POST" enctype="multipart/form-data" class="mt-4">
                 {% csrf_token %}
@@ -33,43 +22,78 @@
                 <!-- Title -->
                 <div class="mb-3">
                     <label for="id_title" class="form-label"><strong>Title:</strong></label>
-                    <input type="text" name="title" id="id_title" class="form-control" required>
+                    {{ form.title|add_class:"form-control" }}
+                    {% if form.title.errors %}
+                    <div class="text-danger">
+                        {{ form.title.errors|join:" " }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Species -->
                 <div class="mb-3">
                     <label for="id_species" class="form-label"><strong>Species:</strong></label>
                     {{ form.species|add_class:"form-select" }}
+                    {% if form.species.errors %}
+                    <div class="text-danger">
+                        {{ form.species.errors|join:" " }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Gender -->
                 <div class="mb-3">
                     <label for="id_gender" class="form-label"><strong>Gender:</strong></label>
                     {{ form.gender|add_class:"form-select" }}
+                    {% if form.gender.errors %}
+                    <div class="text-danger">
+                        {{ form.gender.errors|join:" " }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Injury Condition -->
                 <div class="mb-3">
                     <label for="id_injury_condition" class="form-label"><strong>Injury Condition:</strong></label>
                     {{ form.injury_condition|add_class:"form-select" }}
+                    {% if form.injury_condition.errors %}
+                    <div class="text-danger">
+                        {{ form.injury_condition.errors|join:" " }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Description -->
                 <div class="mb-3">
                     <label for="id_description" class="form-label"><strong>Description:</strong></label>
                     {{ form.description|add_class:"form-control" }}
+                    {% if form.description.errors %}
+                    <div class="text-danger">
+                        {{ form.description.errors|join:" " }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Location -->
                 <div class="mb-3">
                     <label for="id_location" class="form-label"><strong>Location (optional):</strong></label>
                     {{ form.location|add_class:"form-control" }}
+                    {% if form.location.errors %}
+                    <div class="text-danger">
+                        {{ form.location.errors|join:" " }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Image Upload -->
                 <div class="mb-3">
                     <label for="id_image" class="form-label"><strong>Upload Image (optional):</strong></label>
                     {{ form.image|add_class:"form-control" }}
+                    {% if form.image.errors %}
+                    <div class="text-danger">
+                        {{ form.image.errors|join:" " }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Submit Button -->

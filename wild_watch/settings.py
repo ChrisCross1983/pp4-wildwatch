@@ -107,6 +107,9 @@ LOGOUT_REDIRECT_URL = '/users/login/'
 WSGI_APPLICATION = 'wild_watch.wsgi.application'
 DEFAULT_DOMAIN = "127.0.0.1:8000"
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -136,6 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 8}
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',

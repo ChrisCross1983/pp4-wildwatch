@@ -1,131 +1,234 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Wild Watch
 
-Welcome USER_NAME,
+Mockup Images & Live Webpage
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+Mockup images: [link]
+Live webpage: [link]
 
-You can safely delete this README.md file or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **June 18, 2024**
+## Developer
 
-## Gitpod Reminders
+| Name            | Linkedin                     | GitHub           |
+| --------------- | ---------------------------- | ---------------- |
+| Christian Borza | [Linkedin Profile](https://www.linkedin.com/in/borzachristian/) | [GitHub repositories](https://github.com/ChrisCross1983) |
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+## About
 
-`python3 -m http.server`
+Wild Watch is a full-stack Django web application designed to assist users in reporting wildlife sightings to promote conservation efforts. The platform enables users to create, view, and manage reports while fostering community engagement around wildlife protection. The project is inspired by a shared goal to support environmental awareness and provide users with an easy way to contribute to nature conservation.
 
-A blue button should appear to click: _Make Public_,
+## Project Goals
 
-Another blue button should appear to click: _Open Browser_.
+### User Goals
 
-To run a backend Python file, type `python3 app.py` if your Python file is named `app.py`, of course.
+- Provide an intuitive way to report wildlife sightings.
+- Allow users to manage their reports (create, update, delete).
+- Offer a way to stay updated on submitted reports by other users.
 
-A blue button should appear to click: _Make Public_,
+### Business Owner Goals
 
-Another blue button should appear to click: _Open Browser_.
+- Establish a user-friendly platform for wildlife data collection.
+- Build a community engaged in wildlife conservation.
+- Ensure secure and seamless functionality for report management.
 
-By Default, Gitpod gives you superuser security privileges. Therefore, you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+## User Experience
 
-To log into the Heroku toolbelt CLI:
+### Target Audience
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+- Animal & Wildlife enthusiasts.
+- Environmental activists and organizations.
+- General users interested in contributing to wildlife protection efforts.
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you, so do not share it. If you accidentally make it public, you can create a new one with _Regenerate API Key_.
+### User Requirements and Expectations
 
-### Connecting your Mongo database
+- Accessible and responsive design.
+- Simple navigation and intuitive layout.
+- Clear feedback during interactions (e.g., successful submission or errors).
+- Secure user authentication.
 
-- **Connect to Mongo CLI on a IDE**
-- navigate to your MongoDB Clusters Sandbox
-- click **"Connect"** button
-- select **"Connect with the MongoDB shell"**
-- select **"I have the mongo shell installed"**
-- choose **mongosh (2.0 or later)** for : **"Select your mongo shell version"**
-- choose option: **"Run your connection string in your command line"**
-- in the terminal, paste the copied code `mongo "mongodb+srv://<CLUSTER-NAME>.mongodb.net/<DBname>" --apiVersion 1 --username <USERNAME>`
-  - replace all `<angle-bracket>` keys with your own data
-- enter password _(will not echo **\*\*\*\*** on screen)_
+### User Stories
 
-------
+#### Users
 
-## Release History
+As a user I want to:
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+1. Register and verify my account to start using the platform.
+2. Log in and out securely.
+3. Create and submit wildlife sighting reports.
+4. Edit or delete my reports.
+5. View all wildlife reports submitted by others.
 
-**June 18, 2024,** Add Mongo back into template
+#### Site Owner
 
-**June 14, 2024,** Temporarily remove Mongo until the key issue is resolved
+As a site owner I want to:
 
-**May 28 2024:** Fix Mongo and Links installs
+1. Monitor user-submitted reports for quality and accuracy.
+2. Manage user accounts efficiently.
 
-**April 26 2024:** Update node version to 16
+### Agile Methodologies
 
-**September 20 2023:** Update Python version to 3.9.17.
+The project followed Agile principles using:
 
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
+- GitHub Projects: Kanban board to track tasks and progress.
+- User Stories: Each feature aligned with specific user or business needs.
 
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
+[Link to GitHub Project Board](https://github.com/users/ChrisCross1983/projects/5)
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
+## Design
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
+### Colors
 
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
+Primary: Green (#1A7F3C) – Symbolizing nature and conservation.
+Secondary: Neutral tones (#F4F4F4, #333333) for readability and aesthetics.
 
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
+(Image of Color Scheme)
 
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
+### Fonts
 
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
+- Headings: Montserrat (Google Fonts).
+- Body: Roboto (Google Fonts).
 
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
+### Structure
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
+The website has a clean and minimalistic structure, ensuring ease of navigation. It includes:
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+- A header with a navigation bar.
+- A main content area for dynamic views.
+- A footer with links to external resources and site information.
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+### Wireframes
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+Wireframes were designed for desktop, tablet, and mobile views using Balsamiq. 
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+[Wireframe images or links]
 
-------
+## Database Diagram
 
-## FAQ about the uptime script
+The application uses a relational database with key models:
 
-**Why have you added this script?**
+User: Stores user authentication details.
+Profile: Extends user with additional fields (e.g., email verification token).
+Report: Captures wildlife sighting details.
 
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
+![Entity Relationship Diagram of Wild Watch](assets/drawSQL-erd.png)
 
-**How will this affect me?**
+## Messages and Interaction With Users
 
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
+Users receive feedback via:
 
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
+- Success messages for actions like account verification and report submission.
+- Error messages for invalid actions, e.g., logging in with unverified accounts.
+- Alerts styled using Bootstrap for clarity.
 
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
+## Admin Panel/Superuser
 
-**So….?**
+The admin panel provides complete CRUD functionality for managing users and reports.
 
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
+Accessible only to authorized administrators.
 
-**Can I opt out?**
+## Technologies Used
 
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
+### Languages
 
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
+- Python
+- HTML5
+- CSS3
+- JavaScript
 
-**Anything more?**
+### Libraries & Frameworks
 
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
+- Django
+- Bootstrap
 
----
+### Django Packages
 
-Happy coding!
+- Django Allauth: User authentication and management.
+- Django Messages: Flash messages for user feedback.
+
+## Features
+
+### Implemented Features
+
+User Authentication: Secure registration, login, and logout.
+Report Management: Create, read, update, and delete wildlife reports.
+Dynamic Feedback: Inform users about actions via messages.
+
+### Planned Features
+
+- Social sharing of reports.
+- Enhanced data visualization for wildlife statistics.
+
+## Validation
+
+HTML, CSS, and Python code were validated using standard tools to ensure compliance and best practices.
+
+(Screenshot Test Results)
+
+## Accessibility
+
+- The platform adheres to WCAG 2.1 guidelines.
+- ARIA roles and labels are implemented for better screen reader compatibility.
+
+## Performance
+
+The website is optimized for speed and scalability, ensuring smooth functionality across devices.
+
+(Screenshot)
+
+## Device Testing
+
+The application was tested on:
+
+- Desktop: Windows and macOS.
+- Mobile: Android and iOS devices.
+
+## Browser Compatibility
+
+Tested and verified on:
+
+- Google Chrome
+- Mozilla Firefox
+- Microsoft Edge
+
+## Testing
+
+### Automated Testing
+
+Unit tests implemented for models and views.
+
+### Manual Testing
+
+Features were manually tested by creating various user scenarios to ensure functionality.
+
+## Bugs
+
+### Known Issues
+
+- Minor responsiveness issues on older devices.
+
+### Resolved Issues
+
+- Fixed email verification token bugs.
+
+## Deployment
+
+The application was deployed using Heroku with the following steps:
+
+1. Push code to GitHub repository.
+2. Connect the repository to Heroku.
+3. Configure environment variables and deploy.
+
+## Credits
+
+### Media
+
+- Placeholder images from Unsplash.
+
+## Further Developments
+
+- Add real-time notifications for new reports.
+- Implement user badges for contributions.
+
+## Acknowledgements
+
+I would like to thank those who were a great support and inspiration during writing this project:
+
+- My wife, who supported me during the process of creating this project.

@@ -7,16 +7,6 @@
     <div class="card-body">
       <h1 class="mb-4">Login</h1>
 
-      {% if messages %}
-        <div class="mb-3">
-          {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" role="alert">
-                {{ message }}
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-
       <form method="POST">
         {% csrf_token %}
         <div class="form-group">

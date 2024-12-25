@@ -24,41 +24,45 @@ def create_report(request):
             report.publication_status = "Pending"
             report.status = "Open"
             report.save()
-
-            send_mail(
-                "New Report Submitted - Review Required",
-                f"A new report titled '{report.title}' has been submitted by {
-                    request.user.username}.\n\n"
-                "Please review it in the pending reports section.",
-                'WildWatch Admin <cborza83@gmail.com>',
-                ['cborza83@gmail.com'],
-                fail_silently=False,
-            )
-
-            if request.user.email:
-                subject = "Your WildWatch Report is Pending"
-                message = (
-                    f"Hello {request.user.username},\n\n"
-                    f"Thank you for submitting your report titled '{
-                        report.title}'.\n\n"
-                    "Your report is currently under review by our team. "
-                    "We will notify you once it has been approved or if further information is required.\n\n"
-                    "Thank you for helping us protect wildlife.\n\n"
-                    "WildWatch Team"
-                )
+            
+            try:
                 send_mail(
-                    subject,
-                    message,
+                    "New Report Submitted - Review Required",
+                    f"A new report titled '{report.title}' has been submitted by {request.user.username}.\n\n"
+                    "Please review it in the pending reports section.",
                     'WildWatch Admin <cborza83@gmail.com>',
-                    [request.user.email],
+                    ['cborza83@gmail.com'],
                     fail_silently=False,
                 )
+            except Exception as e:
+                print(f"Email error: {e}")
 
-            messages.success(
-                request, "Your report has been successfully submitted!")
+            # Notify the user about their submission
+            if request.user.email:
+                try:
+                    send_mail(
+                        "Your WildWatch Report is Pending",
+                        f"Hello {request.user.username},\n\n"
+                        f"Thank you for submitting your report titled '{report.title}'.\n\n"
+                        "Your report is currently under review by our team. "
+                        "We will notify you once it has been approved or if further information is required.\n\n"
+                        "Thank you for helping us protect wildlife.\n\n"
+                        "WildWatch Team",
+                        'WildWatch Admin <cborza83@gmail.com>',
+                        [request.user.email],
+                        fail_silently=False,
+                    )
+                except Exception as e:
+                    print(f"Email error: {e}")
+
+            messages.success(request, "Your report has been successfully submitted!")
             return redirect('reports:my_reports')
+        else:
+            print("Form errors:", form.errors)  # Debugging
+            messages.error(request, "There were errors in the form.")
     else:
         form = InjuryReportForm()
+
     return render(request, 'reports/create_report.html', {'form': form})
 
 
