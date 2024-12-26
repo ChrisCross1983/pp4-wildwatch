@@ -84,11 +84,11 @@ TEMPLATES = [
 ]
 
 MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-debug',
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-error',
+    messages.DEBUG: 'custom-alert-debug',
+    messages.INFO: 'custom-alert-info',
+    messages.SUCCESS: 'custom-alert-success',
+    messages.WARNING: 'custom-alert-warning',
+    messages.ERROR: 'custom-alert-danger',
 }
 
 # EMAIL CONFIGURATION

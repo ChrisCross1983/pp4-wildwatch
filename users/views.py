@@ -29,8 +29,7 @@ def signup(request):
 
             messages.success(
                 request,
-                "Account created successfully. Please check your email to activate your account."
-            )
+                "Account created successfully. Please check your email to activate your account.")
             return redirect('users:signup_thanks')
     else:
         form = CustomUserCreationForm()
@@ -47,7 +46,7 @@ def confirm_email(request, token):
         profile = Profile.objects.get(email_token=token)
 
         if profile.user.is_active:
-            messages.info(request, "This email is already verified. You can log in.")
+            messages.error(request, "This email is already verified. You can log in.")
             return redirect("users:login")
         
         if profile.email_token_expiry and profile.email_token_expiry < now():
@@ -124,8 +123,8 @@ def login_view(request):
 # Logout View
 def logout_view(request):
     logout(request)
-    messages.info(request, "You have been logged out.", extra_tags='info-highlight')
-    return redirect('users:login')
+    messages.info(request, "You have been logged out.")
+    return redirect('users:home')
 
 # Home View
 def home(request):
@@ -188,6 +187,6 @@ def delete_account(request):
     if request.method == 'POST':
         user = request.user
         user.delete()
-        messages.success(request, "Your account has been deleted successfully.", extra_tags='success-highlight')
+        messages.success(request, "Your account has been deleted successfully.")
         return redirect('users:login')
     return render(request, 'users/profile.html', {'user': request.user})

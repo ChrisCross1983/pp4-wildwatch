@@ -16,7 +16,15 @@
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
           <a class="navbar-brand text-primary" href="{% url 'home' %}">WildWatch</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button 
+            class="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation"
+          >
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
@@ -37,17 +45,17 @@
                     <a class="nav-link text-primary" href="{% url 'reports:create_report' %}">Create a Report</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link text-primary" href="{% url 'reports:all_reports' %}">All Reports Feed</a>
+                    <a class="nav-link text-primary" href="{% url 'reports:all_reports' %}">Animal Reports Feed</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link text-primary" href="{% url 'reports:my_reports' %}">My Reports</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link text-primary" href="{% url 'home' %}">Settings</a>
+                    <a class="nav-link text-primary" href="{% url 'users:profile' %}">Settings</a>
                   </li>
                 {% endif %}
                 <li class="nav-item">
-                  <span class="nav-link disabled">Logged in as {{ user.username }}</span>
+                  <span class="nav-link text-primary disabled">Logged in as {{ user.username }}</span>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-danger" href="{% url 'users:logout' %}">Logout</a>
@@ -66,24 +74,24 @@
       </nav>
     </header>
 
+    <!-- Custom Alert Messages -->
     {% if messages %}
     <div class="container mt-3">
       {% for message in messages %}
-      <div class="alert 
-        {% if message.tags %}alert-{{ message.tags }}
-        {% else %}alert-info
-        {% endif %}">
-      {{ message }}
+      <div class="custom-alert {{ message.tags }}">
+        {{ message }}
       </div>
       {% endfor %}
     </div>
     {% endif %}
 
     <!-- Main Content -->
-    <div class="container my-4">
-      {% block content %} {% endblock %}
-    </div>
+    <main class="container my-4">
+      {% block content %} 
+      {% endblock %}
+    </main>
 
+    <!-- Footer -->
     <footer class="bg-light py-3 text-center">
       <p class="m-0">&copy; 2024 WildWatch</p>
     </footer>

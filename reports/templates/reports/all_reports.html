@@ -4,45 +4,16 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-        <!-- Desktop Sidebar -->
-        <div class="col-md-2 d-none d-md-flex flex-column bg-light border-end vh-100 position-sticky sidebar" style="top: 120px; max-height: fit-content;">
+        <!-- Left Sidebar -->
+        <div class="col-md-2 sidebar sidebar-left">
             <div class="p-3">
                 <a href="{% url 'reports:create_report' %}" class="btn btn-primary w-100 mb-2">New Report</a>
                 <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary w-100 mb-2">My Reports</a>
             </div>
-            <div class="p-3">
-                <h5 class="text-center">Filters</h5>
-                <form method="get" action=".">
-                    <div class="form-group mb-3">
-                        <label for="query">Search</label>
-                        <input type="text" class="form-control" id="query" name="query" placeholder="Search..." value="{{ query }}">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="species">Species</label>
-                        <select class="form-control" id="species" name="species">
-                            <option value="">All</option>
-                            <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
-                            <option value="Dog" {% if request.GET.species == "Dog" %}selected{% endif %}>Dog</option>
-                            <option value="Other" {% if request.GET.species == "Other" %}selected{% endif %}>Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="status_filter">Status</label>
-                        <select class="form-control" id="status_filter" name="status_filter">
-                            <option value="">All</option>
-                            <option value="Open" {% if request.GET.status_filter == "Open" %}selected{% endif %}>Open</option>
-                            <option value="In Progress" {% if request.GET.status_filter == "In Progress" %}selected{% endif %}>In Progress</option>
-                            <option value="Completed" {% if request.GET.status_filter == "Completed" %}selected{% endif %}>Completed</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100 mb-2">Apply Filters</button>
-                    <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary w-100">Reset Filters</a>
-                </form>
-            </div>
-        </div>        
+        </div>
 
         <!-- Main Content -->
-        <div class="col-md-8">
+        <div class="col-md-8 main-content">
             <h1 class="text-center mt-4">Animal Report Feed</h1>
             <p class="text-center"><strong>{{ results_count }}</strong> report(s) found.</p>
 
@@ -71,7 +42,6 @@
                                 {% else %} None
                                 {% endif %}
                             </p>
-                            <!-- Help Status -->
                             {% if report.helper == user %}
                             <div class="alert alert-success text-center mt-3">
                                 <strong>You are currently helping with this report.</strong>
@@ -99,6 +69,29 @@
                 {% empty %}
                 <p class="text-center">No reports found matching your criteria.</p>
                 {% endfor %}
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="col-md-2 sidebar sidebar-right">
+            <div class="p-3">
+                <h5 class="text-center">Filters</h5>
+                <form method="get" action=".">
+                    <div class="form-group mb-3">
+                        <label for="query">Search</label>
+                        <input type="text" class="form-control" id="query" name="query" placeholder="Search..." value="{{ query }}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="species">Species</label>
+                        <select class="form-control" id="species" name="species">
+                            <option value="">All</option>
+                            <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
+                            <option value="Dog" {% if request.GET.species == "Dog" %}selected{% endif %}>Dog</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mb-2">Apply Filters</button>
+                    <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary w-100">Reset Filters</a>
+                </form>
             </div>
         </div>
     </div>
@@ -132,15 +125,6 @@
                                 <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
                                 <option value="Dog" {% if request.GET.species == "Dog" %}selected{% endif %}>Dog</option>
                                 <option value="Other" {% if request.GET.species == "Other" %}selected{% endif %}>Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="status_filter">Status</label>
-                            <select class="form-control" id="status_filter" name="status_filter">
-                                <option value="">All</option>
-                                <option value="Open" {% if request.GET.status_filter == "Open" %}selected{% endif %}>Open</option>
-                                <option value="In Progress" {% if request.GET.status_filter == "In Progress" %}selected{% endif %}>In Progress</option>
-                                <option value="Completed" {% if request.GET.status_filter == "Completed" %}selected{% endif %}>Completed</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-info w-100 mb-2">Apply Filters</button>
