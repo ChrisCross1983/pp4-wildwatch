@@ -1,23 +1,20 @@
 {% extends 'base_generic.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container text-center mt-5">
-    <h1>Welcome to Wild Watch!</h1>
-    
-    {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-    
+<style>
+    body {
+        background-image: url("{% static 'images/hero_rhino.png' %}");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+<div class="container text-center mt-5 hero-text">
+    <h1 class="text-light fw-bold">Welcome to Wild Watch!</h1>
     <p>
-        <a href="{% url 'users:email_confirm_resend' %}">Resend Verification Email</a>
+        <a href="{% url 'users:login' %}" class="btn btn-lg btn-primary mt-3">Go to Login</a>
+        <a href="{% url 'users:email_confirm_resend' %}" class="btn btn-lg btn-success mt-3">Resend Verification Email</a>
     </p>
-    <a href="{% url 'users:login' %}" class="btn btn-primary mt-3">Go to Login</a>
 </div>
 {% endblock %}

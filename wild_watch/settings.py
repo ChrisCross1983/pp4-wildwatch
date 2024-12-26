@@ -28,7 +28,12 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'wild-watch.herokuapp.com', 'wild-watch-4ac96b54e024.herokuapp.com', '.herokuapp.com']
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "wild-watch-4ac96b54e024.herokuapp.com",
+    ".herokuapp.com"
+]
 
 # Application definition
 
@@ -39,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'cloudinary',
     'cloudinary_storage',
     'core',
@@ -99,16 +105,25 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'WildWatch <cborza83@gmail.com>'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/users/login/'
 
+SITE_ID = 1
 WSGI_APPLICATION = 'wild_watch.wsgi.application'
-DEFAULT_DOMAIN = "127.0.0.1:8000"
+if DEBUG:
+    DEFAULT_DOMAIN = "127.0.0.1:8000"
+else:
+    DEFAULT_DOMAIN = "wild-watch-4ac96b54e024.herokuapp.com"
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+if DEBUG:
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -191,4 +206,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.herokuapp.com"
+    "https://wild-watch-4ac96b54e024.herokuapp.com"
 ]
