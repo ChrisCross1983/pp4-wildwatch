@@ -98,7 +98,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'WildWatch <noreply@wildwatch.com>'
+DEFAULT_FROM_EMAIL = 'WildWatch <cborza83@gmail.com>'
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'
