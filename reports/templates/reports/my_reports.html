@@ -6,7 +6,7 @@
     <!-- Title and Create Button -->
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
         <h1 class="text-center flex-grow-1 mb-3 mb-md-0">My Reports</h1>
-        <a href="{% url 'reports:create_report' %}" class="btn btn-primary btn-sm">Submit a New Report</a>
+        <a href="{% url 'reports:create_report' %}" class="btn btn-primary btn-sm">New Report</a>
     </div>
 
     <!-- Mobile Bubble -->
@@ -24,8 +24,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <a href="{% url 'reports:create_report' %}" class="btn btn-info w-100 mb-2">New Report</a>
-                    <a href="{% url 'reports:all_reports' %}" class="btn btn-primary w-100 mb-2">Animal Report Feed</a>
+                    <a href="{% url 'reports:create_report' %}" class="btn btn-primary w-100 mb-2">New Report</a>
+                    <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary w-100 mb-2">Animal Report Feed</a>
                 </div>
             </div>
         </div>

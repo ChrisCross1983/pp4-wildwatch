@@ -28,6 +28,18 @@ li {
     padding: 0.5rem 1rem;
 }
 
+.sidebar {
+    height: auto;
+    min-height: calc(100vh - 56px);
+    padding-bottom: 1rem;
+    top: 56px;
+    z-index: 1020;
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
 /* Floating Bubble Button */
 .fab {
     display: none;

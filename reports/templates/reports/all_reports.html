@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Desktop Sidebar -->
-        <div class="col-md-2 d-none d-md-flex flex-column bg-light border-end vh-100 position-sticky" style="top: 0;">
+        <div class="col-md-2 d-none d-md-flex flex-column bg-light border-end vh-100 position-sticky sidebar" style="top: 120px; max-height: fit-content;">
             <div class="p-3">
                 <a href="{% url 'reports:create_report' %}" class="btn btn-primary w-100 mb-2">New Report</a>
                 <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary w-100 mb-2">My Reports</a>
@@ -39,7 +39,7 @@
                     <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary w-100">Reset Filters</a>
                 </form>
             </div>
-        </div>
+        </div>        
 
         <!-- Main Content -->
         <div class="col-md-8">
@@ -71,6 +71,12 @@
                                 {% else %} None
                                 {% endif %}
                             </p>
+                            <!-- Help Status -->
+                            {% if report.helper == user %}
+                            <div class="alert alert-success text-center mt-3">
+                                <strong>You are currently helping with this report.</strong>
+                            </div>
+                            {% endif %}
                         </div>
                         <div class="card-footer d-flex justify-content-between">
                             <a href="{% url 'reports:report_detail' report.id %}?source=all_reports" class="btn btn-info btn-sm">View Details</a>
@@ -138,7 +144,7 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-info w-100 mb-2">Apply Filters</button>
-                        <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary w-100">Reset Filters</a>
+                        <a href="{% url 'reports:all_reports' %}" class="btn btn-danger w-100">Reset Filters</a>
                     </form>
                 </div>
             </div>

@@ -53,6 +53,13 @@
           class="img-fluid rounded"
           style="max-height: 400px; object-fit: cover"
         />
+
+        <!-- Help Status -->
+        {% if report.helper == user %}
+        <div class="alert alert-success text-center mt-3">
+          <strong>You are currently helping with this report.</strong>
+        </div>
+        {% endif %}
       </div>
       {% endif %}
 
@@ -106,13 +113,6 @@
           {% endif %}
         {% endif %}
       </div>
-
-      <!-- Help Status -->
-      {% if report.helper == user %}
-      <div class="alert alert-success text-center mt-3">
-        <strong>You are currently helping with this report.</strong>
-      </div>
-      {% endif %}
     </div>
 
     <!-- Action Buttons -->
