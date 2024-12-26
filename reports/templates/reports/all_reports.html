@@ -2,7 +2,16 @@
 {% load static %}
 
 {% block content %}
+<style>
+    body {
+        background-image: url("{% static 'images/hero_rhino.png' %}");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
 <div class="container-fluid">
+    <!-- Row for Sidebars and Main Content -->
     <div class="row">
         <!-- Left Sidebar -->
         <div class="col-md-2 sidebar sidebar-left">
@@ -14,9 +23,10 @@
 
         <!-- Main Content -->
         <div class="col-md-8 main-content">
-            <h1 class="text-center mt-4">Animal Report Feed</h1>
-            <p class="text-center"><strong>{{ results_count }}</strong> report(s) found.</p>
-
+            <div class="hero-text">
+                <h1 class="text-center text-light fw-bold mt-4">Animal Report Feed</h1>
+                <p class="text-center text-light lead"><strong>{{ results_count }}</strong> report(s) found.</p>
+            </div>
             <div class="row justify-content-center">
                 {% for report in page_obj %}
                 <div class="col-md-12 mb-4">

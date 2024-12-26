@@ -2,11 +2,22 @@
 {% load static %}
 
 {% block content %}
+<style>
+    body {
+        background-image: url("{% static 'images/hero_leopard.png' %}");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
 <div class="container mt-5">
     <!-- Title and Create Button -->
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-        <h1 class="text-center flex-grow-1 mb-3 mb-md-0">My Reports</h1>
-        <a href="{% url 'reports:create_report' %}" class="btn btn-primary btn-sm">New Report</a>
+    <div class="hero-image d-flex align-items-center justify-content-center text-center">
+        <div class="hero-text">
+            <h1 class="text-light fw-bold">My Reports</h1>
+            <p class="text-light lead">You have no reports.</p>
+            <a href="{% url 'reports:create_report' %}" class="btn btn-lg btn-primary mt-3">New Report</a>
+        </div>
     </div>
 
     <!-- Mobile Bubble -->
@@ -71,9 +82,6 @@
             </div>
         </div>
         {% empty %}
-        <div class="text-center">
-            <p>You have no reports.</p>
-        </div>
         {% endfor %}
     </div>
 </div>
