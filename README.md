@@ -1,9 +1,9 @@
 # Wild Watch
 
-Mockup Images & Live Webpage
+![Screenshot of welcome site](assets/welcome.png)
 
-Mockup images: [link]
-Live webpage: [link]
+
+[Live webpage:](https://wild-watch-4ac96b54e024.herokuapp.com/)
 
 ## Developer
 
