@@ -46,6 +46,8 @@ li {
     background-color: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
+    margin: 0 auto 3rem;
+    max-width: 600px;
 }
 
 /* Sticky and Fixed Navbar */
@@ -76,6 +78,7 @@ li {
     left: 0;
     max-height: fit-content;
     width: 18%;
+    border-radius: 10px;
 }
 
 .sidebar-right {
@@ -83,6 +86,7 @@ li {
     right: 0;
     max-height: fit-content;
     width: 18%;
+    border-radius: 10px;
 }
 
 /* Floating Bubble Button */
