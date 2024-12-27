@@ -45,7 +45,7 @@ li {
 /* Header-Styling */
 .section-header {
     padding: 20px;
-    margin: 0 auto 2rem;
+    margin-bottom: 20px;
     text-align: center;
     border-radius: 8px;
     font-size: 1.5rem;
@@ -66,10 +66,10 @@ li {
   }
 
 .hero-text {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
-    margin: 2rem auto 2rem;
+    margin: 0 auto 3rem;
     max-width: 600px;
 }
 

@@ -25,9 +25,14 @@ class CustomUserCreationForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
         user.is_active = False
+        
         if commit:
             user.save()
-            Profile.objects.create(user=user, profile_picture=self.cleaned_data.get('profile_picture'))
+            profile_picture = self.cleaned_data.get('profile_picture')
+            profile, created = Profile.objects.get_or_create(user=user)
+            if profile_picture:
+                profile.profile_picture = profile_picture
+            profile.save()
         return user
 
 # Custom Form for Editing User Details

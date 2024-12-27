@@ -70,6 +70,8 @@ The project followed Agile principles using:
 - GitHub Projects: Kanban board to track tasks and progress.
 - User Stories: Each feature aligned with specific user or business needs.
 
+![Kanban Board](assets/kanban_board.png)
+
 [Link to GitHub Project Board](https://github.com/users/ChrisCross1983/projects/5)
 
 ## Design

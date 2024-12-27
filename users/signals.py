@@ -9,3 +9,6 @@ def manage_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
     else:
         instance.profile.save()
+        if hasattr(instance, 'profile'):
+            instance.profile.save()
+

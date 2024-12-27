@@ -1,96 +1,114 @@
 {% extends 'base_generic.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card mx-auto shadow-lg" style="max-width: 900px;">
-        <div class="card-header bg-primary text-white text-center">
-            <h2>Manage Reports</h2>
-        </div>
-        <div class="card-body">
-            <!-- Search Results Info -->
-            {% if results_count %}
-            <p class="text-center mb-4">
-                <strong>{{ results_count }}</strong> report(s) found.
-            </p>
-            {% else %}
-            <p class="text-center text-muted">No reports found.</p>
-            {% endif %}
+<style>
+    body {
+        background-image: url("{% static 'images/hero_leopard.png' %}");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
 
-            <!-- Filter Form -->
-            <form method="get" action="." class="mb-4">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <label for="filter_status" class="form-label"><strong>Filter by Status:</strong></label>
-                        <select name="filter_status" id="filter_status" class="form-select">
-                            <option value="">All</option>
-                            <option value="Pending" {% if request.GET.filter_status == "Pending" %}selected{% endif %}>Pending</option>
-                            <option value="Rejected" {% if request.GET.filter_status == "Rejected" %}selected{% endif %}>Rejected</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <button type="submit" class="btn btn-primary mt-3">Apply Filter</button>
+<div class="container mt-5">
+    <!-- Title Section -->
+    <div class="d-flex align-items-center justify-content-center text-center">
+        <div class="hero-text">
+            <h1 class="text-light fw-bold">Manage Reports</h1>
+            <p class="text-light lead">Admin Panel for Reviewing Reports</p>
+        </div>
+    </div>
+
+    <!-- Filter Form -->
+    <form method="get" action="." class="mb-4 mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <label for="filter_status" class="form-label text-light"><strong>Filter by Status:</strong></label>
+                <select name="filter_status" id="filter_status" class="form-select">
+                    <option value="">All</option>
+                    <option value="Pending" {% if request.GET.filter_status == "Pending" %}selected{% endif %}>Pending</option>
+                    <option value="Rejected" {% if request.GET.filter_status == "Rejected" %}selected{% endif %}>Rejected</option>
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Apply Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Pending Reports Section -->
+    <div class="row justify-content-center">
+        <div class="section-header pending-header">
+            <h1 class="text-center text-light fw-bold">Pending Reports</h1>
+        </div>
+        {% for report in pending_reports %}
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="m-0">{{ report.title }}</h5>
+                    <div>
+                        <span class="badge {{ report.status_class }}">{{ report.status }}</span>
                     </div>
                 </div>
-            </form>
-
-            <!-- Pending Reports -->
-            <h3 class="mt-4 text-center">Pending Reports</h3>
-            <ul class="list-group mb-4">
-                {% for report in pending_reports %}
-                <li class="list-group-item">
-                    <div class="row align-items-center">
-                        <div class="col-md-3">
-                            {% if report.image %}
-                            <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">
-                            {% else %}
-                            <p class="text-muted text-center">No Image</p>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-7">
-                            <p><strong>Title:</strong> {{ report.title }}</p>
-                            <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
-                            <p><strong>Species:</strong> {{ report.species }}</p>
-                            <p><strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
-                        </div>
-                        <div class="col-md-2 text-end">
-                            <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-sm btn-primary">View Details</a>
-                        </div>
+                <div class="card-body">
+                    <!-- Image -->
+                    {% if report.image %}
+                    <div class="text-center mb-3">
+                        <img src="{{ report.image.url }}" alt="Report Image" class="img-fluid rounded report-image">
                     </div>
-                </li>
-                {% empty %}
-                <p class="text-center text-muted">No pending reports found.</p>
-                {% endfor %}
-            </ul>
+                    {% endif %}
 
-            <!-- Rejected Reports -->
-            <h3 class="mt-4 text-center">Rejected Reports</h3>
-            <ul class="list-group">
-                {% for report in rejected_reports %}
-                <li class="list-group-item">
-                    <div class="row align-items-center">
-                        <div class="col-md-3">
-                            {% if report.image %}
-                            <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">
-                            {% else %}
-                            <p class="text-muted text-center">No Image</p>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-7">
-                            <p><strong>Title:</strong> {{ report.title }}</p>
-                            <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
-                            <p><strong>Species:</strong> {{ report.species }}</p>
-                            <p><strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
-                        </div>
-                        <div class="col-md-2 text-end">
-                            <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-sm btn-primary">View Details</a>
-                        </div>
-                    </div>
-                </li>
-                {% empty %}
-                <p class="text-center text-muted">No rejected reports found.</p>
-                {% endfor %}
-            </ul>
+                    <!-- Report Details -->
+                    <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
+                    <p><strong>Species:</strong> {{ report.species }}</p>
+                    <p><strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm">View Details</a>
+                </div>
+            </div>
         </div>
+        {% empty %}
+        <p class="text-center text-light">No pending reports found.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Rejected Reports Section -->
+    <div class="row justify-content-center">
+        <div class="section-header rejected-header">
+            <h1 class="text-center text-light fw-bold">Rejected Reports</h1>
+        </div>
+        {% for report in rejected_reports %}
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="m-0">{{ report.title }}</h5>
+                    <div>
+                        <span class="badge bg-danger">Rejected</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Image -->
+                    {% if report.image %}
+                    <div class="text-center mb-3">
+                        <img src="{{ report.image.url }}" alt="Report Image" class="img-fluid rounded report-image">
+                    </div>
+                    {% endif %}
+
+                    <!-- Report Details -->
+                    <p><strong>Reported By:</strong> {{ report.reported_by|default:"Anonymous" }}</p>
+                    <p><strong>Species:</strong> {{ report.species }}</p>
+                    <p><strong>Date:</strong> {{ report.date_reported|date:"Y-m-d H:i" }}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-info btn-sm">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-light">No rejected reports found.</p>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

@@ -370,7 +370,6 @@ def take_care_of_report(request, report_id):
 
     return redirect('reports:all_reports')
 
-
 @login_required
 def delete_report(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
@@ -378,12 +377,16 @@ def delete_report(request, report_id):
     if request.user == report.reported_by or request.user.is_staff:
         report.delete()
         messages.success(request, "The report has been successfully deleted.")
+        
+        if request.user.is_staff:
+            return redirect('reports:pending_reports')
+        
+        return redirect('reports:my_reports')
     else:
         messages.error(
-            request, "You are not authorized to delete this report.")
-
-    return redirect('reports:my_reports')
-
+            request, "You are not authorized to delete this report."
+        )
+        return redirect('reports:all_reports')
 
 @login_required
 def close_report(request, report_id):

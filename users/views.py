@@ -33,7 +33,7 @@ def signup(request):
             return redirect('users:signup_thanks')
     else:
         form = CustomUserCreationForm()
-    
+
     return render(request, 'users/signup.html', {'form': form})
 
 # Thanks Page after registration
@@ -141,12 +141,15 @@ def edit_profile(request):
     profile = request.user.profile
     old_email = request.user.email
 
-    if request.method == 'POST':
-        user_form = CustomUserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
-        password_form = PasswordChangeForm(user=request.user, data=request.POST)
+    user_form = CustomUserUpdateForm(instance=request.user)
+    profile_form = ProfileUpdateForm(instance=profile)
+    password_form = PasswordChangeForm(user=request.user)
 
+    if request.method == 'POST':
         if 'save_profile' in request.POST:
+            user_form = CustomUserUpdateForm(request.POST, instance=request.user)
+            profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+
             if user_form.is_valid() and profile_form.is_valid():
                 new_email = user_form.cleaned_data['email']
 
@@ -164,16 +167,12 @@ def edit_profile(request):
                 return redirect('users:profile')
 
         elif 'change_password' in request.POST:
+            password_form = PasswordChangeForm(user=request.user, data=request.POST)
             if password_form.is_valid():
                 password_form.save()
                 update_session_auth_hash(request, password_form.user)
                 messages.success(request, "Your password has been updated successfully!")
                 return redirect('users:profile')
-
-    else:
-        user_form = CustomUserUpdateForm(instance=request.user)
-        profile_form = ProfileUpdateForm(instance=profile)
-        password_form = PasswordChangeForm(user=request.user)
 
     return render(request, 'users/edit_profile.html', {
         'user_form': user_form,

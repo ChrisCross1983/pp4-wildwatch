@@ -6,7 +6,7 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Signup</button>
+        <button type="submit" data-action-button data-loading-text="Signing up..." class="btn btn-success">Signup</button>
     </form>
 </div>
 {% endblock %}
