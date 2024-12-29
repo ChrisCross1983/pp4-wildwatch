@@ -19,9 +19,11 @@ logger = logging.getLogger(__name__)
 # Signup View
 def signup(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        print(request.FILES) 
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
+            print(f"Profile picture saved: {user.profile.profile_picture}")
             user.is_active = False
             user.save()
 
@@ -57,6 +59,9 @@ def confirm_email(request, token):
         profile.email_token = None
         profile.email_token_expiry = None
         profile.user.save()
+
+        if not profile.profile_picture:
+            profile.profile_picture = 'profile_pictures/placeholder.jpg'
         profile.save()
 
         messages.success(request, "Your email has been confirmed! You can now log in.")

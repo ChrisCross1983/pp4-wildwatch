@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-import sys
 import os
 from pathlib import Path
+from django.conf import settings
+import sys
 from django.contrib.messages import constants as messages
+from django.contrib.auth.context_processors import auth
 import dj_database_url
 if os.path.isfile("env.py"):
     import env
@@ -27,7 +29,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
@@ -73,17 +75,14 @@ ROOT_URLCONF = 'wild_watch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'wild_watch' / 'templates',
-            BASE_DIR / 'users' / 'templates',
-        ],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.messages',
             ],
         },
     },
@@ -113,6 +112,7 @@ LOGOUT_REDIRECT_URL = '/users/login/'
 
 SITE_ID = 1
 WSGI_APPLICATION = 'wild_watch.wsgi.application'
+
 if DEBUG:
     DEFAULT_DOMAIN = "127.0.0.1:8000"
 else:
@@ -143,7 +143,6 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.environ.get("CLOUDINARY_API_KEY"),
     'API_SECRET': os.environ.get("CLOUDINARY_API_SECRET"),
 }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -199,12 +198,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+PLACEHOLDER_IMAGE_URL = 'https://res.cloudinary.com/duazmtlpi/image/upload/v1735380047/placeholder_werhfs.jpg'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.herokuapp.com"
+    "https://*.herokuapp.com",
     "https://wild-watch-4ac96b54e024.herokuapp.com"
 ]
+
+from pprint import pprint
+pprint(TEMPLATES)

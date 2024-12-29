@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from cloudinary.models import CloudinaryField
 import uuid
@@ -10,7 +11,7 @@ class Profile(models.Model):
     email_token_expiry = models.DateTimeField(null=True, blank=True)
     profile_picture = models.ImageField(
         upload_to='profile_pictures/',
-        default='profile_pictures/placeholder.jpg',
+        default=settings.PLACEHOLDER_IMAGE_URL,
         blank=True,
         null=True
     )

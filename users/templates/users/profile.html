@@ -16,11 +16,9 @@
     <!-- Profile Picture -->
     <div class="text-center mb-4">
         {% if user.profile.profile_picture %}
-            <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture"
-                 class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;">
+            <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" class="profile-picture" style="width: 150px; height: 150px;">
         {% else %}
-            <img src="{% static 'images/placeholder.jpg' %}" alt="Placeholder"
-                 class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;">
+            <img src="{{ settings.PLACEHOLDER_IMAGE_URL }}" alt="Placeholder" class="profile-picture" style="width: 150px; height: 150px;">
         {% endif %}
     </div>
 

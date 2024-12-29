@@ -25,13 +25,16 @@ class CustomUserCreationForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
         user.is_active = False
-        
+
         if commit:
             user.save()
+
             profile_picture = self.cleaned_data.get('profile_picture')
             profile, created = Profile.objects.get_or_create(user=user)
             if profile_picture:
                 profile.profile_picture = profile_picture
+            else:
+                profile.profile_picture = 'https://res.cloudinary.com/duazmtlpi/image/upload/v1735380047/placeholder_werhfs.jpg'
             profile.save()
         return user
 
@@ -83,5 +86,5 @@ class ProfileUpdateForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         if not cleaned_data.get('profile_picture'):
-            cleaned_data['profile_picture'] = 'path/to/default/image.jpg'
+            cleaned_data['profile_picture'] = 'profile_pictures/placeholder.jpg'
         return cleaned_data

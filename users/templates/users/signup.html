@@ -1,12 +1,47 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1>Signup</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" data-action-button data-loading-text="Signing up..." class="btn btn-success">Signup</button>
-    </form>
+<div class="container">
+    <h1 class="text-center mt-5">Sign Up</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="form-group text-center">
+                        <label for="profile_picture">Profile Picture Preview:</label><br>
+                        <img id="profilePicturePreview" class="profile-picture mt-3" src="{% static 'images/placeholder.jpg' %}" alt="Profile Picture Preview">
+                    </div>
+                    <button type="submit" data-action-button data-loading-text="Signing up..." class="btn btn-primary w-100 mt-3">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // JavaScript for live profile picture preview
+    document.addEventListener('DOMContentLoaded', () => {
+        const profilePictureInput = document.getElementById('id_profile_picture');
+        const profilePicturePreview = document.getElementById('profilePicturePreview');
+
+        if (profilePictureInput && profilePicturePreview) {
+            profilePictureInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        profilePicturePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    profilePicturePreview.src = "{% static 'images/placeholder.jpg' %}";
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}
