@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from .models import Profile
+from cloudinary.api import resource
+from cloudinary.uploader import upload
 
 # Custom Form for User Signup
 class CustomUserCreationForm(UserCreationForm):
@@ -16,7 +18,13 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'profile_picture', 'password1', 'password2']
-        
+
+    def clean_profile_picture(self):
+        profile_picture = self.cleaned_data.get('profile_picture')
+        if profile_picture and profile_picture.size > 5 * 1024 * 1024:
+            raise forms.ValidationError("The profile picture is too large (max 5 MB).")
+        return profile_picture
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -46,10 +54,30 @@ class CustomUserUpdateForm(forms.ModelForm):
         label="Change Profile Picture",
         widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
     )
-    email = forms.EmailField(max_length=254, required=True, label="Email")
-    first_name = forms.CharField(max_length=30, required=True, label="First Name")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
-    username = forms.CharField(max_length=150, required=True, label="Username")
+    email = forms.EmailField(
+        max_length=254,
+        required=True,
+        label="Email",
+        widget=forms.TextInput(attrs={'autocomplete': 'email', 'class': 'form-control'})
+    )
+    first_name = forms.CharField(
+        max_length=30,
+        required=True,
+        label="First Name",
+        widget=forms.TextInput(attrs={'autocomplete': 'given-name', 'class': 'form-control'})
+    )
+    last_name = forms.CharField(
+        max_length=30,
+        required=True,
+        label="Last Name",
+        widget=forms.TextInput(attrs={'autocomplete': 'family-name', 'class': 'form-control'})
+    )
+    username = forms.CharField(
+        max_length=150,
+        required=True,
+        label="Username",
+        widget=forms.TextInput(attrs={'autocomplete': 'username', 'class': 'form-control'})
+    )
 
     class Meta:
         model = User
@@ -90,8 +118,19 @@ class ProfileUpdateForm(forms.ModelForm):
 
     def clean_profile_picture(self):
         profile_picture = self.cleaned_data.get('profile_picture')
-        if profile_picture and profile_picture.size > 5 * 1024 * 1024:
-            raise forms.ValidationError("The profile picture is too large (max 5 MB).")
+        if profile_picture:
+
+            try:
+                upload_result = upload(profile_picture)
+            except Exception as e:
+                raise forms.ValidationError(f"Fehler beim Hochladen des Bildes: {e}")
+
+
+            if upload_result.get('bytes', 0) > 5 * 1024 * 1024:
+                raise forms.ValidationError("Die Datei darf nicht größer als 5 MB sein.")
+
+            self.cleaned_data['profile_picture_public_id'] = upload_result.get('public_id')
+
         return profile_picture
 
     def clean(self):
@@ -99,3 +138,14 @@ class ProfileUpdateForm(forms.ModelForm):
         if not cleaned_data.get('profile_picture'):
             cleaned_data['profile_picture'] = 'profile_pictures/placeholder.jpg'
         return cleaned_data
+    
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        profile_picture_public_id = self.cleaned_data.get('profile_picture_public_id')
+
+        if profile_picture_public_id:
+            profile.profile_picture = profile_picture_public_id
+
+        if commit:
+            profile.save()
+        return profile
