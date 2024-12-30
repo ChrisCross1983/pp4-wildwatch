@@ -19,11 +19,16 @@ logger = logging.getLogger(__name__)
 # Signup View
 def signup(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
             user.save()
+
+            profile = Profile.objects.create(user=user)
+            profile.profile_picture = form.cleaned_data.get('profile_picture') or 'profile_pictures/placeholder.jpg'
+            profile.save()
+            logger.info(f"Profilbild: {profile.profile_picture}")
 
             send_verification_email(user)
 

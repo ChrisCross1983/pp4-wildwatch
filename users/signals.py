@@ -7,8 +7,10 @@ from .models import Profile
 def manage_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+        logger.info(f"Profile created for user: {instance.username}")
     else:
-        instance.profile.save()
         if hasattr(instance, 'profile'):
             instance.profile.save()
-
+            logger.info(f"Profile updated for user: {instance.username}")
+        else:
+            logger.warning(f"No profile found for user: {instance.username}")

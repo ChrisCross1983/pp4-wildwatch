@@ -8,7 +8,11 @@ class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, label="First Name")
     last_name = forms.CharField(max_length=30, required=True, label="Last Name")
     email = forms.EmailField(max_length=254, required=True, label="Email")
-    profile_picture = forms.ImageField(required=False, label="Upload Profile Picture")
+    profile_picture = forms.ImageField(
+        required=False,
+        label="Upload Profile Picture",
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
+    )
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'profile_picture', 'password1', 'password2']
@@ -37,7 +41,11 @@ class CustomUserCreationForm(UserCreationForm):
 
 # Custom Form for Editing User Details
 class CustomUserUpdateForm(forms.ModelForm):
-    profile_picture = forms.ImageField(required=False, label="Change Profile Picture")
+    profile_picture = forms.ImageField(
+        required=False,
+        label="Change Profile Picture",
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
+    )
     email = forms.EmailField(max_length=254, required=True, label="Email")
     first_name = forms.CharField(max_length=30, required=True, label="First Name")
     last_name = forms.CharField(max_length=30, required=True, label="Last Name")
@@ -80,8 +88,14 @@ class ProfileUpdateForm(forms.ModelForm):
             'profile_picture': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
+    def clean_profile_picture(self):
+        profile_picture = self.cleaned_data.get('profile_picture')
+        if profile_picture and profile_picture.size > 5 * 1024 * 1024:
+            raise forms.ValidationError("The profile picture is too large (max 5 MB).")
+        return profile_picture
+
     def clean(self):
         cleaned_data = super().clean()
         if not cleaned_data.get('profile_picture'):
-            cleaned_data['profile_picture'] = 'path/to/default/image.jpg'
+            cleaned_data['profile_picture'] = 'profile_pictures/placeholder.jpg'
         return cleaned_data

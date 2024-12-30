@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import sys
 import os
 from pathlib import Path
+import cloudinary
 from django.contrib.messages import constants as messages
 import dj_database_url
 if os.path.isfile("env.py"):
@@ -27,7 +28,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
@@ -73,16 +75,14 @@ ROOT_URLCONF = 'wild_watch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'wild_watch' / 'templates',
-            BASE_DIR / 'users' / 'templates',
-        ],
+        'DIRS': [BASE_DIR / 'wild_watch' / 'templates', BASE_DIR / 'users' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -113,6 +113,7 @@ LOGOUT_REDIRECT_URL = '/users/login/'
 
 SITE_ID = 1
 WSGI_APPLICATION = 'wild_watch.wsgi.application'
+
 if DEBUG:
     DEFAULT_DOMAIN = "127.0.0.1:8000"
 else:
@@ -143,7 +144,11 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.environ.get("CLOUDINARY_API_KEY"),
     'API_SECRET': os.environ.get("CLOUDINARY_API_SECRET"),
 }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+DEFAULT_FILE_STORAGE = 'dj3_cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -168,13 +173,18 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
     },
 }
 

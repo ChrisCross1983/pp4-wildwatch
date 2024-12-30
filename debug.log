@@ -1,0 +1,286 @@
+Watching for file changes with StatReloader
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 3705
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 10737
+"GET /admin/auth/user/ HTTP/1.1" 200 15334
+"GET /admin/jsi18n/ HTTP/1.1" 200 3343
+"POST /admin/auth/user/ HTTP/1.1" 200 9180
+"POST /admin/auth/user/ HTTP/1.1" 302 0
+"GET /admin/auth/user/ HTTP/1.1" 200 14682
+"GET /admin/jsi18n/ HTTP/1.1" 200 3343
+"POST /admin/logout/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3326
+Watching for file changes with StatReloader
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/f3cbf1f9-32cb-4b88-9469-b6d74e2257bb/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4506
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/bd89a594-609a-4e84-901e-70bb32e821b6/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"GET /users/confirm-email/bd89a594-609a-4e84-901e-70bb32e821b6/ HTTP/1.1" 302 0
+"GET /users/resend-email/ HTTP/1.1" 200 3043
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4515
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/cd32cab6-8728-42a9-b3ee-eee89f531a27/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4498
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\wild_watch\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\forms.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/profile/ HTTP/1.1" 200 4498
+"GET /static/images/favicon.ico HTTP/1.1" 200 15406
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/9b5e001d-1fa4-477d-8b17-6dbcd809c4b4/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4481
+"GET /users/edit-profile/ HTTP/1.1" 200 6113
+"POST /users/edit-profile/ HTTP/1.1" 200 6220
+- Broken pipe from ('127.0.0.1', 61892)
+- Broken pipe from ('127.0.0.1', 61913)
+- Broken pipe from ('127.0.0.1', 61918)
+"POST /users/edit-profile/ HTTP/1.1" 302 0
+"GET /users/profile/ HTTP/1.1" 200 4671
+- Broken pipe from ('127.0.0.1', 61893)
+- Broken pipe from ('127.0.0.1', 61916)
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\views.py changed, reloading.
+Watching for file changes with StatReloader
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/0dcc2f17-c51e-46a9-88a8-534c58a785e3/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4481
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\wild_watch\settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/profile/ HTTP/1.1" 200 4481
+"GET /static/css/style.css HTTP/1.1" 200 7522
+"GET /static/js/scripts.js HTTP/1.1" 200 697
+"GET /static/images/hero_elephant.png HTTP/1.1" 200 3406680
+"GET /static/images/favicon.ico HTTP/1.1" 200 15406
+"GET /static/images/hero_elephant.png HTTP/1.1" 200 3406680
+"GET /media/profile_pictures/placeholder.jpg HTTP/1.1" 200 7926
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2614
+"GET /users/profile/ HTTP/1.1" 200 4428
+"GET /users/profile/ HTTP/1.1" 200 4428
+"GET /static/css/style.css HTTP/1.1" 200 7522
+"GET /static/js/scripts.js HTTP/1.1" 200 697
+"GET /static/images/hero_elephant.png HTTP/1.1" 200 3406680
+"GET /static/images/favicon.ico HTTP/1.1" 200 15406
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 5405
+"GET /users/profile/ HTTP/1.1" 200 4428
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/75d756e0-b562-481a-9e51-5dfb2ea7986e/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4428
+"GET /users/profile/ HTTP/1.1" 200 4462
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\wild_watch\settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/profile/ HTTP/1.1" 200 4410
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\wild_watch\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/profile/ HTTP/1.1" 200 4481
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/logout/ HTTP/1.1" 302 0
+"GET /users/ HTTP/1.1" 200 4971
+"GET /users/login/?next=/users/ HTTP/1.1" 200 3326
+"POST /users/login/?next=/users/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4481
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/9f18c0bd-e5fb-407f-b193-65d41e95e578/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4481
+"GET /users/profile/ HTTP/1.1" 200 4511
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/71378b52-e1c0-485c-b669-aa9bbeade9a6/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4511
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/355a0150-481a-4fa8-9a48-ed685c7d4794/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4504
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 5405
+"GET /users/profile/ HTTP/1.1" 200 4504
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+- Broken pipe from ('127.0.0.1', 65496)
+"GET /users/confirm-email/65214883-a963-4db6-ba77-4436f0a84648/ HTTP/1.1" 302 0
+"GET /users/resend-email/ HTTP/1.1" 200 3043
+"GET /users/confirm-email/65214883-a963-4db6-ba77-4436f0a84648/ HTTP/1.1" 302 0
+"GET /users/resend-email/ HTTP/1.1" 200 3043
+"POST /users/resend-email/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3510
+"GET /users/login/?next=/users/signup/thanks/ HTTP/1.1" 200 3326
+"POST /users/login/?next=/users/signup/thanks/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4504
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/profile/ HTTP/1.1" 200 4533
+"GET /static/css/style.css HTTP/1.1" 200 7522
+"GET /static/js/scripts.js HTTP/1.1" 200 697
+"GET /static/images/hero_elephant.png HTTP/1.1" 200 3406680
+"GET /static/images/favicon.ico HTTP/1.1" 200 15406
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/18f9ed19-211a-4c5c-8b7c-398e609fcd4e/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /reports/create/ HTTP/1.1" 200 7014
+"GET /reports/all/ HTTP/1.1" 200 29784
+"GET /static/icons/cat-icon.png HTTP/1.1" 200 1501
+"GET /users/profile/ HTTP/1.1" 200 4534
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\wild_watch\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /users/profile/ HTTP/1.1" 200 4533
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\wild_watch\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\.venv\Lib\site-packages\cloudinary_storage\apps.py changed, reloading.
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 4804
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/fa4b4910-ee95-43e7-8226-747e86d62244/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4533
+"GET /users/profile/ HTTP/1.1" 200 4533
+"GET /users/profile/ HTTP/1.1" 200 4533
+"GET /static/css/style.css HTTP/1.1" 200 7522
+"GET /static/js/scripts.js HTTP/1.1" 200 697
+"GET /static/images/hero_elephant.png HTTP/1.1" 200 3406680
+"GET /static/images/favicon.ico HTTP/1.1" 200 15406
+"POST /users/delete-account/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3508
+"GET /users/signup/ HTTP/1.1" 200 4191
+"POST /users/signup/ HTTP/1.1" 302 0
+"GET /users/signup/thanks/ HTTP/1.1" 200 2852
+"GET /users/confirm-email/a95b80be-2563-47df-b278-a7bc7c3eb3fa/ HTTP/1.1" 302 0
+"GET /users/login/ HTTP/1.1" 200 3515
+"POST /users/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /users/profile/ HTTP/1.1" 200 4533
+"GET /users/profile/ HTTP/1.1" 302 0
+"GET /users/login/?next=/users/profile/ HTTP/1.1" 200 3326
+"GET /static/css/style.css HTTP/1.1" 200 7522
+"GET /static/js/scripts.js HTTP/1.1" 200 697
+"GET /static/images/hero_rhino.png HTTP/1.1" 200 3708929
+"GET /static/images/favicon.ico HTTP/1.1" 200 15406
+"POST /users/login/?next=/users/profile/ HTTP/1.1" 200 3563
+"POST /users/login/?next=/users/profile/ HTTP/1.1" 200 3561
+"POST /users/login/?next=/users/profile/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 5567
+"GET /static/images/hero_elephant.png HTTP/1.1" 200 3406680
+"GET /users/profile/ HTTP/1.1" 200 4533
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Ramon\OneDrive\Dokumente\GitHub\pp4-wildwatch\users\models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 5405
+"GET /users/profile/ HTTP/1.1" 200 4479
+"GET /users/edit-profile/ HTTP/1.1" 200 6075
+- Broken pipe from ('127.0.0.1', 52928)
+"POST /users/edit-profile/ HTTP/1.1" 302 0
+"GET /users/profile/ HTTP/1.1" 200 4662
+"GET /users/edit-profile/ HTTP/1.1" 200 6117
+"POST /users/edit-profile/ HTTP/1.1" 200 6117
+"POST /users/edit-profile/ HTTP/1.1" 200 6117
+"POST /users/edit-profile/ HTTP/1.1" 200 6117
+"GET /users/profile/ HTTP/1.1" 200 4480
+"GET /users/edit-profile/ HTTP/1.1" 200 6117
+"POST /users/edit-profile/ HTTP/1.1" 200 6117
+"POST /users/edit-profile/ HTTP/1.1" 200 6117
+"POST /users/edit-profile/ HTTP/1.1" 200 6117
+"POST /users/edit-profile/ HTTP/1.1" 200 6068
+"POST /users/edit-profile/ HTTP/1.1" 200 6068
+"GET /users/profile/ HTTP/1.1" 200 4480
+"GET /users/edit-profile/ HTTP/1.1" 200 6068
+"POST /users/edit-profile/ HTTP/1.1" 302 0
+"GET /users/profile/ HTTP/1.1" 200 4661
+"GET /users/edit-profile/ HTTP/1.1" 200 6075
+"POST /users/edit-profile/ HTTP/1.1" 200 6182
+"GET /users/profile/ HTTP/1.1" 200 4479
