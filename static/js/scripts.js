@@ -12,16 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const originalText = button.innerHTML;
-      const loadingText =
-        button.getAttribute("data-loading-text") || "Submitting...";
+      const loadingText = button.getAttribute("data-loading-text") || "Submitting...";
 
       button.disabled = true;
       button.innerHTML = loadingText;
 
-      if (form) {
-        form.submit();
-      }
     });
   });
 });
-

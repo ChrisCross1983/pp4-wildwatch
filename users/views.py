@@ -27,6 +27,11 @@ def signup(request):
             user.is_active = False
             user.save()
 
+            profile = Profile.objects.create(user=user)
+            profile.profile_picture = form.cleaned_data.get('profile_picture') or 'profile_pictures/placeholder.jpg'
+            profile.save()
+            logger.info(f"Profilbild: {profile.profile_picture}")
+
             send_verification_email(user)
 
             messages.success(
@@ -143,6 +148,7 @@ def profile(request):
 # Edit Profile View
 @login_required
 def edit_profile(request):
+    logger.info("Edit profile view accessed")
     profile = request.user.profile
     old_email = request.user.email
 
@@ -151,25 +157,37 @@ def edit_profile(request):
     password_form = PasswordChangeForm(user=request.user)
 
     if request.method == 'POST':
+        logger.info("Received POST request")
+        logger.info(f"POST data: {request.POST}")
+        logger.info(f"FILES data: {request.FILES}")
+        
         if 'save_profile' in request.POST:
             user_form = CustomUserUpdateForm(request.POST, instance=request.user)
             profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+            
+            logger.info(f"User form valid: {user_form.is_valid()} - Errors: {user_form.errors}")
+            logger.info(f"Profile form valid: {profile_form.is_valid()} - Errors: {profile_form.errors}")
 
             if user_form.is_valid() and profile_form.is_valid():
                 new_email = user_form.cleaned_data['email']
+                logger.info("Forms are valid. Saving data...")
+
 
                 if old_email != new_email:
+                    logger.info("Email changed. Sending verification email...")
                     request.user.is_active = False
                     request.user.save()
-
                     send_verification_email(request.user)
                     messages.success(request, "Your email was updated. Please verify your new email.")
                     return redirect('users:login')
 
                 user_form.save()
                 profile_form.save()
+                logger.info("Profile and user data saved successfully.")
                 messages.success(request, "Your profile has been updated successfully!")
                 return redirect('users:profile')
+            else:
+                logger.warning("Form validation failed.")
 
         elif 'change_password' in request.POST:
             password_form = PasswordChangeForm(user=request.user, data=request.POST)
@@ -177,8 +195,10 @@ def edit_profile(request):
                 password_form.save()
                 update_session_auth_hash(request, password_form.user)
                 messages.success(request, "Your password has been updated successfully!")
+                logger.info("Password updated successfully.")
                 return redirect('users:profile')
 
+    logger.info("Rendering edit profile page.")
     return render(request, 'users/edit_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form,
