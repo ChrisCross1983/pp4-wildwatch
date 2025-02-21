@@ -127,6 +127,11 @@ else:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
+CSRF_COOKIE_HTTPONLY = True
+CSRF_USE_SESSIONS = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -229,7 +234,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.herokuapp.com",
-    "https://wild-watch-4ac96b54e024.herokuapp.com"
+    "https://wild-watch-4ac96b54e024.herokuapp.com",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000"
 ]
 
 from pprint import pprint
