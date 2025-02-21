@@ -58,14 +58,17 @@ def confirm_email(request, token):
     try:
         profile = Profile.objects.get(email_token=token)
 
+        # User is already verified
         if profile.user.is_active:
-            messages.error(request, "This email is already verified. You can log in.")
+            messages.info(request, "Your email is already verified. You can log in.")
             return redirect("users:login")
         
+        # Token is expired
         if profile.email_token_expiry and profile.email_token_expiry < now():
-            messages.error(request, "This token has expired. Please request a new confirmation email.")
+            messages.warning(request, "This token has expired. Please request a new confirmation email.")
             return redirect("users:email_confirm_resend")
 
+        # Token is valig - Confirm E-Mail
         profile.user.is_active = True
         profile.email_token = None
         profile.email_token_expiry = None
@@ -79,6 +82,14 @@ def confirm_email(request, token):
         return redirect("users:login")
 
     except Profile.DoesNotExist:
+        # Token belongs to no profile (perhaps already verified)
+        # Checks, if the user is existing and active
+        user_exists = Profile.objects.filter(user__is_active=True).exists()
+        if user_exists:
+            messages.info(request, "Your email is already verified. You can log in.")
+            return redirect("users:login")
+        
+        # Token is completly invalid or manipulated
         messages.error(request, "Invalid token. Please request a new confirmation email.")
         return redirect("users:email_confirm_resend")
 
@@ -116,24 +127,34 @@ class CustomLoginView(LoginView):
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(request, username=username, password=password)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-            if user is None:
-                form.add_error(None, "Invalid username or password.")
-            elif not user.is_active:
-                form.add_error(None, "Account is inactive. Please verify your email.")
-            else:
-                login(request, user)
-                messages.success(request, f"Welcome back, {username}!")
-                return redirect("home")
-        else:
-            logger.error(f"Form invalid: {form.errors}")
+        try:
+            user = User.objects.get(username=username)
+
+            if not user.is_active:
+                messages.warning(request, "Your account is not verified. Please check your email or request a new verification link.")
+                return redirect("users:email_confirm_resend")
+
+        except User.DoesNotExist:
+            messages.error(request, "Invalid username or password.")
+            return redirect("users:login")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is None:
+            messages.error(request, "Invalid username or password.")
+            return redirect("users:login")
+
+        login(request, user)
+        messages.success(request, f"Welcome back, {username}!")
+        return redirect("home")
+
     else:
         form = AuthenticationForm()
         logger.debug("GET request to login page")
+
     return render(request, "users/login.html", {"form": form})
 
 # Logout View
