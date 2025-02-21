@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse
+from django.http import HttpResponseRedirect
 from .forms import CustomUserCreationForm, CustomUserUpdateForm, ProfileUpdateForm
 from django import forms
 from .models import Profile
@@ -19,25 +20,30 @@ logger = logging.getLogger(__name__)
 # Signup View
 def signup(request):
     if request.method == 'POST':
-        print(request.FILES) 
+        print(">>> POST Request received <<<")
         form = CustomUserCreationForm(request.POST, request.FILES)
+        print("Form valid:", form.is_valid())
+        
         if form.is_valid():
             user = form.save(commit=False)
-            print(f"Profile picture saved: {user.profile.profile_picture}")
             user.is_active = False
             user.save()
 
             profile = Profile.objects.create(user=user)
             profile.profile_picture = form.cleaned_data.get('profile_picture') or 'profile_pictures/placeholder.jpg'
             profile.save()
-            logger.info(f"Profilbild: {profile.profile_picture}")
+            print(">>> Profile created:", profile)
+            print(f">>> Profile picture saved: {profile.profile_picture}")
 
             send_verification_email(user)
-
             messages.success(
                 request,
                 "Account created successfully. Please check your email to activate your account.")
-            return redirect('users:signup_thanks')
+
+            return HttpResponseRedirect(reverse('users:signup_thanks'))
+        else:
+            print("Form errors:", form.errors)
+            messages.error(request, "There was an error in your registration.")
     else:
         form = CustomUserCreationForm()
 

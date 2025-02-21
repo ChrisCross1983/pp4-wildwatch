@@ -1,47 +1,83 @@
-{% extends 'base_generic.html' %}
-
-{% block content %}
-<div class="container">
+{% extends 'base_generic.html' %} {% load static %} {% load custom_tags %} {% block content %}
+  <div class="container">
     <h1 class="text-center mt-5">Sign Up</h1>
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm p-4">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <div class="form-group text-center">
-                        <label for="profile_picture">Profile Picture Preview:</label><br>
-                        <img id="profilePicturePreview" class="profile-picture mt-3" src="{% static 'images/placeholder.jpg' %}" alt="Profile Picture Preview">
-                    </div>
-                    <button type="submit" data-action-button data-loading-text="Signing up..." class="btn btn-primary w-100 mt-3">Sign Up</button>
-                </form>
+      <div class="col-md-8">
+        <div class="card shadow-sm p-4">
+          <form method="post" action="{% url 'users:signup' %}" enctype="multipart/form-data" onsubmit="this.querySelector('button[type=submit]').disabled = true;">
+            {% csrf_token %}
+
+            <!-- Username Field -->
+            <div class="form-group">
+              {{ form.username.label_tag }} {{ form.username|add_class:'form-control' }} {% if form.username.errors %}
+                <div class="text-danger">{{ form.username.errors|join:' ' }}</div>
+              {% endif %}
             </div>
+
+            <!-- First Name Field -->
+            <div class="form-group">
+              {{ form.first_name.label_tag }} {{ form.first_name|add_class:'form-control' }} {% if form.first_name.errors %}
+                <div class="text-danger">{{ form.first_name.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Last Name Field -->
+            <div class="form-group">
+              {{ form.last_name.label_tag }} {{ form.last_name|add_class:'form-control' }} {% if form.last_name.errors %}
+                <div class="text-danger">{{ form.last_name.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+              {{ form.email.label_tag }} {{ form.email|add_class:'form-control' }}
+              {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Profile Picture Field -->
+            <div class="form-group text-center">
+              <label for="id_profile_picture">Upload Profile Picture:</label>
+              <br />
+              <input type="file" name="profile_picture" id="id_profile_picture" class="form-control mt-3" />
+              <img id="profilePicturePreview" class="profile-picture mt-3" src="{% static 'images/placeholder.jpg' %}" alt="Profile Picture Preview" />
+              {% if form.profile_picture.errors %}
+                <div class="text-danger">{{ form.profile_picture.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Password Fields -->
+            <div class="form-group">
+              {{ form.password1.label_tag }} {{ form.password1|add_class:'form-control' }} {% if form.password1.errors %}
+                <div class="text-danger">{{ form.password1.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
+
+            <div class="form-group">
+              {{ form.password2.label_tag }} {{ form.password2|add_class:'form-control' }} {% if form.password2.errors %}
+                <div class="text-danger">{{ form.password2.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
+
+            <button type="submit" data-action-button data-loading-text="Signing up..." class="btn btn-primary w-100 mt-3">Sign Up</button>
+          </form>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
-
 {% block scripts %}
-<script>
-    // JavaScript for live profile picture preview
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const profilePictureInput = document.getElementById('id_profile_picture');
-        const profilePicturePreview = document.getElementById('profilePicturePreview');
-
-        if (profilePictureInput && profilePicturePreview) {
-            profilePictureInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        profilePicturePreview.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    profilePicturePreview.src = "{% static 'images/placeholder.jpg' %}";
-                }
-            });
-        }
-    });
-</script>
+      const form = document.querySelector('form')
+      if (form) {
+        form.addEventListener('submit', function () {
+          const submitButton = form.querySelector('button[type="submit"]')
+          submitButton.disabled = true
+          submitButton.innerHTML = 'Submitting...'
+        })
+      }
+    })
+  </script>
 {% endblock %}

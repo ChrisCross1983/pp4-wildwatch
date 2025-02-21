@@ -220,6 +220,8 @@ The application was deployed using Heroku with the following steps:
 
 ## Credits
 
+icons8.de - Favicon
+
 ### Media
 
 - Placeholder images from Unsplash.

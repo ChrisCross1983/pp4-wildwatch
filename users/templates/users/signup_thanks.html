@@ -1,20 +1,9 @@
 {% extends 'base_generic.html' %}
-{% load static %}
 
 {% block content %}
-<style>
-    body {
-        background-image: url("{% static 'images/hero_rhino.png' %}");
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-</style>
-<div class="container text-center mt-5 hero-text">
-    <h1 class="text-light fw-bold">Welcome to Wild Watch!</h1>
-    <p>
-        <a href="{% url 'users:login' %}" class="btn btn-lg btn-primary mt-3">Go to Login</a>
-        <a href="{% url 'users:email_confirm_resend' %}" class="btn btn-lg btn-success mt-3">Resend Verification Email</a>
-    </p>
-</div>
+  <div class="container text-center mt-5">
+    <h1 class="text-success">Registration Successful!</h1>
+    <p class="lead">Please check your email to activate your account.</p>
+    <a href="{% url 'users:login' %}" class="btn btn-primary mt-3">Go to Login</a>
+  </div>
 {% endblock %}
