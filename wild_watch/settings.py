@@ -48,9 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'corsheaders',
     'cloudinary',
     'cloudinary_storage',
-    'corsheaders',
     'core',
     'reports',
     'users',
@@ -132,12 +132,39 @@ else:
     CSRF_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
     CSRF_COOKIE_SAMESITE = 'None'
-    CSRF_USE_SESSIONS = True
+    CSRF_USE_SESSIONS = False
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_SSL_REDIRECT = True
 
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'None'
+# CORS Settings
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "https://wild-watch-4ac96b54e024.herokuapp.com",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000"
+]
+CORS_ALLOW_CREDENTIALS = True
+CORS_REPLACE_HTTPS_REFERER = True
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'x-csrftoken',
+    'authorization',
+    'accept',
+    'origin',
+    'user-agent',
+    'x-requested-with'
+]
+CORS_EXPOSE_HEADERS = ['x-csrftoken']
 
-# Proxy Settings for HEROKU
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.herokuapp.com",
+    "https://wild-watch-4ac96b54e024.herokuapp.com",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000"
+]
+
+# Proxy Settings for Heroku
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Database
@@ -239,14 +266,6 @@ PLACEHOLDER_IMAGE_URL = 'https://res.cloudinary.com/duazmtlpi/image/upload/v1735
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.herokuapp.com",
-    "https://wild-watch-4ac96b54e024.herokuapp.com",
-    "http://127.0.0.1:8000",
-    "http://localhost:8000"
-]
 
 from pprint import pprint
 pprint(TEMPLATES)
