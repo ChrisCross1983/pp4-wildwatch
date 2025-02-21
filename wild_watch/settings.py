@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'cloudinary',
     'cloudinary_storage',
+    'corsheaders',
     'core',
     'reports',
     'users',
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -71,7 +73,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ROOT_URLCONF = 'wild_watch.urls'
 
 TEMPLATES = [
@@ -124,14 +125,20 @@ else:
 if DEBUG:
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
+    CSRF_COOKIE_HTTPONLY = False
+    CSRF_COOKIE_SAMESITE = 'Lax'
 else:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_SAMESITE = 'None'
+    CSRF_USE_SESSIONS = True
 
-CSRF_COOKIE_HTTPONLY = False
-CSRF_USE_SESSIONS = True
-CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'None'
+
+# Proxy Settings for HEROKU
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -232,6 +239,7 @@ PLACEHOLDER_IMAGE_URL = 'https://res.cloudinary.com/duazmtlpi/image/upload/v1735
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.herokuapp.com",
