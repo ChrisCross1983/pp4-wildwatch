@@ -40,7 +40,8 @@
                         </div>
                         <div class="card-body text-center">
                             {% if report.image %}
-                            <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" style="max-height: 200px;">
+                            {% debug %}
+                            <img src="{{ report.image | default_if_none:'' }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" style="max-height: 200px;">
                             <p>{{ report.image.url }}</p>
                             {% endif %}
                             <p><strong>Species:</strong> {{ report.species }}</p>
