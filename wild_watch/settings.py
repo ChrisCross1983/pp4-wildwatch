@@ -159,6 +159,8 @@ CORS_ALLOW_HEADERS = [
 CORS_EXPOSE_HEADERS = ['x-csrftoken']
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://*.cloudinary.com",
+    "https://res.cloudinary.com",
     "https://*.herokuapp.com",
     "https://wild-watch-4ac96b54e024.herokuapp.com",
     "http://127.0.0.1:8000",
@@ -181,15 +183,9 @@ if 'test' in sys.argv:
         'NAME': BASE_DIR / 'test_db.sqlite3',
     }
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get("CLOUDINARY_CLOUD_NAME"),
-    'API_KEY': os.environ.get("CLOUDINARY_API_KEY"),
-    'API_SECRET': os.environ.get("CLOUDINARY_API_SECRET"),
-}
-
-MEDIA_URL = '/media/'
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
+MEDIA_URL = 'https://res.cloudinary.com/duazmtlpi/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Password validation
