@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const submitButton = form.querySelector('button[type="submit"]');
           submitButton.disabled = true;
-          const loadingText = submitButton.getAttribute('data-loading-text') || 'Signing up...';
+          const loadingText = submitButton.getAttribute('data-loading-text') || 'Submitting...';
           submitButton.innerHTML = loadingText;
       });
   } else {

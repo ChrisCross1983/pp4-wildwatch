@@ -107,35 +107,142 @@ li {
   }
   
   .pending-header {
-    background-color: rgba(0, 123, 255, 0.9); /* Blau */
+    background-color: rgba(0, 123, 255, 0.9);
     color: white;
     border: 2px solid rgba(0, 123, 255, 1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .rejected-header {
-    background-color: rgba(220, 53, 69, 0.9); /* Rot */
+    background-color: rgba(220, 53, 69, 0.9);
     color: white;
     border: 2px solid rgba(220, 53, 69, 1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-.hero-text {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 10px;
-    margin: 2rem auto 2rem;
-    max-width: 600px;
+/* Hero Section */
+.hero-content {
+    position: relative;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 30px;
 }
 
+.hero-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 80%;
+    text-align: center;
+}
+
+/* Sections */
+section {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+section h2 {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* About Section */
+.about-section {
+    background-color: #F4E4BC;
+    color: #4E3629;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+    background-color: #D67B4B;
+    color: #FFFFFF;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Icon Box */
+.icon-box {
+    background: #D9C098;
+    color: #4E3629;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.icon-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Icon Circle */
 .icon-circle {
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+    font-size: 30px;
+    color: white;
+}
+
+.icon-circle.bg-primary {
+    background-color: #007bff;
+}
+
+.icon-circle.bg-success {
+    background-color: #28a745;
+}
+
+.icon-circle.bg-danger {
+    background-color: #dc3545;
+}
+
+/* Call-to-Action Section  */
+.call-to-action-section {
+    background-color: #D9C098;
+    color: #4E3629;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.call-to-action-section .btn-primary {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.call-to-action-section .btn-primary:hover {
+    background-color: #c0392b;
+}
+
+.call-to-action-section .btn-outline-light {
+    border-color: white;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.call-to-action-section .btn-outline-light:hover {
+    background-color: white;
+    color: #2c3e50;
 }
 
 /* Sticky and Fixed Navbar */
@@ -252,6 +359,14 @@ li {
 
 #scrollToTopBtn:hover {
     background-color: rgba(100, 100, 100, 0.9);
+}
+
+/* Form-Button */
+form button[type="submit"] {
+    width: auto;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.875rem;
+    border-radius: 5px;
 }
 
 button[disabled] {
