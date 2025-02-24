@@ -91,20 +91,6 @@
     <!-- Scroll to Top Button -->
     <button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">⬆️</button>
 
-    <!-- Scroll to Top Button -->
-    <script>
-      function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }
-      
-      window.onscroll = function () {
-        var scrollToTopBtn = document.getElementById('scrollToTopBtn')
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-          scrollToTopBtn.style.display = 'block'
-        } else {
-          scrollToTopBtn.style.display = 'none'
-        }
-      }
-    </script>
+    <script src="{% static 'js/scripts.js' %}"></script>
   </body>
 </html>

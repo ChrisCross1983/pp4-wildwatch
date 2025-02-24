@@ -41,7 +41,6 @@
                         <div class="card-body text-center">
                             {% if report.image %}
                             <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" style="max-height: 200px;">
-                            <p>{{ report.image.url }}</p>
                             {% endif %}
                             <p><strong>Species:</strong> {{ report.species }}</p>
                             <p><strong>Injury Condition:</strong> {{ report.injury_condition }}</p>
@@ -96,8 +95,9 @@
                         <label for="species">Species</label>
                         <select class="form-control" id="species" name="species">
                             <option value="">All</option>
-                            <option value="Cat" {% if request.GET.species == "Cat" %}selected{% endif %}>Cat</option>
-                            <option value="Dog" {% if request.GET.species == "Dog" %}selected{% endif %}>Dog</option>
+                            <option value="Cat" {% if request.GET.species|default:'' == "Cat" %}selected{% endif %}>Cat</option>
+                            <option value="Dog" {% if request.GET.species|default:'' == "Dog" %}selected{% endif %}>Dog</option>
+                            <option value="Other" {% if request.GET.species|default:'' == "Other" %}selected{% endif %}>Other</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mb-2">Apply Filters</button>
@@ -107,8 +107,53 @@
         </div>
     </div>
 
+    <!-- Pagination -->
+    <div class="pagination justify-content-center mt-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">First</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Previous</a>
+                </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Last</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
     <!-- Mobile Bubble -->
-    <div class="fab d-md-none" data-bs-toggle="modal" data-bs-target="#bubbleModal">
+    <div class="fab" data-bs-toggle="modal" data-bs-target="#bubbleModal">
         <img src="{% static 'icons/cat-icon.png' %}" alt="Menu" />
     </div>
     <div class="fab-tooltip d-md-none">Menu</div>
