@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from datetime import datetime
+from cloudinary.models import CloudinaryField
 
 class InjuryReport(models.Model):
 
@@ -58,7 +59,7 @@ class InjuryReport(models.Model):
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, help_text="Select the gender of the animal if known.")
     injury_condition = models.CharField(max_length=50, choices=INJURY_CONDITION_CHOICES, help_text="Describe the severity of the injury.")
     location = models.CharField(max_length=255, blank=True, null=True, help_text="Enter the nearest city or coordinates.")
-    image = models.ImageField(upload_to='injury_reports/', blank=True, null=True, help_text="Upload a clear image if possible.")
+    image = CloudinaryField('image', folder='injury_reports/', blank=True, null=True, help_text="Upload a clear image if possible.")
     date_reported = models.DateTimeField(auto_now_add=True)
     reported_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     helper = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='helper', help_text="User who is taking care of this report.",)
