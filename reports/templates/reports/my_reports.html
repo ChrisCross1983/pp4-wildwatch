@@ -2,88 +2,90 @@
 {% load static %}
 
 {% block content %}
-  <div class="container mt-5">
-    <!-- Title and Create Button -->
-    <div class="hero-text d-flex align-items-center justify-content-center text-center">
-      <div>
-        <h1 class="text-light fw-bold">My Reports</h1>
-        <p class="text-light lead">You have no reports.</p>
-        <a href="{% url 'reports:create_report' %}" class="btn btn-lg btn-primary mt-3">New Report</a>
+  <body class="my-reports-body">
+    <div class="container mt-5">
+      <!-- Title and Create Button -->
+      <div class="hero-text d-flex align-items-center justify-content-center text-center">
+        <div>
+          <h1 class="text-light fw-bold">My Reports</h1>
+          <p class="text-light lead">You have no reports.</p>
+          <a href="{% url 'reports:create_report' %}" class="btn btn-lg btn-primary mt-3">New Report</a>
+        </div>
       </div>
-    </div>
 
-    <!-- Mobile Bubble -->
-    <div class="fab d-md-none" data-bs-toggle="modal" data-bs-target="#bubbleModal">
-      <img src="{% static 'icons/cat-icon.png' %}" alt="Menu" />
-    </div>
-    <div class="fab-tooltip d-md-none">Menu</div>
+      <!-- Mobile Bubble -->
+      <div class="fab d-md-none" data-bs-toggle="modal" data-bs-target="#bubbleModal">
+        <img src="{% static 'icons/cat-icon.png' %}" alt="Menu" />
+      </div>
+      <div class="fab-tooltip d-md-none">Menu</div>
 
-    <!-- Modal for Bubble -->
-    <div class="modal fade" id="bubbleModal" tabindex="-1" aria-labelledby="bubbleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="bubbleModalLabel">Menu</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <a href="{% url 'reports:create_report' %}" class="btn btn-primary w-100 mb-2">New Report</a>
-            <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary w-100 mb-2">Animal Report Feed</a>
+      <!-- Modal for Bubble -->
+      <div class="modal fade" id="bubbleModal" tabindex="-1" aria-labelledby="bubbleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="bubbleModalLabel">Menu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <a href="{% url 'reports:create_report' %}" class="btn btn-primary w-100 mb-2">New Report</a>
+              <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary w-100 mb-2">Animal Report Feed</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Check if user has reports -->
-    <div class="row justify-content-center">
-      {% for report in reports %}
-        <div class="col-md-8 mb-4">
-          <div class="card shadow-sm">
-            <div class="card-header">
-              <h5 class="m-0">{{ report.title }}</h5>
-              <div>
-                <span class="badge {{ report.status_class }}">{{ report.status }}</span>
-                <span class="badge {{ report.publication_class }}">{{ report.publication_status }}</span>
+      <!-- Check if user has reports -->
+      <div class="row justify-content-center">
+        {% for report in reports %}
+          <div class="col-md-8 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header">
+                <h5 class="m-0">{{ report.title }}</h5>
+                <div>
+                  <span class="badge {{ report.status_class }}">{{ report.status }}</span>
+                  <span class="badge {{ report.publication_class }}">{{ report.publication_status }}</span>
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- Rejection Comment -->
+                {% if report.publication_status == 'Rejected' %}
+                  <div class="alert alert-danger">
+                    <strong>Rejected:</strong> {{ report.admin_comment }}
+                  </div>
+                {% endif %}
+
+                <!-- Image -->
+                {% if report.image %}
+                  <div class="text-center mb-3">
+                    <img src="{{ report.image.url }}" alt="Report Image" class="img-fluid rounded report-image" />
+                  </div>
+                {% endif %}
+
+                <!-- Report Details -->
+                <p>
+                  <strong>Species:</strong> {{ report.species }}
+                </p>
+                <p>
+                  <strong>Location:</strong> {{ report.location|default:'Unknown' }}
+                </p>
+                <p>
+                  <strong>Status:</strong> {{ report.status }}
+                </p>
+                <p>
+                  <strong>Date Reported:</strong> {{ report.date_reported|date:'Y-m-d H:i' }}
+                </p>
+              </div>
+              <div class="card-footer d-flex justify-content-between">
+                <!-- View Details Button -->
+                <a href="{% url 'reports:report_detail' report.id %}?source=my_reports" class="btn btn-info btn-sm">View Details</a>
               </div>
             </div>
-            <div class="card-body">
-              <!-- Rejection Comment -->
-              {% if report.publication_status == 'Rejected' %}
-                <div class="alert alert-danger">
-                  <strong>Rejected:</strong> {{ report.admin_comment }}
-                </div>
-              {% endif %}
-
-              <!-- Image -->
-              {% if report.image %}
-                <div class="text-center mb-3">
-                  <img src="{{ report.image.url }}" alt="Report Image" class="img-fluid rounded report-image" />
-                </div>
-              {% endif %}
-
-              <!-- Report Details -->
-              <p>
-                <strong>Species:</strong> {{ report.species }}
-              </p>
-              <p>
-                <strong>Location:</strong> {{ report.location|default:'Unknown' }}
-              </p>
-              <p>
-                <strong>Status:</strong> {{ report.status }}
-              </p>
-              <p>
-                <strong>Date Reported:</strong> {{ report.date_reported|date:'Y-m-d H:i' }}
-              </p>
-            </div>
-            <div class="card-footer d-flex justify-content-between">
-              <!-- View Details Button -->
-              <a href="{% url 'reports:report_detail' report.id %}?source=my_reports" class="btn btn-info btn-sm">View Details</a>
-            </div>
           </div>
-        </div>
-      {% empty %}
+        {% empty %}
 
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
-  </div>
+  </body>
 {% endblock %}

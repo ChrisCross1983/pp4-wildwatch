@@ -42,6 +42,61 @@ li {
     opacity: 0.9;
 }
 
+/* Background Images */
+
+.home-body,
+.signup-body {
+    background-image: url("../images/hero_big_elephant.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.all-reports-body {
+    background-image: url("../images/hero_rhino.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.my-reports-body,
+.profile-body {
+    background-image: url("../images/hero_elephant.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.create-report-body {
+    background-image: url("../images/hero_leopard.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.pending-reports-body,
+.login-body {
+    background-image: url("../images/hero_rhino.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
 /* Header-Styling */
 .section-header {
     padding: 20px;
@@ -71,6 +126,16 @@ li {
     border-radius: 10px;
     margin: 2rem auto 2rem;
     max-width: 600px;
+}
+
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 /* Sticky and Fixed Navbar */
@@ -110,9 +175,10 @@ li {
     max-height: fit-content;
     width: 18%;
     border-radius: 10px;
+    padding-right: 5px;
 }
 
-/* Floating Bubble Button */
+/* Mobile Bubble Standard */
 .fab {
     display: none;
     position: fixed;
@@ -130,6 +196,7 @@ li {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     font-size: 24px;
     cursor: pointer;
+    opacity: 0.7;
 }
 
 .fab img {
@@ -138,10 +205,11 @@ li {
 }
 
 .fab:hover {
-    background-color: #0056b3;
+    background-color: #007bff;
+    opacity: 1;
 }
 
-/* Bubble Tooltip */
+/* Mobile Bubble Tooltip */
 .fab-tooltip {
     position: fixed;
     bottom: 90px;
@@ -164,23 +232,26 @@ li {
 /* Scroll to Top Button */
 #scrollToTopBtn {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
     display: none;
-    background-color: #007bff;
-    color: white;
+    background-color: rgba(100, 100, 100, 0.7);
+    color: #fff;
     border: none;
     border-radius: 50%;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+    font-size: 24px;
     cursor: pointer;
-    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s;
-    font-size: 20px;
 }
 
 #scrollToTopBtn:hover {
-    background-color: #0056b3;
+    background-color: rgba(100, 100, 100, 0.9);
 }
 
 button[disabled] {
@@ -432,8 +503,12 @@ button[disabled]::after {
     }
 }
 
-/* Adjust Bubble for 992px and Below */
+/* Media Query: Show Bubble under 992px */
 @media (max-width: 992px) {
+    .fab {
+        display: flex !important;
+    }
+
     .sidebar {
         display: none
     }
@@ -444,13 +519,16 @@ button[disabled]::after {
         margin-left: 0;
         margin-right: 0;
     }
+}
 
+/* Media Query: Hide Bubble from 993px */
+@media (min-width: 993px) {
     .fab {
-        display: flex;
+        display: none !important;
     }
 }
 
-/* Media Query: Show Bubble in Mobile */
+/* Media Query: Additional adjustment for mobile */
 @media (max-width: 768px) {    
     body {
         padding-top: 40px;

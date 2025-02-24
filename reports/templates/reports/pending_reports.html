@@ -2,15 +2,7 @@
 {% load static %}
 
 {% block content %}
-<style>
-    body {
-        background-image: url("{% static 'images/hero_leopard.png' %}");
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-</style>
-
+<body class="pending-reports-body">
 <div class="container mt-5">
     <!-- Title Section -->
     <div class="d-flex align-items-center justify-content-center text-center">
@@ -111,4 +103,5 @@
         {% endfor %}
     </div>
 </div>
+<body>
 {% endblock %}

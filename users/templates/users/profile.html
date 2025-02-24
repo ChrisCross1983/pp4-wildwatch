@@ -2,44 +2,47 @@
 {% load static %}
 
 {% block content %}
-<style>
-    body {
-        background-image: url("{% static 'images/hero_elephant.png' %}");
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-</style>
-<div class="container mt-5 hero-text">
-    <h1 class="text-center mb-4 text-light fw-bold">My Profile</h1>
+  <body class="profile-body">
+    <div class="container mt-5 hero-text">
+      <h1 class="text-center mb-4 text-light fw-bold">My Profile</h1>
 
-    <!-- Profile Picture -->
-    <div class="text-center mb-4">
+      <!-- Profile Picture -->
+      <div class="text-center mb-4">
         {% if user.profile.profile_picture %}
-            <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;">
+          <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" />
         {% else %}
-            <img src="https://res.cloudinary.com/duazmtlpi/image/upload/v1735562779/profile_pictures/placeholder.jpg" alt="Default Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;">
+          <img src="https://res.cloudinary.com/duazmtlpi/image/upload/v1735562779/profile_pictures/placeholder.jpg" alt="Default Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" />
         {% endif %}
-    </div>
-    
+      </div>
 
-    <!-- Profile Details -->
-    <ul class="list-group mb-4">
-        <li class="list-group-item"><strong>First Name:</strong> {{ user.first_name }}</li>
-        <li class="list-group-item"><strong>Last Name:</strong> {{ user.last_name }}</li>
-        <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
-        <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
-        <li class="list-group-item"><strong>Password:</strong> ********</li>
-    </ul>
+      <!-- Profile Details -->
+      <ul class="list-group mb-4">
+        <li class="list-group-item">
+          <strong>First Name:</strong> {{ user.first_name }}
+        </li>
+        <li class="list-group-item">
+          <strong>Last Name:</strong> {{ user.last_name }}
+        </li>
+        <li class="list-group-item">
+          <strong>Username:</strong> {{ user.username }}
+        </li>
+        <li class="list-group-item">
+          <strong>Email:</strong> {{ user.email }}
+        </li>
+        <li class="list-group-item">
+          <strong>Password:</strong> ********
+        </li>
+      </ul>
 
-    <!-- Actions -->
-    <div class="d-flex justify-content-center gap-3">
+      <!-- Actions -->
+      <div class="d-flex justify-content-center gap-3">
         <a href="{% url 'users:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
         <form method="post" action="{% url 'users:delete_account' %}" onsubmit="return confirm('Are you sure you want to delete your account? This action is irreversible.');">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Delete My Account</button>
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Delete My Account</button>
         </form>
         <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+      </div>
     </div>
-</div>
+  </body>
 {% endblock %}

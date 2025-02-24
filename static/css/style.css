@@ -42,6 +42,61 @@ li {
     opacity: 0.9;
 }
 
+/* Background Images */
+
+.home-body,
+.signup-body {
+    background-image: url("../images/hero_big_elephant.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.all-reports-body {
+    background-image: url("../images/hero_rhino.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.my-reports-body,
+.profile-body {
+    background-image: url("../images/hero_elephant.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.create-report-body {
+    background-image: url("../images/hero_leopard.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.pending-reports-body,
+.login-body {
+    background-image: url("../images/hero_rhino.webp");
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh;
+}
+
 /* Header-Styling */
 .section-header {
     padding: 20px;
@@ -71,6 +126,16 @@ li {
     border-radius: 10px;
     margin: 2rem auto 2rem;
     max-width: 600px;
+}
+
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 /* Sticky and Fixed Navbar */
@@ -110,6 +175,7 @@ li {
     max-height: fit-content;
     width: 18%;
     border-radius: 10px;
+    padding-right: 5px;
 }
 
 /* Mobile Bubble Standard */

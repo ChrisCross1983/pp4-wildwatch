@@ -3,115 +3,93 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<style>
-    body {
-        background-image: url("{% static 'images/hero_rhino.png' %}");
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-</style>
-<div class="container mt-5">
-    <div class="card mx-auto shadow-lg" style="max-width: 700px;">
+  <body class="create-report-body">
+    <div class="container mt-5">
+      <div class="card mx-auto shadow-lg" style="max-width: 700px;">
         <!-- Header -->
         <div class="card-header bg-primary text-white text-center">
-            <h2>Create an Injury Report</h2>
+          <h2>Create an Injury Report</h2>
         </div>
 
         <!-- Explanation Section -->
         <div class="card-body">
-            <div class="alert alert-info text-center">
-                Reporting injured animals is crucial to ensure timely help. By providing accurate details, you assist in their rescue and treatment.
+          <div class="alert alert-info text-center">Reporting injured animals is crucial to ensure timely help. By providing accurate details, you assist in their rescue and treatment.</div>
+
+          <!-- Form -->
+          <form method="POST" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+
+            <!-- Title -->
+            <div class="mb-3">
+              <label for="id_title" class="form-label"><strong>Title:</strong></label>
+              {{ form.title|add_class:'form-control' }}
+              {% if form.title.errors %}
+                <div class="text-danger">{{ form.title.errors|join:' ' }}</div>
+              {% endif %}
             </div>
 
-            <!-- Form -->
-            <form method="POST" enctype="multipart/form-data" class="mt-4">
-                {% csrf_token %}
+            <!-- Species -->
+            <div class="mb-3">
+              <label for="id_species" class="form-label"><strong>Species:</strong></label>
+              {{ form.species|add_class:'form-select' }}
+              {% if form.species.errors %}
+                <div class="text-danger">{{ form.species.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
 
-                <!-- Title -->
-                <div class="mb-3">
-                    <label for="id_title" class="form-label"><strong>Title:</strong></label>
-                    {{ form.title|add_class:"form-control" }}
-                    {% if form.title.errors %}
-                    <div class="text-danger">
-                        {{ form.title.errors|join:" " }}
-                    </div>
-                    {% endif %}
-                </div>
+            <!-- Gender -->
+            <div class="mb-3">
+              <label for="id_gender" class="form-label"><strong>Gender:</strong></label>
+              {{ form.gender|add_class:'form-select' }}
+              {% if form.gender.errors %}
+                <div class="text-danger">{{ form.gender.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
 
-                <!-- Species -->
-                <div class="mb-3">
-                    <label for="id_species" class="form-label"><strong>Species:</strong></label>
-                    {{ form.species|add_class:"form-select" }}
-                    {% if form.species.errors %}
-                    <div class="text-danger">
-                        {{ form.species.errors|join:" " }}
-                    </div>
-                    {% endif %}
-                </div>
+            <!-- Injury Condition -->
+            <div class="mb-3">
+              <label for="id_injury_condition" class="form-label"><strong>Injury Condition:</strong></label>
+              {{ form.injury_condition|add_class:'form-select' }}
+              {% if form.injury_condition.errors %}
+                <div class="text-danger">{{ form.injury_condition.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
 
-                <!-- Gender -->
-                <div class="mb-3">
-                    <label for="id_gender" class="form-label"><strong>Gender:</strong></label>
-                    {{ form.gender|add_class:"form-select" }}
-                    {% if form.gender.errors %}
-                    <div class="text-danger">
-                        {{ form.gender.errors|join:" " }}
-                    </div>
-                    {% endif %}
-                </div>
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="id_description" class="form-label"><strong>Description:</strong></label>
+              {{ form.description|add_class:'form-control' }}
+              {% if form.description.errors %}
+                <div class="text-danger">{{ form.description.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
 
-                <!-- Injury Condition -->
-                <div class="mb-3">
-                    <label for="id_injury_condition" class="form-label"><strong>Injury Condition:</strong></label>
-                    {{ form.injury_condition|add_class:"form-select" }}
-                    {% if form.injury_condition.errors %}
-                    <div class="text-danger">
-                        {{ form.injury_condition.errors|join:" " }}
-                    </div>
-                    {% endif %}
-                </div>
+            <!-- Location -->
+            <div class="mb-3">
+              <label for="id_location" class="form-label"><strong>Location (optional):</strong></label>
+              {{ form.location|add_class:'form-control' }}
+              {% if form.location.errors %}
+                <div class="text-danger">{{ form.location.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
 
-                <!-- Description -->
-                <div class="mb-3">
-                    <label for="id_description" class="form-label"><strong>Description:</strong></label>
-                    {{ form.description|add_class:"form-control" }}
-                    {% if form.description.errors %}
-                    <div class="text-danger">
-                        {{ form.description.errors|join:" " }}
-                    </div>
-                    {% endif %}
-                </div>
+            <!-- Image Upload -->
+            <div class="mb-3">
+              <label for="id_image" class="form-label"><strong>Upload Image (optional):</strong></label>
+              {{ form.image|add_class:'form-control' }}
+              {% if form.image.errors %}
+                <div class="text-danger">{{ form.image.errors|join:' ' }}</div>
+              {% endif %}
+            </div>
 
-                <!-- Location -->
-                <div class="mb-3">
-                    <label for="id_location" class="form-label"><strong>Location (optional):</strong></label>
-                    {{ form.location|add_class:"form-control" }}
-                    {% if form.location.errors %}
-                    <div class="text-danger">
-                        {{ form.location.errors|join:" " }}
-                    </div>
-                    {% endif %}
-                </div>
-
-                <!-- Image Upload -->
-                <div class="mb-3">
-                    <label for="id_image" class="form-label"><strong>Upload Image (optional):</strong></label>
-                    {{ form.image|add_class:"form-control" }}
-                    {% if form.image.errors %}
-                    <div class="text-danger">
-                        {{ form.image.errors|join:" " }}
-                    </div>
-                    {% endif %}
-                </div>
-
-                <!-- Submit Button -->
-                <div class="d-flex justify-content-between mt-4">
-                    <button type="submit" data-action-button data-loading-text="Submitting..." class="btn btn-success px-4">Submit</button>
-                    <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary px-4">Back</a>
-                </div>
-            </form>
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" data-action-button data-loading-text="Submitting..." class="btn btn-success px-4">Submit</button>
+              <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary px-4">Back</a>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
-</div>
+  </body>
 {% endblock %}
