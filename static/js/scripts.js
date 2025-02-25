@@ -73,3 +73,29 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('>>> Profile Picture Input or Preview not found! <<<');
   }
 });
+
+// Lazy Loading for CSS-Background Images
+document.addEventListener("DOMContentLoaded", function () {
+  const lazyBackgrounds = document.querySelectorAll('.animal-circle.lazy-bg');
+
+  if ('IntersectionObserver' in window) {
+      const backgroundObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  const bgElement = entry.target;
+                  const bgImage = bgElement.getAttribute('data-bg');
+                  if (bgImage) {
+                      bgElement.style.backgroundImage = `url(${bgImage})`;
+                      bgElement.classList.add("loaded");
+                      observer.unobserve(bgElement);
+                  }
+              }
+          });
+      });
+
+      lazyBackgrounds.forEach(bgElement => {
+          backgroundObserver.observe(bgElement);
+      });
+  }
+});
+

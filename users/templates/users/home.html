@@ -7,8 +7,8 @@
       <!-- Hero Section -->
       <div class="hero-content text-center d-flex align-items-center justify-content-center">
         <div class="hero-overlay">
-          <h1 class="display-4 text-light fw-bold">Welcome to WildWatch</h1>
-          <p class="lead text-light">Protecting animals and their habitats.</p>
+          <h1 class="display-4 fw-bold">Welcome to WildWatch</h1>
+          <p class="lead">Protecting animals and their habitats.</p>
           <a href="{% url 'reports:all_reports' %}" class="btn btn-primary btn-lg mt-3">View Animal Reports</a>
         </div>
       </div>
@@ -17,7 +17,8 @@
       <div class="about-section py-5">
         <div class="container text-center">
           <h2 class="section-title mb-4">About WildWatch</h2>
-          <p class="section-text">WildWatch is a community-driven platform to report and monitor animal-related incidents. Help us protect animals by submitting reports or exploring the latest updates.</p>
+          <p class="section-text">WildWatch is a community-driven platform dedicated to protecting animals and their habitats. By reporting incidents, tracking updates, and contributing as a helper, you can actively participate in safeguarding wildlife. Our platform bridges the gap between those who observe, those who act, and those who care. Whether you're an animal lover, a volunteer, or just someone who wants to make a difference, WildWatch empowers you to take action.</p>
+          <p class="section-text">Together, we can raise awareness, help injured animals, and create a safer environment for wildlife. Join us and become a part of a community that cares.</p>
         </div>
       </div>
 
@@ -28,29 +29,29 @@
           <div class="row">
             <div class="col-md-4 mb-4">
               <div class="icon-box shadow-sm">
-                <div class="icon-circle bg-primary text-light mb-3">
+                <div class="animal-circle animal-elephant lazy-bg mb-3" data-bg="{% static 'images/elephant.webp' %}">
                   <i class="bi bi-plus-circle fs-1"></i>
                 </div>
                 <h5>Submit a Report</h5>
-                <p>Share details about an animal-related incident.</p>
+                <p>Share details about an animal-related incident you have witnessed. Whether it's an injured animal, a sighting of endangered species, or illegal activities, your report helps us take action.</p>
               </div>
             </div>
             <div class="col-md-4 mb-4">
               <div class="icon-box shadow-sm">
-                <div class="icon-circle bg-success text-light mb-3">
+                <div class="animal-circle animal-lion lazy-bg mb-3" data-bg="{% static 'images/lion.webp' %}">
                   <i class="bi bi-eye fs-1"></i>
                 </div>
                 <h5>Track Updates</h5>
-                <p>Follow the progress of your submitted reports.</p>
+                <p>Stay informed about the progress of your submitted reports. Get notified when helpers are assigned or when the situation is resolved.</p>
               </div>
             </div>
             <div class="col-md-4 mb-4">
               <div class="icon-box shadow-sm">
-                <div class="icon-circle bg-danger text-light mb-3">
+                <div class="animal-circle animal-giraffe lazy-bg mb-3" data-bg="{% static 'images/giraffe.webp' %}">
                   <i class="bi bi-heart fs-1"></i>
                 </div>
                 <h5>Make a Difference</h5>
-                <p>Join the community to protect animals and their habitats.</p>
+                <p>Join the WildWatch community and help animals in need. Contribute as a volunteer, provide assistance, or simply spread awareness to make a positive impact.</p>
               </div>
             </div>
           </div>
@@ -58,9 +59,11 @@
       </div>
 
       <!-- Call-to-Action Section -->
-      <div class="call-to-action-section text-center text-light py-5">
+      <div class="call-to-action-section text-center py-5">
         <div class="container">
           <h2 class="mb-4">Join the WildWatch Community</h2>
+          <p>Become part of a passionate community dedicated to protecting wildlife. By signing up, you can submit reports, track updates, and join forces with others to make a difference. Every voice counts, and together, we can create a better future for our planet's creatures.</p>
+          <p>Whether you want to contribute actively or simply stay informed, WildWatch welcomes everyone who cares about animals. Take the first step today!</p>
           {% if user.is_authenticated %}
             <a href="{% url 'reports:create_report' %}" class="btn btn-primary btn-lg">Submit a Report</a>
           {% else %}

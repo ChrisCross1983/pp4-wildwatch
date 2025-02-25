@@ -9,9 +9,9 @@
       <!-- Profile Picture -->
       <div class="text-center mb-4">
         {% if user.profile.profile_picture %}
-          <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" />
+          <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" loading="lazy" />
         {% else %}
-          <img src="https://res.cloudinary.com/duazmtlpi/image/upload/v1735562779/profile_pictures/placeholder.jpg" alt="Default Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" />
+          <img src="https://res.cloudinary.com/duazmtlpi/image/upload/v1735562779/profile_pictures/placeholder.jpg" alt="Default Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" loading="lazy" />
         {% endif %}
       </div>
 

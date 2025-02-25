@@ -15,7 +15,7 @@
 
       <!-- Mobile Bubble -->
       <div class="fab d-md-none" data-bs-toggle="modal" data-bs-target="#bubbleModal">
-        <img src="{% static 'icons/cat-icon.png' %}" alt="Menu" />
+        <img src="{% static 'icons/cat-icon.png' %}" alt="Menu" loading="lazy" />
       </div>
       <div class="fab-tooltip d-md-none">Menu</div>
 
@@ -58,7 +58,7 @@
                 <!-- Image -->
                 {% if report.image %}
                   <div class="text-center mb-3">
-                    <img src="{{ report.image.url }}" alt="Report Image" class="img-fluid rounded report-image" />
+                    <img src="{{ report.image.url }}" alt="Report Image" class="img-fluid rounded report-image" loading="lazy" />
                   </div>
                 {% endif %}
 
