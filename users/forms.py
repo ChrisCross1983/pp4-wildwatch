@@ -1,10 +1,14 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordResetForm
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import Profile
 from cloudinary.api import resource
 from cloudinary.uploader import upload
+
+User = get_user_model()
 
 # Custom Form for User Signup
 class CustomUserCreationForm(UserCreationForm):
@@ -165,6 +169,6 @@ class CustomPasswordResetForm(PasswordResetForm):
         email = self.cleaned_data.get('email')
 
         if not User.objects.filter(email=email).exists():
-            raise ValidationError("No account found with this email address.")
+            raise ValidationError(_("No account found with this email address."))
         
         return email

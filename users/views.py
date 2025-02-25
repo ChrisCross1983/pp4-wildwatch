@@ -5,7 +5,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from .forms import CustomUserCreationForm, CustomPasswordResetForm, CustomUserUpdateForm, ProfileUpdateForm
 from django import forms
@@ -13,6 +13,7 @@ from .models import Profile
 from django.contrib.auth.models import User
 from .utils import send_verification_email
 from django.utils.timezone import now
+from django.conf import settings
 import logging
 
 logger = logging.getLogger(__name__)
@@ -243,3 +244,10 @@ def delete_account(request):
 class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
     template_name = 'users/password_reset.html'
+    success_url = reverse_lazy('users:password_reset_done')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['domain'] = settings.DEFAULT_DOMAIN
+        context['protocol'] = 'https' if self.request.is_secure() else 'http'
+        return context
