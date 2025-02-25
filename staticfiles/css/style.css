@@ -8,7 +8,21 @@ body {
     margin: 0;
 }
 
-.container-fluid {
+body, .section-text {
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-display: swap;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.container-fluid.px-0 {
+    min-height: 100vh;
+    overflow-x: hidden;
     flex: 1;
     position: relative;
 }
@@ -36,6 +50,7 @@ li {
     padding: 10px;
     border-radius: 5px;
     background-color: #f9f9f9;
+    margin-right: 5px;
 }
 
 .list-group {
@@ -123,6 +138,7 @@ li {
 /* Hero Section */
 .hero-content {
     position: relative;
+    min-height: 80vh;
     color: white;
     display: flex;
     align-items: center;
@@ -161,7 +177,6 @@ section h2 {
     color: #4E3629;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    padding: 20px;
     margin-bottom: 20px;
 }
 
@@ -177,7 +192,7 @@ section h2 {
 
 /* Icon Box */
 .icon-box {
-    background: #D9C098;
+    background: #F4E4BC;
     color: #4E3629;
     border-radius: 10px;
     padding: 20px;
@@ -189,44 +204,55 @@ section h2 {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Icon Circle */
-.icon-circle {
-    width: 80px;
-    height: 80px;
+/* Animal Circle */
+.animal-circle {
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin: 0 auto;
-    font-size: 30px;
-    color: white;
+    display: block;
 }
 
-.icon-circle.bg-primary {
-    background-color: #007bff;
+.animal-lion {
+    background-image: url("../images/lion.webp");
 }
 
-.icon-circle.bg-success {
-    background-color: #28a745;
+.animal-elephant {
+    background-image: url("../images/elephant.webp");
 }
 
-.icon-circle.bg-danger {
-    background-color: #dc3545;
+.animal-giraffe {
+    background-image: url("../images/giraffe.webp");
+}
+
+.animal-circle.lazy-bg {
+    background-color: #333;
+}
+
+/* After Loading */
+.animal-circle.lazy-bg.loaded {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Call-to-Action Section  */
 .call-to-action-section {
-    background-color: #D9C098;
+    background-color: #F4E4BC;
     color: #4E3629;
     padding: 60px 20px;
     text-align: center;
 }
 
 .call-to-action-section .btn-primary {
-    background-color: #e74c3c;
+    background-color: #D67B4B;
+    font-weight: 600;
     border: none;
-    color: white;
+    color: #000000;
     transition: background-color 0.3s ease;
 }
 
@@ -235,8 +261,9 @@ section h2 {
 }
 
 .call-to-action-section .btn-outline-light {
-    border-color: white;
-    color: white;
+    background-color: #3898FF;
+    font-weight: 600;
+    color: #000000;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -251,9 +278,16 @@ section h2 {
     top: 0;
     width: 100%;
     z-index: 1030;
-    background-color: #f8f9fa;
+    background-color: #FFC857;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 0.5rem 1rem;
+}
+
+.navbar-brand a,
+.nav-link a,
+.nav-item a {
+    color: #4D4D4D;
+    font-weight: 600;
 }
 
 /* Sidebar Styling */
@@ -339,8 +373,8 @@ section h2 {
 /* Scroll to Top Button */
 #scrollToTopBtn {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
+    bottom: 50px;
+    left: 30px;
     z-index: 999;
     display: none;
     background-color: rgba(100, 100, 100, 0.7);
@@ -633,6 +667,11 @@ button[disabled]::after {
         justify-content: center;
         margin-left: 0;
         margin-right: 0;
+    }
+
+    li {
+        margin: 5px 0;
+        padding: 5px;
     }
 }
 

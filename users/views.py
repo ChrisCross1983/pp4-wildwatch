@@ -2,12 +2,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm, ProfileUpdateForm
+from .forms import CustomUserCreationForm, CustomPasswordResetForm, CustomUserUpdateForm, ProfileUpdateForm
 from django import forms
 from .models import Profile
 from django.contrib.auth.models import User
@@ -133,27 +133,25 @@ def login_view(request):
         try:
             user = User.objects.get(username=username)
 
+            user = authenticate(request, username=username, password=password)
+            if user is None:
+                messages.error(request, "Invalid password.")
+                return redirect("users:login")
+
             if not user.is_active:
                 messages.warning(request, "Your account is not verified. Please check your email or request a new verification link.")
                 return redirect("users:email_confirm_resend")
 
+            login(request, user)
+            messages.success(request, f"Welcome back, {username}!")
+            return redirect("home")
+
         except User.DoesNotExist:
-            messages.error(request, "Invalid username or password.")
+            messages.error(request, "User does not exist.")
             return redirect("users:login")
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is None:
-            messages.error(request, "Invalid username or password.")
-            return redirect("users:login")
-
-        login(request, user)
-        messages.success(request, f"Welcome back, {username}!")
-        return redirect("home")
 
     else:
         form = AuthenticationForm()
-        logger.debug("GET request to login page")
 
     return render(request, "users/login.html", {"form": form})
 
@@ -241,3 +239,7 @@ def delete_account(request):
         messages.success(request, "Your account has been deleted successfully.")
         return redirect('users:login')
     return render(request, 'users/profile.html', {'user': request.user})
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    template_name = 'users/password_reset.html'

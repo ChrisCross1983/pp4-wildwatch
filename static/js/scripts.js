@@ -29,11 +29,10 @@ function toggleFab() {
 toggleFab();
 window.addEventListener('resize', toggleFab);
 
-// Sign Up Form and Profile Picture Preview
+// Form Submit Button Handling
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('>>> DOMContentLoaded - Form and Profil Image Preview <<<');
 
-  // --- Form Submit Button Handling ---
+  // Form Handling
   const form = document.querySelector('form');
   if (form) {
       form.addEventListener('submit', function (event) {
@@ -44,15 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           const submitButton = form.querySelector('button[type="submit"]');
-          submitButton.disabled = true;
-          const loadingText = submitButton.getAttribute('data-loading-text') || 'Submitting...';
-          submitButton.innerHTML = loadingText;
+          if (submitButton) {
+              submitButton.disabled = true;
+              const loadingText = submitButton.getAttribute('data-loading-text') || 'Submitting...';
+              submitButton.innerHTML = loadingText;
+          }
       });
-  } else {
-      console.error('>>> Form not found! <<<');
-  }
+    }
 
-  // Profil Picture Preview
+  // Profile Picture Preview
   const profilePictureInput = document.getElementById('id_profile_picture');
   const profilePicturePreview = document.getElementById('profilePicturePreview');
 
@@ -69,10 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
               profilePicturePreview.src = "/static/images/placeholder.jpg";
           }
       });
-  } else {
-      console.error('>>> Profile Picture Input or Preview not found! <<<');
-  }
-});
+    }
+  });
 
 // Lazy Loading for CSS-Background Images
 document.addEventListener("DOMContentLoaded", function () {
