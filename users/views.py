@@ -245,9 +245,13 @@ class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
     template_name = 'users/password_reset.html'
     success_url = reverse_lazy('users:password_reset_done')
+    email_template_name = 'registration/password_reset_email.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.is_secure() or not settings.DEBUG:
+            context['protocol'] = 'https'
+        else:
+            context['protocol'] = 'http'
         context['domain'] = settings.DEFAULT_DOMAIN
-        context['protocol'] = 'https' if self.request.is_secure() else 'http'
         return context

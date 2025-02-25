@@ -108,7 +108,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'WildWatch <cborza83@gmail.com>'
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https" if not DEBUG else "http"
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'
@@ -118,8 +118,10 @@ SITE_ID = 1
 WSGI_APPLICATION = 'wild_watch.wsgi.application'
 
 if DEBUG:
+    ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
     DEFAULT_DOMAIN = "127.0.0.1:8000"
 else:
+    ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
     DEFAULT_DOMAIN = "wild-watch-4ac96b54e024.herokuapp.com"
 
 if DEBUG:

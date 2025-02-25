@@ -1,7 +1,27 @@
 from django.urls import path, include
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django.db.utils import OperationalError, ProgrammingError
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from .views import signup, profile, edit_profile, delete_account, login_view, logout_view, home, signup_thanks, confirm_email, email_confirm_resend, CustomPasswordResetView
+
+def set_dynamic_site():
+    try:
+        if settings.DEBUG:
+            Site.objects.update_or_create(id=1, defaults={
+                'domain': '127.0.0.1:8000',
+                'name': 'WildWatch Local'
+            })
+        else:
+            Site.objects.update_or_create(id=1, defaults={
+                'domain': 'wild-watch-4ac96b54e024.herokuapp.com',
+                'name': 'WildWatch Heroku'
+            })
+    except (OperationalError, ProgrammingError):
+        pass
+
+set_dynamic_site()
 
 app_name = 'users'
 
