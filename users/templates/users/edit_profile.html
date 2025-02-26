@@ -1,24 +1,18 @@
 {% extends 'base_generic.html' %}
-{% load custom_tags %}
+{% load static %}
 
 {% block content %}
   <body class="edit-profile-body">
-    <div class="container mt-5">
-      <div class="d-flex justify-content-center text-center w-100" style="min-height: 250px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px;">
-        <h1 class="text-center mb-4">Edit Profile</h1>
+    <div class="container mt-5 d-flex justify-content-center text-center w-100" style="min-height: 250px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px;">
+      <div>
+        <h1 class="text-center mb-4 text-light fw-bold">Edit Profile</h1>
 
-        <!-- Debug-Outcome for form instances -->
-        <div class="alert alert-info">
-          <h4>Debug Informationen:</h4>
-          <ul>
-            <li>
-              <strong>User Form Data:</strong> {{ user_form.data }}
-            </li>
-            <li>
-              <strong>Profile Form Data:</strong> {{ profile_form.data }}
-            </li>
-          </ul>
-        </div>
+        <!-- Profil Picture Preview -->
+        {% if user.profile.profile_picture %}
+          <img id="profilePicturePreview" src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" loading="lazy" />
+        {% else %}
+          <img id="profilePicturePreview" src="https://res.cloudinary.com/duazmtlpi/image/upload/v1735562779/profile_pictures/placeholder.jpg" alt="Default Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" loading="lazy" />
+        {% endif %}
 
         <!-- Feedback Messages -->
         {% if messages %}
@@ -32,82 +26,78 @@
           </div>
         {% endif %}
 
-        <!-- Show Form Errors -->
-        {% if user_form.errors or profile_form.errors %}
-          <div class="alert alert-danger">
-            <h4>Error during actualization of profile:</h4>
-            <ul>
-              {% for field, errors in user_form.errors.items %}
-                <li>
-                  <strong>{{ field }}:</strong> {{ errors|join:', ' }}
-                </li>
-              {% endfor %}
-              {% for field, errors in profile_form.errors.items %}
-                <li>
-                  <strong>{{ field }}:</strong> {{ errors|join:', ' }}
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
-
-        <!-- Profile Update Form -->
-        <h3 class="text-center">Update Profile Details</h3>
+        <!-- Form -->
         <form method="post" enctype="multipart/form-data" class="mb-4">
           {% csrf_token %}
-
           <input type="hidden" name="save_profile" value="1" />
 
-          <!-- User Form Fields -->
-          <div class="mb-3">
-            {{ user_form.username.label_tag }}
-            {{ user_form.username }}
-            {% if user_form.username.errors %}
-              <div class="text-danger small">{{ user_form.username.errors|join:', ' }}</div>
-            {% endif %}
-          </div>
+          <ul class="list-group mb-4">
+            <li class="list-group-item">
+              <strong>First Name:</strong>
+              {{ user_form.first_name }}
+              {% if user_form.first_name.errors %}
+                <div class="text-danger small">{{ user_form.first_name.errors|join:', ' }}</div>
+              {% endif %}
+            </li>
+            <li class="list-group-item">
+              <strong>Last Name:</strong>
+              {{ user_form.last_name }}
+              {% if user_form.last_name.errors %}
+                <div class="text-danger small">{{ user_form.last_name.errors|join:', ' }}</div>
+              {% endif %}
+            </li>
+            <li class="list-group-item">
+              <strong>Username:</strong>
+              {{ user_form.username }}
+              {% if user_form.username.errors %}
+                <div class="text-danger small">{{ user_form.username.errors|join:', ' }}</div>
+              {% endif %}
+            </li>
+            <li class="list-group-item">
+              <strong>Email:</strong>
+              {{ user_form.email }}
+              {% if user_form.email.errors %}
+                <div class="text-danger small">{{ user_form.email.errors|join:', ' }}</div>
+              {% endif %}
+            </li>
+            <li class="list-group-item">
+              <strong>Change Profile Picture:</strong>
+              {{ profile_form.profile_picture }}
+              {% if profile_form.profile_picture.errors %}
+                <div class="text-danger small">{{ profile_form.profile_picture.errors|join:', ' }}</div>
+              {% endif %}
+            </li>
+          </ul>
 
-          <div class="mb-3">
-            {{ user_form.first_name.label_tag }}
-            {{ user_form.first_name }}
-            {% if user_form.first_name.errors %}
-              <div class="text-danger small">{{ user_form.first_name.errors|join:', ' }}</div>
-            {% endif %}
-          </div>
-
-          <div class="mb-3">
-            {{ user_form.last_name.label_tag }}
-            {{ user_form.last_name }}
-            {% if user_form.last_name.errors %}
-              <div class="text-danger small">{{ user_form.last_name.errors|join:', ' }}</div>
-            {% endif %}
-          </div>
-
-          <div class="mb-3">
-            {{ user_form.email.label_tag }}
-            {{ user_form.email }}
-            {% if user_form.email.errors %}
-              <div class="text-danger small">{{ user_form.email.errors|join:', ' }}</div>
-            {% endif %}
-          </div>
-
-          <!-- Profile Form Field (only profile picture) -->
-          <div class="mb-3">
-            {{ profile_form.profile_picture.label_tag }}
-            {{ profile_form.profile_picture }}
-            {% if profile_form.profile_picture.errors %}
-              <div class="text-danger small">{{ profile_form.profile_picture.errors|join:', ' }}</div>
-            {% endif %}
-          </div>
-
-          <button type="submit" name="save_profile" class="btn btn-primary">Save Profile</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
         </form>
 
-        <!-- Back Button -->
-        <div class="text-center">
+        <!-- Actions -->
+        <div class="d-flex justify-content-center gap-3">
           <a href="{% url 'users:profile' %}" class="btn btn-secondary">Back to Profile</a>
         </div>
       </div>
     </div>
+
+    <!-- Script für Picture Preview -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const profilePictureInput = document.getElementById('id_profile_picture')
+        const profilePicturePreview = document.getElementById('profilePicturePreview')
+      
+        if (profilePictureInput && profilePicturePreview) {
+          profilePictureInput.addEventListener('change', function (event) {
+            const file = event.target.files[0]
+            if (file && file.type.startsWith('image/')) {
+              const reader = new FileReader()
+              reader.onload = function (e) {
+                profilePicturePreview.src = e.target.result
+              }
+              reader.readAsDataURL(file)
+            }
+          })
+        }
+      })
+    </script>
   </body>
 {% endblock %}

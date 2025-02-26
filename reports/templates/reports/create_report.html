@@ -84,8 +84,11 @@
 
             <!-- Submit Button -->
             <div class="d-flex justify-content-between mt-4">
-              <button type="submit" data-action-button data-loading-text="Submitting..." class="create-report-btn btn btn-success px-4">Submit</button>
-              <a href="{% url 'reports:all_reports' %}" class="create-report-btn btn btn-danger px-4">Back</a>
+              <button type="submit" id="submitReportBtn" class="btn btn-success px-4">
+                <span id="submitReportText">Submit</span>
+                <span id="loadingIndicator" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+              </button>
+              <a href="{% url 'reports:all_reports' %}" class="btn btn-danger px-4">Back</a>
             </div>
           </form>
         </div>

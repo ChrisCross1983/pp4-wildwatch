@@ -31,23 +31,26 @@ window.addEventListener('resize', toggleFab);
 
 // Form Submit Button Handling
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('form.mb-4');
-  if (form) {
-      form.addEventListener('submit', function (event) {
-          if (!form.checkValidity()) {
-              event.preventDefault();
-              form.reportValidity();
-              return;
-          }
+  const forms = document.querySelectorAll('form');
 
-          const submitButton = form.querySelector('button[type="submit"]');
-          if (submitButton) {
-              submitButton.disabled = true;
-              const loadingText = submitButton.getAttribute('data-loading-text') || 'Submitting...';
-              submitButton.innerHTML = loadingText;
-          }
-      });
-  }
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        form.reportValidity();
+        return;
+      }
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
+          <span>Submitting...</span>
+          <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+        `;
+      }
+    });
+  });
 });
 
 // Profile Picture Preview
