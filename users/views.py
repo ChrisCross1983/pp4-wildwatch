@@ -134,15 +134,16 @@ def login_view(request):
 
         try:
             user = User.objects.get(username=username)
-
-            user = authenticate(request, username=username, password=password)
-            if user is None:
-                messages.error(request, "Invalid password.")
-                return redirect("users:login")
-
+            
             if not user.is_active:
                 messages.warning(request, "Your account is not verified. Please check your email or request a new verification link.")
                 return redirect("users:email_confirm_resend")
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is None:
+                messages.error(request, "Invalid password.")
+                return redirect("users:login")
 
             login(request, user)
             messages.success(request, f"Welcome back, {username}!")
