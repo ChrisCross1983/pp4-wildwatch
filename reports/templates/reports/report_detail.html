@@ -94,14 +94,14 @@
           <div class="text-center mt-3">
             {% if not user.is_staff and report.reported_by != user %}
               {% if request.user in report.helpers.all %}
-                <form method="post" action="{% url 'reports:cancel_help' report.id %}" style="display: inline">
+                <form method="post" action="{% url 'reports:cancel_help' report.id %}" style="display: inline;">
                   {% csrf_token %}
-                  <button data-action-button data-loading-text="Processing..." class="btn btn-danger btn-sm">I can no longer help</button>
+                  <button class="btn btn-danger btn-sm help-button" data-loading-text="Processing...">I can no longer help</button>
                 </form>
               {% else %}
-                <form method="post" action="{% url 'reports:help_report' report.id %}" style="display: inline">
+                <form method="post" action="{% url 'reports:help_report' report.id %}" style="display: inline;">
                   {% csrf_token %}
-                  <button class="btn btn-success btn-sm">I want to help</button>
+                  <button class="btn btn-success btn-sm help-button" data-loading-text="Processing...">I want to help</button>
                 </form>
               {% endif %}
             {% endif %}

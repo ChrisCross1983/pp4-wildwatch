@@ -29,27 +29,48 @@ function toggleFab() {
 toggleFab();
 window.addEventListener('resize', toggleFab);
 
-// Form Submit Button Handling
+// Form Submit Handler
 document.addEventListener('DOMContentLoaded', () => {
   const forms = document.querySelectorAll('form');
 
   forms.forEach((form) => {
-    form.addEventListener('submit', function (event) {
-      if (!form.checkValidity()) {
-        event.preventDefault();
-        form.reportValidity();
-        return;
-      }
+      form.addEventListener('submit', function (event) {
+          if (form.id === "delete-account-form") {
+              const confirmDelete = confirm("Are you sure you want to delete your account? This action is irreversible.");
+              if (!confirmDelete) {
+                  event.preventDefault();
+                  return;
+              }
+          }
 
-      const submitButton = form.querySelector('button[type="submit"]');
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.innerHTML = `
-          <span>Submitting...</span>
-          <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
-        `;
-      }
-    });
+          if (!form.checkValidity()) {
+              event.preventDefault();
+              form.reportValidity();
+              return;
+          }
+
+          const submitButton = form.querySelector('button[type="submit"]');
+          if (submitButton) {
+              submitButton.disabled = true;
+              submitButton.innerHTML = `
+                  <span>Submitting...</span>
+                  <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+              `;
+          }
+      });
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.help-button').forEach(button => {
+      button.addEventListener('click', function () {
+          if (!button.disabled) {
+              button.disabled = true;
+              const loadingText = button.getAttribute('data-loading-text') || 'Processing...';
+              button.innerHTML = loadingText;
+              button.closest("form").submit();
+          }
+      });
   });
 });
 

@@ -220,6 +220,8 @@ The application was deployed using Heroku with the following steps:
 
 ## Credits
 
+webaim.org - Contrast checker
+tinypng.com - Convert images
 icons8.de - Favicon
 
 ### Media
