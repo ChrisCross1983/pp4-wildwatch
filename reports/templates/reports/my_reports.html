@@ -6,8 +6,15 @@
     <!-- Title and Create Button -->
     <div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="min-height: 250px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px;">
       <h1 class="text-light fw-bold mb-3">My Reports</h1>
-      <p class="text-light lead mb-4">You have no reports.</p>
-      <a href="{% url 'reports:create_report' %}" class="btn btn-lg btn-primary">New Report</a>
+      {% if reports %}
+        <p class="text-light lead mb-4">You have {{ reports|length }} report{{ reports|length|pluralize:'s' }}.</p>
+      {% else %}
+        <p class="text-light lead mb-4">You have no reports.</p>
+      {% endif %}
+      <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'reports:create_report' %}" class="btn btn-lg btn-primary">New Report</a>
+        <a href="{% url 'reports:all_reports' %}" class="btn btn-lg btn-secondary">Animal Report Feed</a>
+      </div>
     </div>
 
     <!-- Mobile Bubble -->
@@ -37,7 +44,7 @@
       {% for report in reports %}
         <div class="col-md-8 mb-4">
           <div class="card shadow-sm">
-            <div class="card-header">
+            <div class="card-header bg-secondary text-white">
               <h5 class="m-0">{{ report.title }}</h5>
               <div>
                 <span class="badge {{ report.status_class }}">{{ report.status }}</span>
@@ -52,26 +59,38 @@
                 </div>
               {% endif %}
 
-              <!-- Image -->
-              {% if report.image %}
-                <div class="text-center mb-3">
-                  <img src="{{ report.image.url }}" alt="Report Image" class="img-fluid rounded report-image" loading="lazy" />
-                </div>
-              {% endif %}
-
               <!-- Report Details -->
+              {% if report.image %}
+                <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" style="max-height: 200px;" loading="lazy" />
+              {% endif %}
               <p>
                 <strong>Species:</strong> {{ report.species }}
+              </p>
+              <p>
+                <strong>Injury Condition:</strong> {{ report.injury_condition }}
               </p>
               <p>
                 <strong>Location:</strong> {{ report.location|default:'Unknown' }}
               </p>
               <p>
-                <strong>Status:</strong> {{ report.status }}
-              </p>
-              <p>
                 <strong>Date Reported:</strong> {{ report.date_reported|date:'Y-m-d H:i' }}
               </p>
+              <p>
+                <strong>Contributor:</strong> {{ report.reported_by|default:'Anonymous' }}
+              </p>
+              <p>
+                <strong>Helpers:</strong>
+                {% if report.helpers.count > 0 %}
+                  {{ report.helpers.all|join:', ' }}
+                {% else %}
+                  None
+                {% endif %}
+              </p>
+              {% if report.helper == user %}
+                <div class="alert alert-success text-center mt-3">
+                  <strong>You are currently helping with this report.</strong>
+                </div>
+              {% endif %}
             </div>
             <div class="card-footer d-flex justify-content-between">
               <!-- View Details Button -->
