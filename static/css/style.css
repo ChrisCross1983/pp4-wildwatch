@@ -383,6 +383,12 @@ section h2 {
     font-size: large !important;
 }
 
+.filter-label {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    padding: 5px;
+}
+
 /* Scroll to Top Button */
 #scrollToTopBtn {
     position: fixed;

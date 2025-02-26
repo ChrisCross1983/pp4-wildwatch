@@ -13,6 +13,7 @@ from cloudinary.uploader import upload, destroy
 User = get_user_model()
 
 # Custom Form for User Signup
+
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, label="First Name")
     last_name = forms.CharField(max_length=30, required=True, label="Last Name")
@@ -113,7 +114,7 @@ class CustomUserUpdateForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        
+
         user.email = self.cleaned_data['email']
         user.username = self.cleaned_data['username']
         user.first_name = self.cleaned_data['first_name']
@@ -162,5 +163,5 @@ class CustomPasswordResetForm(PasswordResetForm):
 
         if not User.objects.filter(email=email).exists():
             raise ValidationError(_("No account found with this email address."))
-        
+
         return email

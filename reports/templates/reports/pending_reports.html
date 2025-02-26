@@ -5,18 +5,16 @@
 <body class="pending-reports-body">
 <div class="container mt-5">
     <!-- Title Section -->
-    <div class="d-flex align-items-center justify-content-center text-center">
-        <div class="hero-text">
-            <h1 class="text-light fw-bold">Manage Reports</h1>
-            <p class="text-light lead">Admin Panel for Reviewing Reports</p>
-        </div>
+    <div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="min-height: 250px; background: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 20px;">
+        <h1 class="text-light fw-bold">Manage Reports</h1>
+        <p class="text-light lead">Admin Panel for Reviewing Reports</p>
     </div>
 
     <!-- Filter Form -->
     <form method="get" action="." class="mb-4 mt-4">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <label for="filter_status" class="form-label text-light"><strong>Filter by Status:</strong></label>
+                <label for="filter_status" class="filter-label form-label text-light"><strong>Filter by Status:</strong></label>
                 <select name="filter_status" id="filter_status" class="form-select">
                     <option value="">All</option>
                     <option value="Pending" {% if request.GET.filter_status == "Pending" %}selected{% endif %}>Pending</option>
@@ -31,8 +29,8 @@
 
     <!-- Pending Reports Section -->
     <div class="row justify-content-center">
-        <div class="section-header pending-header">
-            <h1 class="text-center text-light fw-bold">Pending Reports</h1>
+        <div class="d-flex flex-column justify-content-center align-items-center text-center w-100 mb-3" style="background: rgb(248, 121, 2, 0.9); border-radius: 10px; padding: 20px;">
+            <h1 class="text-light fw-bold">Pending Reports</h1>
         </div>
         {% for report in pending_reports %}
         <div class="col-md-8 mb-4">
@@ -62,14 +60,16 @@
             </div>
         </div>
         {% empty %}
-        <p class="text-center text-light">No pending reports found.</p>
+        <div class="d-flex justify-content-center align-items-center text-center w-100" style="background: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 20px;">
+            <p class="text-light">No pending reports found.</p>
+        </div>
         {% endfor %}
     </div>
 
     <!-- Rejected Reports Section -->
     <div class="row justify-content-center">
-        <div class="section-header rejected-header">
-            <h1 class="text-center text-light fw-bold">Rejected Reports</h1>
+        <div class="d-flex flex-column justify-content-center align-items-center text-center w-100 mb-3" style="background: rgba(250, 1, 1, 0.9); border-radius: 10px; padding: 20px;">
+            <h1 class="text-light fw-bold">Rejected Reports</h1>
         </div>
         {% for report in rejected_reports %}
         <div class="col-md-8 mb-4">
@@ -99,7 +99,9 @@
             </div>
         </div>
         {% empty %}
-        <p class="text-center text-light">No rejected reports found.</p>
+        <div class="d-flex justify-content-center align-items-center text-center w-100" style="background: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 20px;">
+            <p class="text-light">No rejected reports found.</p>
+        </div>
         {% endfor %}
     </div>
 </div>

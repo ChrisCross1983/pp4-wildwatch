@@ -25,7 +25,7 @@ def signup(request):
         print(">>> POST Request received <<<")
         form = CustomUserCreationForm(request.POST, request.FILES)
         print("Form valid:", form.is_valid())
-        
+
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
@@ -64,7 +64,7 @@ def confirm_email(request, token):
         if profile.user.is_active:
             messages.info(request, "Your email is already verified. You can log in.")
             return redirect("users:login")
-        
+
         # Token is expired
         if profile.email_token_expiry and profile.email_token_expiry < now():
             messages.warning(request, "This token has expired. Please request a new confirmation email.")
@@ -90,7 +90,7 @@ def confirm_email(request, token):
         if user_exists:
             messages.info(request, "Your email is already verified. You can log in.")
             return redirect("users:login")
-        
+
         # Token is completly invalid or manipulated
         messages.error(request, "Invalid token. Please request a new confirmation email.")
         return redirect("users:email_confirm_resend")
@@ -118,7 +118,7 @@ def email_confirm_resend(request):
 # Custom Login View
 class CustomLoginView(LoginView):
     template_name = 'users/login.html'
-    
+
     def get_success_url(self):
         next_url = self.request.GET.get('next')
         if next_url:
@@ -206,7 +206,7 @@ def edit_profile(request):
 
         print("\n=== DEBUG: POST Data ===\n", request.POST)
         print("\n=== DEBUG: FILES Data ===\n", request.FILES)
-        
+
         print("\n=== DEBUG: Forms starting to initialize ===\n")
 
         user_form = CustomUserUpdateForm(request.POST, instance=request.user)
@@ -216,7 +216,7 @@ def edit_profile(request):
 
         if 'save_profile' in request.POST:
             logger.info("Save Profile Button Clicked")
-            
+
             print("\n=== DEBUG: Before is_valid() Check ===\n")
 
             user_form_valid = user_form.is_valid()
@@ -256,9 +256,9 @@ def edit_profile(request):
                 with connection.cursor() as cursor:
                     cursor.execute("""
                         UPDATE auth_user
-                        SET first_name = %s, 
-                            last_name = %s, 
-                            email = %s, 
+                        SET first_name = %s,
+                            last_name = %s,
+                            email = %s,
                             username = %s
                         WHERE id = %s
                     """, [
