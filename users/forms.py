@@ -4,9 +4,11 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from .models import Profile
 from cloudinary.api import resource
-from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
+from cloudinary.uploader import upload, destroy
 
 User = get_user_model()
 
@@ -32,8 +34,13 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_profile_picture(self):
         profile_picture = self.cleaned_data.get('profile_picture')
-        if profile_picture and profile_picture.size > 5 * 1024 * 1024:
-            raise forms.ValidationError("The profile picture is too large (max 5 MB).")
+
+        if not profile_picture:
+            return self.instance.profile_picture
+
+        if profile_picture:
+            if profile_picture.size > 5 * 1024 * 1024:
+                raise forms.ValidationError("The image should be not bigger than 5 MB.")
         return profile_picture
 
     def clean_email(self):
@@ -63,11 +70,6 @@ class CustomUserCreationForm(UserCreationForm):
 
 # Custom Form for Editing User Details
 class CustomUserUpdateForm(forms.ModelForm):
-    profile_picture = forms.ImageField(
-        required=False,
-        label="Change Profile Picture",
-        widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
-    )
     email = forms.EmailField(
         max_length=254,
         required=True,
@@ -103,23 +105,25 @@ class CustomUserUpdateForm(forms.ModelForm):
             raise forms.ValidationError("This email address is already in use.")
         return email
 
-    def clean_first_name(self):
-        first_name = self.cleaned_data.get('first_name')
-        if not first_name.strip():
-            raise forms.ValidationError("First Name cannot be empty.")
-        return first_name
-
-    def clean_last_name(self):
-        last_name = self.cleaned_data.get('last_name')
-        if not last_name.strip():
-            raise forms.ValidationError("Last Name cannot be empty.")
-        return last_name
-
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if not username.strip():
-            raise forms.ValidationError("Username cannot be empty.")
+        if User.objects.filter(username=username).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("This username is already taken.")
         return username
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        
+        user.email = self.cleaned_data['email']
+        user.username = self.cleaned_data['username']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        print("User Object Before Save:", user.__dict__)
+
+        if commit:
+            user.save()
+            print("User Object After Save:", user.__dict__)
+        return user
 
 # Form for Editing Profile-Specific Details
 class ProfileUpdateForm(forms.ModelForm):
@@ -131,37 +135,25 @@ class ProfileUpdateForm(forms.ModelForm):
         }
 
     def clean_profile_picture(self):
-        profile_picture = self.cleaned_data.get('profile_picture')
-        if profile_picture:
+        picture = self.cleaned_data.get('profile_picture')
+        if picture and hasattr(picture, 'size'):
+            if picture.size > 5 * 1024 * 1024:
+                raise forms.ValidationError("The image should be not bigger than 5 MB.")
+        return picture
 
-            try:
-                upload_result = upload(profile_picture)
-            except Exception as e:
-                raise forms.ValidationError(f"Fehler beim Hochladen des Bildes: {e}")
-
-
-            if upload_result.get('bytes', 0) > 5 * 1024 * 1024:
-                raise forms.ValidationError("Die Datei darf nicht größer als 5 MB sein.")
-
-            self.cleaned_data['profile_picture_public_id'] = upload_result.get('public_id')
-
-        return profile_picture
-
-    def clean(self):
-        cleaned_data = super().clean()
-        if not cleaned_data.get('profile_picture'):
-            cleaned_data['profile_picture'] = 'profile_pictures/placeholder.jpg'
-        return cleaned_data
-    
     def save(self, commit=True):
         profile = super().save(commit=False)
-        profile_picture_public_id = self.cleaned_data.get('profile_picture_public_id')
+        profile_picture = self.cleaned_data.get('profile_picture')
+        print("Profile Object Before Save:", profile.__dict__)
 
-        if profile_picture_public_id:
-            profile.profile_picture = profile_picture_public_id
+        if profile_picture:
+            upload_result = upload(profile_picture.file)
+            profile.profile_picture = upload_result['public_id']
+            print("Profile Picture Uploaded:", profile.profile_picture)
 
         if commit:
             profile.save()
+            print("Profile Object After Save:", profile.__dict__)
         return profile
 
 class CustomPasswordResetForm(PasswordResetForm):

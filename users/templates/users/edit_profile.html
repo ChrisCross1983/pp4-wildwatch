@@ -2,67 +2,112 @@
 {% load custom_tags %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Edit Profile</h1>
+  <body class="edit-profile-body">
+    <div class="container mt-5">
+      <div class="d-flex justify-content-center text-center w-100" style="min-height: 250px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px;">
+        <h1 class="text-center mb-4">Edit Profile</h1>
 
-    <!-- Profile Update Form -->
-    <h3>Update Profile Details</h3>
-    <form method="post" enctype="multipart/form-data" class="mb-4">
-        {% csrf_token %}
-        <div class="mb-3">
+        <!-- Debug-Outcome for form instances -->
+        <div class="alert alert-info">
+          <h4>Debug Informationen:</h4>
+          <ul>
+            <li>
+              <strong>User Form Data:</strong> {{ user_form.data }}
+            </li>
+            <li>
+              <strong>Profile Form Data:</strong> {{ profile_form.data }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feedback Messages -->
+        {% if messages %}
+          <div class="container mt-3">
+            {% for message in messages %}
+              <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Show Form Errors -->
+        {% if user_form.errors or profile_form.errors %}
+          <div class="alert alert-danger">
+            <h4>Error during actualization of profile:</h4>
+            <ul>
+              {% for field, errors in user_form.errors.items %}
+                <li>
+                  <strong>{{ field }}:</strong> {{ errors|join:', ' }}
+                </li>
+              {% endfor %}
+              {% for field, errors in profile_form.errors.items %}
+                <li>
+                  <strong>{{ field }}:</strong> {{ errors|join:', ' }}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <!-- Profile Update Form -->
+        <h3 class="text-center">Update Profile Details</h3>
+        <form method="post" enctype="multipart/form-data" class="mb-4">
+          {% csrf_token %}
+
+          <input type="hidden" name="save_profile" value="1" />
+
+          <!-- User Form Fields -->
+          <div class="mb-3">
             {{ user_form.username.label_tag }}
-            {{ user_form.username|add_class:"form-control" }}
+            {{ user_form.username }}
             {% if user_form.username.errors %}
-            <div class="text-danger small">{{ user_form.username.errors|join:", " }}</div>
+              <div class="text-danger small">{{ user_form.username.errors|join:', ' }}</div>
             {% endif %}
-        </div>
-        <div class="mb-3">
+          </div>
+
+          <div class="mb-3">
             {{ user_form.first_name.label_tag }}
-            {{ user_form.first_name|add_class:"form-control" }}
+            {{ user_form.first_name }}
             {% if user_form.first_name.errors %}
-            <div class="text-danger small">{{ user_form.first_name.errors|join:", " }}</div>
+              <div class="text-danger small">{{ user_form.first_name.errors|join:', ' }}</div>
             {% endif %}
-        </div>
-        <div class="mb-3">
+          </div>
+
+          <div class="mb-3">
             {{ user_form.last_name.label_tag }}
-            {{ user_form.last_name|add_class:"form-control" }}
+            {{ user_form.last_name }}
             {% if user_form.last_name.errors %}
-            <div class="text-danger small">{{ user_form.last_name.errors|join:", " }}</div>
+              <div class="text-danger small">{{ user_form.last_name.errors|join:', ' }}</div>
             {% endif %}
-        </div>
-        <div class="mb-3">
+          </div>
+
+          <div class="mb-3">
             {{ user_form.email.label_tag }}
-            {{ user_form.email|add_class:"form-control" }}
+            {{ user_form.email }}
             {% if user_form.email.errors %}
-            <div class="text-danger small">{{ user_form.email.errors|join:", " }}</div>
+              <div class="text-danger small">{{ user_form.email.errors|join:', ' }}</div>
             {% endif %}
-        </div>
-        <div class="mb-3">
+          </div>
+
+          <!-- Profile Form Field (only profile picture) -->
+          <div class="mb-3">
             {{ profile_form.profile_picture.label_tag }}
-            {{ profile_form.profile_picture|add_class:"form-control" }}
+            {{ profile_form.profile_picture }}
             {% if profile_form.profile_picture.errors %}
-            <div class="text-danger small">{{ profile_form.profile_picture.errors|join:", " }}</div>
+              <div class="text-danger small">{{ profile_form.profile_picture.errors|join:', ' }}</div>
             {% endif %}
+          </div>
+
+          <button type="submit" name="save_profile" class="btn btn-primary">Save Profile</button>
+        </form>
+
+        <!-- Back Button -->
+        <div class="text-center">
+          <a href="{% url 'users:profile' %}" class="btn btn-secondary">Back to Profile</a>
         </div>
-        <button 
-            type="submit" 
-            name="save_profile" 
-            class="btn btn-primary">
-            Save Profile
-        </button>
-    </form>
-
-    <!-- Password Change Form -->
-    <h3>Change Password</h3>
-    <form method="post" class="mb-4">
-        {% csrf_token %}
-        {{ password_form.as_p }}
-        <button type="submit" name="change_password" class="btn btn-warning">Change Password</button>
-    </form>
-
-    <!-- Back Button -->
-    <div class="text-center">
-        <a href="{% url 'users:profile' %}" class="btn btn-secondary">Back to Profile</a>
+      </div>
     </div>
-</div>
+  </body>
 {% endblock %}

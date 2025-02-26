@@ -13,6 +13,7 @@ from .models import Profile
 from django.contrib.auth.models import User
 from .utils import send_verification_email
 from django.utils.timezone import now
+from django.db import connection
 from django.conf import settings
 import logging
 
@@ -171,64 +172,147 @@ def home(request):
 def profile(request):
     return render(request, 'users/profile.html', {'user': request.user})
 
+def debug_check_database(user_id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT first_name, last_name, email, username FROM auth_user WHERE id = %s", [user_id])
+        result = cursor.fetchone()
+        print("\n=== DIREKTE DATABASE REQUEST ===\n")
+        print("First Name:", result[0])
+        print("Last Name:", result[1])
+        print("Email:", result[2])
+        print("Username:", result[3])
+
 # Edit Profile View
+def debug_check_database(user_id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT first_name, last_name, email, username FROM auth_user WHERE id = %s", [user_id])
+        result = cursor.fetchone()
+        print("\n=== DIREKTE DATENBANKABFRAGE ===\n")
+        print("First Name:", result[0])
+        print("Last Name:", result[1])
+        print("Email:", result[2])
+        print("Username:", result[3])
+
 @login_required
 def edit_profile(request):
     logger.info("Edit profile view accessed")
     profile = request.user.profile
     old_email = request.user.email
 
-    user_form = CustomUserUpdateForm(instance=request.user)
-    profile_form = ProfileUpdateForm(instance=profile)
-    password_form = PasswordChangeForm(user=request.user)
-
     if request.method == 'POST':
         logger.info("Received POST request")
-        logger.info(f"POST data: {request.POST}")
-        logger.info(f"FILES data: {request.FILES}")
+        logger.info(f"POST Data: {request.POST}")
+        logger.info(f"FILES Data: {request.FILES}")
+
+        print("\n=== DEBUG: POST Data ===\n", request.POST)
+        print("\n=== DEBUG: FILES Data ===\n", request.FILES)
         
+        print("\n=== DEBUG: Forms starting to initialize ===\n")
+
+        user_form = CustomUserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+
+        print("\n=== DEBUG: Forms are initialized ===\n")
+
         if 'save_profile' in request.POST:
-            user_form = CustomUserUpdateForm(request.POST, instance=request.user)
-            profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+            logger.info("Save Profile Button Clicked")
             
-            logger.info(f"User form valid: {user_form.is_valid()} - Errors: {user_form.errors}")
-            logger.info(f"Profile form valid: {profile_form.is_valid()} - Errors: {profile_form.errors}")
+            print("\n=== DEBUG: Before is_valid() Check ===\n")
 
-            if user_form.is_valid() and profile_form.is_valid():
-                new_email = user_form.cleaned_data['email']
-                logger.info("Forms are valid. Saving data...")
+            user_form_valid = user_form.is_valid()
+            profile_form_valid = profile_form.is_valid()
 
+            print("\n=== DEBUG: user_form_valid =", user_form_valid)
+            print("\n=== DEBUG: profile_form_valid =", profile_form_valid)
 
-                if old_email != new_email:
-                    logger.info("Email changed. Sending verification email...")
-                    request.user.is_active = False
-                    request.user.save()
-                    send_verification_email(request.user)
+            if not user_form_valid:
+                print("\n=== DEBUG: User Form Validation Errors ===\n", user_form.errors)
+
+            if not profile_form_valid:
+                print("\n=== DEBUG: Profile Form Validation Errors ===\n", profile_form.errors)
+
+            if user_form_valid and profile_form_valid:
+                print("\n=== DEBUG: Forms are validated, now saving ===\n")
+
+                user = user_form.save(commit=False)
+
+                if old_email != user_form.cleaned_data['email']:
+                    print("\n=== DEBUG: Email was changed! Deactivating user and sending verification email ===\n")
+                    user.is_active = False
+                    user.save()
+                    send_verification_email(user)
                     messages.success(request, "Your email was updated. Please verify your new email.")
+
+                    logout(request)
                     return redirect('users:login')
 
-                user_form.save()
-                profile_form.save()
-                logger.info("Profile and user data saved successfully.")
+                user.save()
+
+                print("\n=== DEBUG: user.save() was executed ===\n")
+
+                debug_check_database(request.user.pk)
+
+                print("\n=== DEBUG: force_db_update is now executing ===\n")
+                with connection.cursor() as cursor:
+                    cursor.execute("""
+                        UPDATE auth_user
+                        SET first_name = %s, 
+                            last_name = %s, 
+                            email = %s, 
+                            username = %s
+                        WHERE id = %s
+                    """, [
+                        user_form.cleaned_data['first_name'],
+                        user_form.cleaned_data['last_name'],
+                        user_form.cleaned_data['email'],
+                        user_form.cleaned_data['username'],
+                        request.user.pk
+                    ])
+
+                debug_check_database(request.user.pk)
+
+                request.user.refresh_from_db()
+
+                saved_user = User.objects.get(pk=request.user.pk)
+                print("\n=== Saved User Data (after SQL-Update) ===\n", saved_user.__dict__)
+
+                if 'profile_picture' in request.FILES:
+                    profile_picture = profile_form.cleaned_data.get('profile_picture')
+
+                    if profile_picture:
+                        from cloudinary.uploader import upload, destroy
+                        try:
+                            if profile.profile_picture and isinstance(profile.profile_picture, str):
+                                destroy(profile.profile_picture)
+
+                            upload_result = upload(profile_picture.file)
+                            profile.profile_picture = upload_result['public_id']
+                            profile.save()
+
+                            logger.info("Profile picture updated successfully.")
+                            print("\n=== DEBUG: Profile picture uploaded successfully ===\n")
+                        except Exception as e:
+                            logger.error(f"Error uploading profile picture: {str(e)}")
+                            messages.error(request, "There was an error uploading the profile picture.")
+                            print("\n=== DEBUG: Error uploading profile picture ===\n", str(e))
+
                 messages.success(request, "Your profile has been updated successfully!")
+
                 return redirect('users:profile')
             else:
-                logger.warning("Form validation failed.")
+                print("\n=== DEBUG: Form validation failed! ===\n")
+                messages.error(request, "There was an error updating your profile. Please check the form for errors.")
+        else:
+            print("\n=== DEBUG: save_profile Button was not found! ===\n")
+    else:
+        print("\n=== DEBUG: GET Request, initializing forms ===\n")
+        user_form = CustomUserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=profile)
 
-        elif 'change_password' in request.POST:
-            password_form = PasswordChangeForm(user=request.user, data=request.POST)
-            if password_form.is_valid():
-                password_form.save()
-                update_session_auth_hash(request, password_form.user)
-                messages.success(request, "Your password has been updated successfully!")
-                logger.info("Password updated successfully.")
-                return redirect('users:profile')
-
-    logger.info("Rendering edit profile page.")
+    print("\n=== DEBUG: Rendering edit_profile.html ===\n")
     return render(request, 'users/edit_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form,
-        'password_form': password_form,
     })
 
 # Delete Account

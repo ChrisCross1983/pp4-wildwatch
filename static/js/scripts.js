@@ -31,9 +31,7 @@ window.addEventListener('resize', toggleFab);
 
 // Form Submit Button Handling
 document.addEventListener('DOMContentLoaded', () => {
-
-  // Form Handling
-  const form = document.querySelector('form');
+  const form = document.querySelector('form.mb-4');
   if (form) {
       form.addEventListener('submit', function (event) {
           if (!form.checkValidity()) {
@@ -49,27 +47,27 @@ document.addEventListener('DOMContentLoaded', () => {
               submitButton.innerHTML = loadingText;
           }
       });
-    }
+  }
+});
 
-  // Profile Picture Preview
-  const profilePictureInput = document.getElementById('id_profile_picture');
-  const profilePicturePreview = document.getElementById('profilePicturePreview');
+// Profile Picture Preview
+const profilePictureInput = document.getElementById('id_profile_picture');
+const profilePicturePreview = document.getElementById('profilePicturePreview');
 
-  if (profilePictureInput && profilePicturePreview) {
-      profilePictureInput.addEventListener('change', (event) => {
-          const file = event.target.files[0];
-          if (file && file.type.startsWith('image/')) {
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                  profilePicturePreview.src = e.target.result;
-              };
-              reader.readAsDataURL(file);
-          } else {
-              profilePicturePreview.src = "/static/images/placeholder.jpg";
-          }
-      });
-    }
-  });
+if (profilePictureInput && profilePicturePreview) {
+    profilePictureInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                profilePicturePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            profilePicturePreview.src = "/static/images/placeholder.jpg";
+        }
+    });
+  }
 
 // Lazy Loading for CSS-Background Images
 document.addEventListener("DOMContentLoaded", function () {
@@ -95,4 +93,3 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
-

@@ -57,6 +57,10 @@ li {
     opacity: 0.9;
 }
 
+.text-danger {
+    color: #9C1C28 !important;
+}
+
 /* Background Images */
 
 .home-body,
@@ -70,7 +74,8 @@ li {
     min-height: 100vh;
 }
 
-.all-reports-body {
+.all-reports-body,
+.edit-profile-body {
     background-image: url("../images/hero_rhino.webp");
     background-position: center center;
     background-size: cover;
@@ -89,6 +94,10 @@ li {
     background-repeat: no-repeat;
     width: 100vw;
     min-height: 100vh;
+}
+
+.my-reports-list {
+    margin-top: 30px;
 }
 
 .create-report-body {
@@ -337,7 +346,7 @@ section h2 {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     font-size: 24px;
     cursor: pointer;
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
 .fab img {
@@ -369,6 +378,10 @@ section h2 {
 }
 
 /* Other Styling */
+
+.create-report-btn {
+    font-size: large !important;
+}
 
 /* Scroll to Top Button */
 #scrollToTopBtn {
@@ -445,7 +458,6 @@ button[disabled]::after {
     overflow: hidden;
     margin: 0 auto;
     text-align: center;
-    opacity: 0.9;
 }
 
 .card-header {
