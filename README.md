@@ -202,6 +202,14 @@ Tested and verified on:
 
     ![CSS Validator Results](assets/w3c_css_validation.png)
 
+- **JavaScript Validation**: Used [JSHint](https://jshint.com/) to validate JavaScript code. The validation process returned a clean report compliant with ES6+ standards.
+
+### Lighthouse scores
+
+Lighthouse metrics were scored on Incognito Chrome
+
+
+
 ### Manual Testing
 
 Features were manually tested by creating various user scenarios to ensure functionality.
