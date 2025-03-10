@@ -29,16 +29,16 @@
 
     <!-- Pending Reports Section -->
     <div class="row justify-content-center">
-        <div class="d-flex flex-column justify-content-center align-items-center text-center w-100 mb-3" style="background: rgb(248, 121, 2, 0.9); border-radius: 10px; padding: 20px;">
-            <h1 class="text-light fw-bold">Pending Reports</h1>
+        <div class="d-flex flex-column justify-content-center align-items-center text-center w-100 mb-3" style="background: rgb(248, 121, 2, 1); border-radius: 10px; padding: 20px;">
+            <h1 class="fw-bold">Pending Reports</h1>
         </div>
         {% for report in pending_reports %}
         <div class="col-md-8 mb-4">
             <div class="card shadow-sm">
-                <div class="card-header">
+                <div class="card-header bg-secondary text-white">
                     <h5 class="m-0">{{ report.title }}</h5>
                     <div>
-                        <span class="badge {{ report.status_class }}">{{ report.status }}</span>
+                        <span class="badge-open {{ report.status_class }}">{{ report.status }}</span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -68,13 +68,13 @@
 
     <!-- Rejected Reports Section -->
     <div class="row justify-content-center">
-        <div class="d-flex flex-column justify-content-center align-items-center text-center w-100 mb-3" style="background: rgba(250, 1, 1, 0.9); border-radius: 10px; padding: 20px;">
-            <h1 class="text-light fw-bold">Rejected Reports</h1>
+        <div class="d-flex flex-column justify-content-center align-items-center text-center w-100 mb-3" style="background: rgba(250, 1, 1, 1); border-radius: 10px; padding: 20px;">
+            <h1 class="fw-bold">Rejected Reports</h1>
         </div>
         {% for report in rejected_reports %}
         <div class="col-md-8 mb-4">
             <div class="card shadow-sm">
-                <div class="card-header">
+                <div class="card-header bg-secondary text-white">
                     <h5 class="m-0">{{ report.title }}</h5>
                     <div>
                         <span class="badge bg-danger">Rejected</span>

@@ -4,6 +4,7 @@ from .models import InjuryReport
 from .forms import InjuryReportForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db import models
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect
@@ -147,8 +148,17 @@ def report_detail(request, report_id):
 
 @login_required
 def my_reports(request):
-    reports = InjuryReport.objects.filter(reported_by=request.user).order_by('-date_reported')
-    
+    reports = InjuryReport.objects.filter(reported_by=request.user).order_by(
+        models.Case(
+            models.When(publication_status='Rejected', then=models.Value(0)),
+            models.When(publication_status='Pending', then=models.Value(1)),
+            models.When(publication_status='Approved', then=models.Value(2)),
+            default=models.Value(3),
+            output_field=models.IntegerField(),
+        ),
+        '-date_reported'
+    )
+
     for report in reports:
         report.status_class = {
             "Open": "badge-open",
@@ -188,6 +198,11 @@ def edit_report(request, report_id):
 
             changes = "\n".join([f"Field '{field}' changed from '{old}' to '{new}'"
                                  for field, (old, new) in updated_fields.items()])
+            
+            # No Change, so save and hint
+            if not updated_fields:
+                messages.warning(request, "No changes were made. Please adjust the report before resubmission.")
+                return redirect('reports:edit_report', report_id=report.id)
 
             # Resubmission logic: Change status to pending and notify admin
             if report.publication_status == "Rejected":

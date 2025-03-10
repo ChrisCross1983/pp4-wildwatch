@@ -14,18 +14,6 @@
           <img id="profilePicturePreview" src="https://res.cloudinary.com/duazmtlpi/image/upload/v1735562779/profile_pictures/placeholder.jpg" alt="Default Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" loading="lazy" />
         {% endif %}
 
-        <!-- Feedback Messages -->
-        {% if messages %}
-          <div class="container mt-3">
-            {% for message in messages %}
-              <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-
         <!-- Form -->
         <form method="post" enctype="multipart/form-data" class="mb-4">
           {% csrf_token %}

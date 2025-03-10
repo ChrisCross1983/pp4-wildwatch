@@ -267,15 +267,15 @@ section h2 {
 }
 
 .call-to-action-section .btn-primary {
-    background-color: #D67B4B;
-    font-weight: 600;
+    background-color: #0d6efd;
     border: none;
-    color: #000000;
+    color: #ffffff;
     transition: background-color 0.3s ease;
 }
 
 .call-to-action-section .btn-primary:hover {
-    background-color: #c0392b;
+    background-color: #0a58ca;
+    transition: background-color 0.3s ease;
 }
 
 .call-to-action-section .btn-outline-light {
@@ -452,6 +452,25 @@ button[disabled]::after {
     animation: ellipsis 1.5s infinite;
 }
 
+.btn-danger {
+    background-color: #830814;
+    font-weight: 600;
+}
+
+.btn-success {
+    font-weight: 600;
+}
+
+.btn-warning {
+    background-color: #f0b914;
+    font-weight: 600;
+}
+
+.btn-info {
+    background-color: #49a9e9;
+    font-weight: 600;
+}
+
 @keyframes ellipsis {
     0% {
         content: "...";
@@ -544,7 +563,7 @@ button[disabled]::after {
 
 .no-helper-badge {
     font-weight: bold;
-    color: #d9534f;
+    color: #830814;
 }
 
 .help-status {
@@ -556,7 +575,7 @@ button[disabled]::after {
 }
 
 .helping-label {
-    background-color: #28a745;
+    background-color: #42c460;
     color: white;
     font-size: 1.1rem;
     padding: 0.5rem 1.5rem;
@@ -592,8 +611,8 @@ button[disabled]::after {
 }
 
 .badge-rejected {
-    background-color: #dc3545;
-    color: #fff;
+    background-color: #830814;
+    color: #ffffff;
     font-size: 0.9rem;
     font-weight: bold;
     padding: 0.25rem 0.75rem;
@@ -601,8 +620,8 @@ button[disabled]::after {
 }
 
 .badge-approved {
-    background-color: #28a745;
-    color: #fff;
+    background-color: #42c460;
+    color: #212529;
     font-size: 0.9rem;
     font-weight: bold;
     padding: 0.25rem 0.75rem;
@@ -610,7 +629,7 @@ button[disabled]::after {
 }
 
 .badge-pending {
-    background-color: #ffc107;
+    background-color: #f0b914;
     color: #212529;
     font-size: 0.9rem;
     font-weight: bold;
@@ -619,8 +638,8 @@ button[disabled]::after {
 }
 
 .badge-open {
-    background-color: #17a2b8;
-    color: #fff;
+    background-color: #1dc2db;
+    color: #212529;
     font-size: 0.9rem;
     font-weight: bold;
     padding: 0.25rem 0.75rem;
@@ -757,5 +776,9 @@ button[disabled]::after {
         flex: 0 0 100% !important;
         max-width: 100% !important;
         padding: 15px;
+    }
+
+    .form-select {
+        margin-bottom: 10px;
     }
 }
