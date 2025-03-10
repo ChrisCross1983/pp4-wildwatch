@@ -14,7 +14,6 @@ from django.http import HttpResponseForbidden, Http404
 def is_staff_user(user):
     return user.is_staff
 
-
 @login_required
 def create_report(request):
     if request.method == 'POST':
@@ -287,10 +286,8 @@ def approve_report(request, report_id):
             fail_silently=False,
         )
 
-    messages.success(request, f"The report '{
-                     report.title}' has been approved.")
+    messages.success(request, f"The report '{report.title}' has been approved.")
     return redirect('reports:pending_reports')
-
 
 @login_required
 @user_passes_test(is_staff_user)
@@ -332,8 +329,7 @@ def reject_report(request, report_id):
                 fail_silently=False,
             )
 
-        messages.success(request, f"The report '{
-                         report.title}' has been rejected, and the user has been notified.")
+        messages.success(request, f"The report '{report.title}' has been rejected, and the user has been notified.")
         return redirect('reports:pending_reports')
 
     return render(request, 'reports/reject_report.html', {'report': report})
@@ -444,7 +440,6 @@ def close_report(request, report_id):
     messages.error(request, "You are not authorized to close this report.")
     return redirect('reports:my_reports')
 
-
 @login_required
 def help_report(request, report_id):
     report = get_object_or_404(InjuryReport, id=report_id)
@@ -490,7 +485,6 @@ def help_report(request, report_id):
     else:
         messages.error(request, "This report is no longer available for help.")
     return redirect('reports:all_reports')
-
 
 @login_required
 def cancel_help(request, report_id):

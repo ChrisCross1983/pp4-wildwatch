@@ -196,7 +196,11 @@ Tested and verified on:
 
 - **HTML Validation**: Used the [W3C HTML Validator](https://validator.w3.org/) which returned the following results:
 
+    **Before**:
     ![HTML Validator Results](assets/w3c_html_validation.png)
+
+    **After**:
+    ![HTML Validator Results](assets/w3c_css_validation_after.png.jpg)
 
 - **CSS Validation**: Used the [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) which returned the following results:
 
@@ -208,7 +212,7 @@ Tested and verified on:
 
 Lighthouse metrics were scored on Incognito Chrome
 
-
+![Lighthouse Test - Home Page](assets/lighthouse_home.jpg)
 
 ### Manual Testing
 

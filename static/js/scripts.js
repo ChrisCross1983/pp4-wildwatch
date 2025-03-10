@@ -12,7 +12,7 @@ window.onscroll = function () {
       scrollToTopBtn.style.display = 'none';
     }
   }
-}
+};
 
 // Toggle Bubble Visibility
 function toggleFab() {
