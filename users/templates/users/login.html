@@ -1,8 +1,9 @@
 {% extends 'base_generic.html' %}
 {% load static %}
 
+{% block body_class %}login-body{% endblock %}
+
 {% block content %}
-  <body class="login-body">
     <div class="container mt-5">
       <div class="card">
         <div class="card-body">
@@ -41,5 +42,4 @@
         </div>
       </div>
     </div>
-  </body>
 {% endblock %}

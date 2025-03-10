@@ -1,8 +1,9 @@
 {% extends 'base_generic.html' %}
 {% load static %}
 
+{% block body_class %}pending-reports-body{% endblock %}
+
 {% block content %}
-<body class="pending-reports-body">
 <div class="container mt-5">
     <!-- Title Section -->
     <div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="min-height: 250px; background: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 20px;">
@@ -105,5 +106,4 @@
         {% endfor %}
     </div>
 </div>
-<body>
 {% endblock %}

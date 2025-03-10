@@ -1,8 +1,9 @@
 {% extends 'base_generic.html' %}
 {% load static %}
 
+{% block body_class %}my-reports-body{% endblock %}
+
 {% block content %}
-  <body class="my-reports-body">
     <!-- Title and Create Button -->
     <div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="min-height: 250px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px;">
       <h1 class="text-light fw-bold mb-3">My Reports</h1>
@@ -102,5 +103,4 @@
 
       {% endfor %}
     </div>
-  </body>
 {% endblock %}

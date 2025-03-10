@@ -1,8 +1,9 @@
 {% extends 'base_generic.html' %}
 {% load static %}
 
+{% block body_class %}edit-profile-body{% endblock %}
+
 {% block content %}
-  <body class="edit-profile-body">
     <div class="container mt-5 d-flex justify-content-center text-center w-100" style="min-height: 250px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px;">
       <div>
         <h1 class="text-center mb-4 text-light fw-bold">Edit Profile</h1>
@@ -17,7 +18,7 @@
         <!-- Form -->
         <form method="post" enctype="multipart/form-data" class="mb-4">
           {% csrf_token %}
-          <input type="hidden" name="save_profile" value="1" />
+          <input type="hidden" name="save_profile" value="1">
 
           <ul class="list-group mb-4">
             <li class="list-group-item">
@@ -87,5 +88,4 @@
         }
       })
     </script>
-  </body>
 {% endblock %}

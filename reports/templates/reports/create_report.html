@@ -2,8 +2,9 @@
 {% load static %}
 {% load widget_tweaks %}
 
+{% block body_class %}create-report-body{% endblock %}
+
 {% block content %}
-  <body class="create-report-body">
     <div class="container mt-5">
       <div class="card mx-auto shadow-lg" style="max-width: 700px;">
         <!-- Header -->
@@ -94,5 +95,4 @@
         </div>
       </div>
     </div>
-  </body>
 {% endblock %}

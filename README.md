@@ -194,7 +194,13 @@ Tested and verified on:
 
 ### Automated Testing
 
-Unit tests implemented for models and views.
+- **HTML Validation**: Used the [W3C HTML Validator](https://validator.w3.org/) which returned the following results:
+
+    ![HTML Validator Results](assets/w3c_html_validation.png)
+
+- **CSS Validation**: Used the [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) which returned the following results:
+
+    ![CSS Validator Results](assets/w3c_css_validation.png)
 
 ### Manual Testing
 

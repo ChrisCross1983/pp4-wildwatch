@@ -1,7 +1,8 @@
 {% extends 'base_generic.html' %}
 
+{% block body_class %}report-detail-body{% endblock %}
+
 {% block content %}
-  <body class="report-detail-body">
     <div class="container mt-5">
       <!-- Admin Communication Section -->
       {% if user.is_staff %}
@@ -159,5 +160,4 @@
         </div>
       </div>
     </div>
-  </body>
 {% endblock %}
