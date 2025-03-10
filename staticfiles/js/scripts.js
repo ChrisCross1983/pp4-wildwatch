@@ -29,13 +29,20 @@ function toggleFab() {
 toggleFab();
 window.addEventListener('resize', toggleFab);
 
-// Form Submit Button Handling
+// Form Submit Handler
 document.addEventListener('DOMContentLoaded', () => {
+  const forms = document.querySelectorAll('form');
 
-  // Form Handling
-  const form = document.querySelector('form');
-  if (form) {
+  forms.forEach((form) => {
       form.addEventListener('submit', function (event) {
+          if (form.id === "delete-account-form") {
+              const confirmDelete = confirm("Are you sure you want to delete your account? This action is irreversible.");
+              if (!confirmDelete) {
+                  event.preventDefault();
+                  return;
+              }
+          }
+
           if (!form.checkValidity()) {
               event.preventDefault();
               form.reportValidity();
@@ -45,31 +52,46 @@ document.addEventListener('DOMContentLoaded', () => {
           const submitButton = form.querySelector('button[type="submit"]');
           if (submitButton) {
               submitButton.disabled = true;
-              const loadingText = submitButton.getAttribute('data-loading-text') || 'Submitting...';
-              submitButton.innerHTML = loadingText;
+              submitButton.innerHTML = `
+                  <span>Submitting...</span>
+                  <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+              `;
           }
       });
-    }
-
-  // Profile Picture Preview
-  const profilePictureInput = document.getElementById('id_profile_picture');
-  const profilePicturePreview = document.getElementById('profilePicturePreview');
-
-  if (profilePictureInput && profilePicturePreview) {
-      profilePictureInput.addEventListener('change', (event) => {
-          const file = event.target.files[0];
-          if (file && file.type.startsWith('image/')) {
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                  profilePicturePreview.src = e.target.result;
-              };
-              reader.readAsDataURL(file);
-          } else {
-              profilePicturePreview.src = "/static/images/placeholder.jpg";
-          }
-      });
-    }
   });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.help-button').forEach(button => {
+      button.addEventListener('click', function () {
+          if (!button.disabled) {
+              button.disabled = true;
+              const loadingText = button.getAttribute('data-loading-text') || 'Processing...';
+              button.innerHTML = loadingText;
+              button.closest("form").submit();
+          }
+      });
+  });
+});
+
+// Profile Picture Preview
+const profilePictureInput = document.getElementById('id_profile_picture');
+const profilePicturePreview = document.getElementById('profilePicturePreview');
+
+if (profilePictureInput && profilePicturePreview) {
+    profilePictureInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                profilePicturePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            profilePicturePreview.src = "/static/images/placeholder.jpg";
+        }
+    });
+  }
 
 // Lazy Loading for CSS-Background Images
 document.addEventListener("DOMContentLoaded", function () {
@@ -95,4 +117,3 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
-
