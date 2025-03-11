@@ -220,6 +220,8 @@ Lighthouse metrics were scored on Incognito Chrome
 
 ![Lighthouse Test - Animal Report Overview Page](assets/lighthouse_animal_reports_overview.jpg)
 
+![Lighthouse Test - My Reports Page](assets/lighthouse_my_reports.jpg)
+
 ### Manual Testing
 
 Features were manually tested by creating various user scenarios to ensure functionality.

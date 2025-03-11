@@ -8,7 +8,7 @@
       <div>
         <h1 class="text-center mb-4 text-light fw-bold">My Profile</h1>
         {% if user.profile.profile_picture %}
-          <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" loading="lazy" />
+          <img src="{{ user.profile.profile_picture.url|force_https }}" alt="Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" loading="lazy" />
         {% else %}
           <img src="https://res.cloudinary.com/duazmtlpi/image/upload/v1735562779/profile_pictures/placeholder.jpg" alt="Default Profile Picture" class="img-thumbnail rounded-circle profile-picture" style="width: 150px; height: 150px;" loading="lazy" />
         {% endif %}

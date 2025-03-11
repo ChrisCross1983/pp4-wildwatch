@@ -64,6 +64,10 @@ li {
     color: #9C1C28 !important;
 }
 
+a {
+    color: #0a30ac;
+}
+
 /* Background Images */
 
 .home-body,
@@ -339,8 +343,8 @@ section h2 {
 .fab {
     display: none;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 55px;
+    right: 50px;
     z-index: 1050;
     background-color: #007bff;
     color: #fff;
@@ -411,8 +415,8 @@ section h2 {
 /* Scroll to Top Button */
 #scrollToTopBtn {
     position: fixed;
-    bottom: 50px;
-    left: 30px;
+    bottom: 55px;
+    left: 20px;
     z-index: 999;
     display: none;
     background-color: rgba(100, 100, 100, 0.7);
@@ -794,5 +798,11 @@ button[disabled]::after {
 
     h2 {
         font-size: 1rem;
+    }
+
+    .fab {
+        right: 30px;
+        width: 50px;
+        height: 50px;
     }
 }
