@@ -63,7 +63,7 @@
 
               <!-- Report Details -->
               {% if report.image %}
-                <img src="{{ report.image.url|force_https }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" width="600" height="200" loading="eager" />
+                <img src="{{ report.image.url|force_https }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" width="600" max-height="400" loading="eager" />
               {% endif %}
               <p>
                 <strong>Species:</strong> {{ report.species }}

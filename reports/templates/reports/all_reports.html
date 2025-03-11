@@ -30,7 +30,7 @@
                 <div class="col-md-12 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-header bg-secondary text-white">
-                            <h5 class="m-0">{{ report.title }}</h5>
+                            <h2 class="m-0">{{ report.title }}</h2>
                             <div>
                                 <span class="badge {{ report.status_class }}">{{ report.status }}</span>
                                 <span class="badge {{ report.publication_class }}">{{ report.publication_status }}</span>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="card-body text-center">
                             {% if report.image %}
-                            <img src="{{ report.image.url|force_https }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" width="600" height="200" loading="eager">
+                            <img src="{{ report.image.url|force_https }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" width="600" max-height="400" loading="eager">
                             {% endif %}
                             <p><strong>Species:</strong> {{ report.species }}</p>
                             <p><strong>Injury Condition:</strong> {{ report.injury_condition }}</p>

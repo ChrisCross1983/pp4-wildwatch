@@ -12,6 +12,10 @@ body, .section-text {
     font-family: 'Open Sans', Arial, sans-serif;
 }
 
+h2 {
+    font-size: 1.25rem;
+}
+
 h3 {
     font-size: 1.25rem;
     font-weight: bold;
@@ -786,5 +790,9 @@ button[disabled]::after {
 
     .form-select {
         margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 1rem;
     }
 }

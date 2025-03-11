@@ -50,7 +50,7 @@
           <!-- Report Image -->
           {% if report.image %}
             <div class="text-center mb-4">
-              <img src="{{ report.image.url|force_https }}" alt="{{ report.title }}" class="img-fluid rounded" width="600" height="400" loading="eager">
+              <img src="{{ report.image.url|force_https }}" alt="{{ report.title }}" class="img-fluid rounded" width="600" max-height="400" loading="eager">
 
               <!-- Help Status -->
               {% if report.helper == user %}
