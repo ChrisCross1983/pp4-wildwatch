@@ -63,14 +63,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll('.help-button').forEach(button => {
-      button.addEventListener('click', function () {
-          if (!button.disabled) {
-              button.disabled = true;
-              const loadingText = button.getAttribute('data-loading-text') || 'Processing...';
-              button.innerHTML = loadingText;
-              button.closest("form").submit();
-          }
-      });
+    button.addEventListener('click', function (event) {
+      const buttonText = button.textContent.trim();
+      let confirmMessage = "";
+
+      if (buttonText.includes("want to help")) {
+        confirmMessage = "Do you really want to help with this report?";
+      } else if (buttonText.includes("no longer help")) {
+        confirmMessage = "Do you really want to cancel your help for this report?";
+      }
+
+      if (confirmMessage && !confirm(confirmMessage)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (!button.disabled) {
+        button.disabled = true;
+        const loadingText = button.getAttribute('data-loading-text') || 'Processing...';
+        button.innerHTML = `
+          <span>${loadingText}</span>
+          <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+        `;
+        button.closest("form").submit();
+      }
+    });
   });
 });
 
