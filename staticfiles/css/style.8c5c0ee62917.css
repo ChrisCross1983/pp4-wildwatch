@@ -68,7 +68,7 @@ li {
 
 .home-body,
 .signup-body {
-    background-image: url("../images/hero_big_elephant.webp");
+    background-image: url("../images/hero_big_elephant.736fe892d993.webp");
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
@@ -79,7 +79,7 @@ li {
 
 .all-reports-body,
 .edit-profile-body {
-    background-image: url("../images/hero_rhino.webp");
+    background-image: url("../images/hero_rhino.e9ecee3e4634.webp");
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
@@ -90,7 +90,7 @@ li {
 
 .my-reports-body,
 .profile-body {
-    background-image: url("../images/hero_elephant.webp");
+    background-image: url("../images/hero_elephant.72859b9d3a71.webp");
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
@@ -105,7 +105,7 @@ li {
 
 .report-detail-body,
 .create-report-body {
-    background-image: url("../images/hero_leopard.webp");
+    background-image: url("../images/hero_leopard.d62c8d88c4f8.webp");
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
@@ -116,7 +116,7 @@ li {
 
 .pending-reports-body,
 .login-body {
-    background-image: url("../images/hero_rhino.webp");
+    background-image: url("../images/hero_rhino.e9ecee3e4634.webp");
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
@@ -239,15 +239,15 @@ section h2 {
 }
 
 .animal-lion {
-    background-image: url("../images/lion.webp");
+    background-image: url("../images/lion.93b85377a368.webp");
 }
 
 .animal-elephant {
-    background-image: url("../images/elephant.webp");
+    background-image: url("../images/elephant.6f949c2f0d2b.webp");
 }
 
 .animal-giraffe {
-    background-image: url("../images/giraffe.webp");
+    background-image: url("../images/giraffe.79ddd3217b91.webp");
 }
 
 .animal-circle.lazy-bg {
