@@ -33,17 +33,6 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError("This username is already taken.")
         return username
 
-    def clean_profile_picture(self):
-        profile_picture = self.cleaned_data.get('profile_picture')
-
-        if not profile_picture:
-            return self.instance.profile_picture
-
-        if profile_picture:
-            if profile_picture.size > 5 * 1024 * 1024:
-                raise forms.ValidationError("The image should be not bigger than 5 MB.")
-        return profile_picture
-
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -145,16 +134,17 @@ class ProfileUpdateForm(forms.ModelForm):
     def save(self, commit=True):
         profile = super().save(commit=False)
         profile_picture = self.cleaned_data.get('profile_picture')
-        print("Profile Object Before Save:", profile.__dict__)
 
         if profile_picture:
-            upload_result = upload(profile_picture.file)
-            profile.profile_picture = upload_result['public_id']
-            print("Profile Picture Uploaded:", profile.profile_picture)
+            try:
+                upload_result = upload(profile_picture.file)
+                profile.profile_picture = upload_result['public_id']
+            except Exception as e:
+                print("Error uploading profile picture:", e)
+                raise forms.ValidationError("There was an error while uploading your profile picture. Please try again later.")
 
         if commit:
             profile.save()
-            print("Profile Object After Save:", profile.__dict__)
         return profile
 
 class CustomPasswordResetForm(PasswordResetForm):

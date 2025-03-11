@@ -47,7 +47,7 @@
                     <!-- Image -->
                     {% if report.image %}
                     <div class="text-center mb-3">
-                        <img src="{{ report.image.url|force_https }}" alt="Report Image" class="img-fluid rounded report-image" loading="lazy">
+                        <img src="{{ report.image.url|force_https }}" alt="Report Image" class="img-fluid rounded mb-3" width="600" height="200" loading="eager">
                     </div>
                     {% endif %}
 
@@ -86,7 +86,7 @@
                     <!-- Image -->
                     {% if report.image %}
                     <div class="text-center mb-3">
-                        <img src="{{ report.image.url|force_https }}" alt="Report Image" class="img-fluid rounded report-image" loading="lazy">
+                        <img src="{{ report.image.url|force_https }}" alt="Report Image" class="img-fluid rounded mb-3" width="600" height="200" loading="eager">
                     </div>
                     {% endif %}
 

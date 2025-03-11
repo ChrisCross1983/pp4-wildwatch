@@ -15,7 +15,11 @@ class Profile(models.Model):
         blank=True,
         null=True
     )
+    
+    def save(self, *args, **kwargs):
+        if not self.profile_picture:
+            self.profile_picture = 'https://res.cloudinary.com/duazmtlpi/image/upload/v1735562779/profile_pictures/placeholder.jpg'
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
-
