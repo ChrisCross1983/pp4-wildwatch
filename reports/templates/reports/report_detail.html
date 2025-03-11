@@ -1,4 +1,5 @@
 {% extends 'base_generic.html' %}
+{% load custom_filters %}
 
 {% block body_class %}report-detail-body{% endblock %}
 
@@ -49,7 +50,7 @@
           <!-- Report Image -->
           {% if report.image %}
             <div class="text-center mb-4">
-              <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid rounded" style="max-height: 400px; object-fit: cover" />
+              <img src="{{ report.image.url|force_https }}" alt="{{ report.title }}" class="img-fluid rounded" style="max-height: 400px; object-fit: cover" />
 
               <!-- Help Status -->
               {% if report.helper == user %}
@@ -148,13 +149,13 @@
           <!-- Back Button -->
           <div>
             {% if request.GET.source == 'all_reports' %}
-              <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back to all reports</a>
+              <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back</a>
             {% elif request.GET.source == 'my_reports' %}
-              <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary btn-sm">Back to my reports</a>
+              <a href="{% url 'reports:my_reports' %}" class="btn btn-secondary btn-sm">Back</a>
             {% elif report.reported_by == user %}
               <a href="{% url 'reports:all_reports' %}" class="btn btn-secondary btn-sm">Back</a>
             {% elif user.is_staff %}
-              <a href="{% url 'reports:pending_reports' %}" class="btn btn-secondary btn-sm">Back to Manage Reports</a>
+              <a href="{% url 'reports:pending_reports' %}" class="btn btn-secondary btn-sm">Back</a>
             {% endif %}
           </div>
         </div>

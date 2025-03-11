@@ -1,4 +1,5 @@
 {% extends 'base_generic.html' %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="container mt-5">
@@ -13,7 +14,7 @@
       {% if report.image %}
       <div class="text-center mb-4">
         <img
-          src="{{ report.image.url }}"
+          src="{{ report.image.url|force_https }}"
           alt="Image of {{ report.species }}"
           class="img-fluid rounded"
           style="max-height: 400px; object-fit: cover"

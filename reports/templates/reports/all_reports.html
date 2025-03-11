@@ -1,4 +1,5 @@
 {% extends 'base_generic.html' %}
+{% load custom_filters %}
 {% load static %}
 
 {% block body_class %}all-reports-body{% endblock %}
@@ -37,7 +38,7 @@
                         </div>
                         <div class="card-body text-center">
                             {% if report.image %}
-                            <img src="{{ report.image.url }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" style="max-height: 200px;" loading="lazy">
+                            <img src="{{ report.image.url|force_https }}" alt="{{ report.title }}" class="img-fluid rounded mb-3" style="max-height: 200px;" loading="lazy">
                             {% endif %}
                             <p><strong>Species:</strong> {{ report.species }}</p>
                             <p><strong>Injury Condition:</strong> {{ report.injury_condition }}</p>

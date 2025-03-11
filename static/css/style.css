@@ -432,7 +432,6 @@ section h2 {
 /* Form-Button */
 form button[type="submit"] {
     width: auto;
-    padding: 0.5rem 1.5rem;
     font-size: 0.875rem;
     border-radius: 5px;
 }
@@ -456,6 +455,7 @@ button[disabled]::after {
 }
 
 .btn-danger {
+    font-size: 1rem !important;
     background-color: #830814;
     font-weight: 600;
 }
@@ -466,17 +466,25 @@ button[disabled]::after {
 }
 
 .btn-warning {
+    font-size: 1rem !important;
     background-color: #f0b914;
     font-weight: 600;
 }
 
 .btn-info {
+    font-size: 1rem !important;
     background-color: #49a9e9;
     font-weight: 600;
 }
 
 .btn-primary {
+    font-size: 1rem !important;
     font-weight: 600;
+}
+
+.btn-secondary {
+    font-size: 1rem !important;
+    font-size: 600;
 }
 
 @keyframes ellipsis {
