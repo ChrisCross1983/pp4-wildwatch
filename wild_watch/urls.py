@@ -19,14 +19,18 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import handler404, handler403
+from django.views.generic import TemplateView
 
 handler404 = 'wild_watch.views.custom_404'
 handler403 = 'wild_watch.views.custom_403'
 
 urlpatterns = [
+    # robots.txt
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+
     # Core URLs
     path('', include('core.urls')),
-    
+
     # Admin
     path('admin/', admin.site.urls),
 
@@ -36,6 +40,7 @@ urlpatterns = [
     # Report Management
     path('reports/', include('reports.urls')),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
