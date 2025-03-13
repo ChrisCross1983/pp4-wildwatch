@@ -22,9 +22,7 @@ logger = logging.getLogger(__name__)
 # Signup View
 def signup(request):
     if request.method == 'POST':
-        print(">>> POST Request received <<<")
         form = CustomUserCreationForm(request.POST, request.FILES)
-        print("Form valid:", form.is_valid())
 
         if form.is_valid():
             user = form.save(commit=False)
@@ -34,8 +32,6 @@ def signup(request):
             profile = Profile.objects.create(user=user)
             profile.profile_picture = form.cleaned_data.get('profile_picture') or 'profile_pictures/placeholder.jpg'
             profile.save()
-            print(">>> Profile created:", profile)
-            print(f">>> Profile picture saved: {profile.profile_picture}")
 
             send_verification_email(user)
             messages.success(
@@ -44,7 +40,6 @@ def signup(request):
 
             return HttpResponseRedirect(reverse('users:signup_thanks'))
         else:
-            print("Form errors:", form.errors)
             messages.error(request, "There was an error in your registration.")
     else:
         form = CustomUserCreationForm()
@@ -173,27 +168,7 @@ def home(request):
 def profile(request):
     return render(request, 'users/profile.html', {'user': request.user})
 
-def debug_check_database(user_id):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT first_name, last_name, email, username FROM auth_user WHERE id = %s", [user_id])
-        result = cursor.fetchone()
-        print("\n=== DIREKTE DATABASE REQUEST ===\n")
-        print("First Name:", result[0])
-        print("Last Name:", result[1])
-        print("Email:", result[2])
-        print("Username:", result[3])
-
 # Edit Profile View
-def debug_check_database(user_id):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT first_name, last_name, email, username FROM auth_user WHERE id = %s", [user_id])
-        result = cursor.fetchone()
-        print("\n=== DIREKTE DATENBANKABFRAGE ===\n")
-        print("First Name:", result[0])
-        print("Last Name:", result[1])
-        print("Email:", result[2])
-        print("Username:", result[3])
-
 @login_required
 def edit_profile(request):
     logger.info("Edit profile view accessed")
@@ -201,44 +176,21 @@ def edit_profile(request):
     old_email = request.user.email
 
     if request.method == 'POST':
-        logger.info("Received POST request")
-        logger.info(f"POST Data: {request.POST}")
-        logger.info(f"FILES Data: {request.FILES}")
-
-        print("\n=== DEBUG: POST Data ===\n", request.POST)
-        print("\n=== DEBUG: FILES Data ===\n", request.FILES)
-
-        print("\n=== DEBUG: Forms starting to initialize ===\n")
 
         user_form = CustomUserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
 
-        print("\n=== DEBUG: Forms are initialized ===\n")
-
         if 'save_profile' in request.POST:
             logger.info("Save Profile Button Clicked")
-
-            print("\n=== DEBUG: Before is_valid() Check ===\n")
 
             user_form_valid = user_form.is_valid()
             profile_form_valid = profile_form.is_valid()
 
-            print("\n=== DEBUG: user_form_valid =", user_form_valid)
-            print("\n=== DEBUG: profile_form_valid =", profile_form_valid)
-
-            if not user_form_valid:
-                print("\n=== DEBUG: User Form Validation Errors ===\n", user_form.errors)
-
-            if not profile_form_valid:
-                print("\n=== DEBUG: Profile Form Validation Errors ===\n", profile_form.errors)
-
             if user_form_valid and profile_form_valid:
-                print("\n=== DEBUG: Forms are validated, now saving ===\n")
 
                 user = user_form.save(commit=False)
 
                 if old_email != user_form.cleaned_data['email']:
-                    print("\n=== DEBUG: Email was changed! Deactivating user and sending verification email ===\n")
                     user.is_active = False
                     user.save()
                     send_verification_email(user)
@@ -249,11 +201,8 @@ def edit_profile(request):
 
                 user.save()
 
-                print("\n=== DEBUG: user.save() was executed ===\n")
+                logger.debug(f"DB Check for user {user_id}: {result}")
 
-                debug_check_database(request.user.pk)
-
-                print("\n=== DEBUG: force_db_update is now executing ===\n")
                 with connection.cursor() as cursor:
                     cursor.execute("""
                         UPDATE auth_user
@@ -270,12 +219,11 @@ def edit_profile(request):
                         request.user.pk
                     ])
 
-                debug_check_database(request.user.pk)
+                logger.debug(f"DB Check for user {user_id}: {result}")
 
                 request.user.refresh_from_db()
 
                 saved_user = User.objects.get(pk=request.user.pk)
-                print("\n=== Saved User Data (after SQL-Update) ===\n", saved_user.__dict__)
 
                 if 'profile_picture' in request.FILES:
                     profile_picture = profile_form.cleaned_data.get('profile_picture')
@@ -290,27 +238,20 @@ def edit_profile(request):
                             profile.profile_picture = upload_result['public_id']
                             profile.save()
 
-                            logger.info("Profile picture updated successfully.")
-                            print("\n=== DEBUG: Profile picture uploaded successfully ===\n")
                         except Exception as e:
-                            logger.error(f"Error uploading profile picture: {str(e)}")
                             messages.error(request, "There was an error uploading the profile picture.")
-                            print("\n=== DEBUG: Error uploading profile picture ===\n", str(e))
 
                 messages.success(request, "Your profile has been updated successfully!")
 
                 return redirect('users:profile')
             else:
-                print("\n=== DEBUG: Form validation failed! ===\n")
                 messages.error(request, "There was an error updating your profile. Please check the form for errors.")
         else:
-            print("\n=== DEBUG: save_profile Button was not found! ===\n")
+            logger.warning("Save Profile button not found in POST request.")
     else:
-        print("\n=== DEBUG: GET Request, initializing forms ===\n")
         user_form = CustomUserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=profile)
 
-    print("\n=== DEBUG: Rendering edit_profile.html ===\n")
     return render(request, 'users/edit_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form,

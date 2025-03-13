@@ -58,7 +58,6 @@ def create_report(request):
             messages.success(request, "Your report has been successfully submitted!")
             return redirect('reports:my_reports')
         else:
-            print("Form errors:", form.errors)  # Debugging
             messages.error(request, "There were errors in the form.")
     else:
         form = InjuryReportForm()
@@ -253,7 +252,6 @@ def edit_report(request, report_id):
             messages.success(request, "Your changes have been saved successfully.")
             return redirect(request.GET.get('next', 'reports:my_reports'))
         else:
-            print("Form errors:", form.errors)
             messages.error(request, "Please correct the errors in the form.")
     else:
         form = InjuryReportForm(instance=report)

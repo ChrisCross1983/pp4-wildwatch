@@ -388,6 +388,10 @@ section h2 {
     display: block;
 }
 
+.modal-content {
+    margin: 0 20px;
+}
+
 /* Other Styling */
 
 .create-report-btn {
