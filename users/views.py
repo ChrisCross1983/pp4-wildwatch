@@ -201,8 +201,6 @@ def edit_profile(request):
 
                 user.save()
 
-                logger.debug(f"DB Check for user {user_id}: {result}")
-
                 with connection.cursor() as cursor:
                     cursor.execute("""
                         UPDATE auth_user
@@ -218,8 +216,6 @@ def edit_profile(request):
                         user_form.cleaned_data['username'],
                         request.user.pk
                     ])
-
-                logger.debug(f"DB Check for user {user_id}: {result}")
 
                 request.user.refresh_from_db()
 
